@@ -314,21 +314,21 @@ N_all <- N.truth[,,1,,,]
 N_all <- adply(N_all, c(1,2,3,4,5))
 colnames(N_all) <- c("segment", "primary", "age","param", "sim", "count")
 
-file_name = paste(path, 'DR_nocontrol_N_all.csv',sep = '/')
+file_name = paste(path, 'N.csv',sep = '/')
 write.csv(N_all,file_name)
 
 #Sum across segments:
 N_allsims <- aggregate(count ~ primary + age + sim + param,
                        data = as.data.frame(N_all), FUN = sum)
 
-file_name = paste(path, 'DR_nocontrol_N_allsims.csv',sep = '/')
+file_name = paste(path, 'N.csv',sep = '/')
 write.csv(N_allsims,file_name)
 
 #--------- D After ---------#
 D_all <- adply(D, c(1,2,3,4,5))
 colnames(D_all) <- c("segment", "primary", "age", "param", "sim", "count")
 
-file_name = paste(path, 'DR_nocontrol_D_all.csv',sep = '/')
+file_name = paste(path, 'D.csv',sep = '/')
 write.csv(D_all,file_name)
 
 #---- timing ---- #
@@ -336,28 +336,3 @@ end.time <- Sys.time()
 time.taken <- end.time - start.time
 file_name = paste(path, 'time.txt',sep = '/')
 write.table(time.taken,file_name)
-
-#finaltime
-N_all.fin <- D_all %>% filter(primary == J)
-N_all.fin$age <- as.numeric(N_all.fin$age)
-N_all.fin <- N_all.fin %>% filter(age > 1)
-
-N_all.fin <- aggregate(count ~ segment + sim + param,
-                       data = as.data.frame(N_all.fin), FUN = sum)
-
-N_all.fin.param <- aggregate(count ~ segment + param,
-                             data = as.data.frame(N_all.fin), FUN = mean)
-
-N_all.fin.full <- aggregate(count ~ segment,
-                            data = as.data.frame(N_all.fin), FUN = mean)
-
-sum(N_all.fin.full$count) 
-
-#Different way, same result
-N_all.fin.sums<- aggregate(count ~ sim + param,
-                             data = as.data.frame(N_all.fin), FUN = sum)
-
-#max(N_all.fin.sums$count)
-mean(N_all.fin.sums$count)
-
-
