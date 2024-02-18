@@ -14,22 +14,20 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results","abund", "abund_p3")
+path <- here::here("results","down", "down_4rem_p1_s1")
 
 #------------------------------------------------------------------------------#
 #### Data ####
 load("parameters.RData")
 
-N.years <- 8 #Number of years that we will be running the simulation
+N.years <- 7 #Number of years that we will be running the simulation
 J <- 12*N.years #Number of total initial primary periods
 K <- 10 #Number of secondary periods (abundance measurements per site), needs to be larger
 I <- 35 #Number of segments -total spatial units
 Ages <- 4 #4 age classes
-S <- 50 #Number of simulations
-P <- 20 #parameter sets
 
-numrem <- c(4,8,16) #segments where removal occurs
-Rem <- length(numrem) #segments where removal occurs
+S <- 25 #Number of simulations
+P <- 20 #chose parameter space p = 1
 
 #Temperature data:
 #loading monthly% of degree days < 6C (for movement)
@@ -45,21 +43,20 @@ u6.temp <- do.call(cbind, replicate((ceiling(J/12)), u6.temp, simplify=FALSE)) #
 #### A. Model set up ####
 #### A1: Creating Arrays ####
 ##----1a: Arrays for removal model----## 
+numrem <- 4 #segments where removal occurs
+segs.remove <- rep(numrem,S)#total segments where removal occurs
 n.trap <- 2000 #number of traps per segment #ignore this for now
 
-Y <- array(0, dim = c(I,J,K,Ages,P,S,Rem)) #removal data (integer)
-N.truth <- array(0, dim = c(I,J,K,Ages,P,S,Rem)) #true population abundance
-R <- array(0, dim = c(I,J,Ages,P,S,Rem)) #population remaining after removals at j
-D <- array(0, dim = c(I,J,Ages,P,S,Rem)) #individuals available for dispersal 
-D.excess <- array(0, dim = c(I,J,P,S,Rem)) #used to truncate D by carrying capacity
-D.stay <- array(0, dim = c(I,J,Ages,P,S,Rem)) #population that is staying
-D.down <- array(0, dim = c(I,J,Ages,P,S,Rem)) #population that moves downstream
-D.up <- array(0, dim = c(I,J,Ages,P,S,Rem)) #population that moves upstream
-D.fork <- array(0, dim = c(I,J,Ages,P,S,Rem)) #population that moves to a new fork
-D.after <- array(0, dim = c(I,J,Ages,P,S,Rem)) #population after movement
-
-#Entering Columbia
-D.columbia <- array(0, dim = c(J,Ages,P,S,Rem))
+Y <- array(0, dim = c(I,J,K,Ages,P,S)) #removal data (integer)
+N.truth <- array(0, dim = c(I,J,K,Ages,P,S)) #true population abundance
+R <- array(0, dim = c(I,J,Ages,P,S)) #population remaining after removals at j
+D <- array(0, dim = c(I,J,Ages,P,S)) #individuals available for dispersal 
+D.excess <- array(0, dim = c(I,J,P,S)) #used to truncate D by carrying capacity
+D.stay <- array(0, dim = c(I,J,Ages,P,S)) #population that is staying
+D.down <- array(0, dim = c(I,J,Ages,P,S)) #population that moves downstream
+D.up <- array(0, dim = c(I,J,Ages,P,S)) #population that moves upstream
+D.fork <- array(0, dim = c(I,J,Ages,P,S)) #population that moves to a new fork
+D.after <- array(0, dim = c(I,J,Ages,P,S)) #population after movement
 
 #indexing when trapping occurs (always first 4 months of the year)
 time.trap <- c(1,1,1,1,0,0,0,0,0,0,0,0)
@@ -67,11 +64,11 @@ time.traps <- rep(time.trap, N.years)
 
 #### param 1 ####
 #removal for each age p
-p <- 0.5
-p2 <- rep(p,P) 
+p <- cap_eff[1:P]
+p2 <- (n.trap)/(8000)*p 
 
 ##----1b: Arrays for population change model----## 
-phi <- array(0, dim = c(I,J,Ages,P,S,Rem)) #survival
+phi <- array(0, dim = c(I,J,Ages,P,S)) #survival
 june <- seq(1,J, by = 12) #June indices (when reproduction occurs)
 
 #### param 2 ####
@@ -155,17 +152,14 @@ for(p in 1:P){
 
 for(p in 1:P){
   for(i in 1:I){
-    N.truth[i,1,1,1:Ages,p,1:S,1:Rem] <- round(t(stable.dist[,p])* initpop[i])
+    N.truth[i,1,1,1:Ages,p,1:S] <- round(t(stable.dist[,p])* initpop[i])
   }
 }
 
-
 #### Year 1 removal ####
-site.traps <- array(NA, dim = c(N.years, numrem[length(numrem)], P, S,Rem))#rep(NA, S)
+site.traps <- array(NA, dim = c(N.years, numrem, P, S))#rep(NA, S)
 
-for(r in 1:Rem){
-  site.traps[1,,1:P, 1:S,r]<- order(initpop, decreasing = T)[1:numrem[r]]
-}
+site.traps[1,1:numrem,1:P, 1:S]<- tail(which(initpop[1:22] > 0), numrem)
 
 decision.date <- seq(1,6)*12 + 1
 yearval <- rep(seq(1,N.years), each = 12)
@@ -217,12 +211,12 @@ june <- seq(1,N.years*12, by = 12)
 may <- seq(12,N.years*12, by = 12)
 
 year <- rep(1:N.years, each = 12)
-N.decision <- array(NA, dim = c(I,J,P,S,Rem))
+
+N.decision <- array(NA, dim = c(I,J,P,S))
 
 ###################################################################################
 
 #### Simulate ####
-for(r in 1:Rem){ #removal locations
 for(p in 1:P){ #parameter set
 for(s in 1:S){ #simulation
   for(j in 1:J){ #primary period (month)
@@ -231,82 +225,82 @@ for(s in 1:S){ #simulation
     if(j %in% decision.date){
       
       for(i in 1:I){
-        N.decision[i,j,p,s,r] <- sum(D.after[i,(j-1),2:Ages,p,s,r]) #abundance summed across ages 2-4
+        N.decision[i,j,p,s] <- sum(D.after[i,(j-1),2:Ages,p,s]) #abundance summed across ages 2-4
       }
       
-      site.traps[yearval[j],1:numrem[r],p, s,r] <- tail(order(N.decision[1:I,j,p,s,r]), numrem[r])
+      site.traps[yearval[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p, s] <- tail(which(N.decision[1:22,j,p,s] > 0), min(numrem, length(which(N.decision[1:22,j,p,s] > 0))))
     }
     
     #### Removal ####
     for(i in 1:I){ #for each segment:
       
       for(a in 2:Ages){ #for ages 2-4
-        if(i %in% site.traps[year[j],1:numrem[r],p,s,r]){
-          Y[i,j,1,a,p,s,r] <- rbinom(1,N.truth[i,j,1,a,p,s,r],p2[p]) * time.traps[j] #removals
+        if(i %in% site.traps[year[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p,s]){
+          Y[i,j,1,a,p,s] <- rbinom(1,N.truth[i,j,1,a,p,s],p2[p]) * time.traps[j] #removals
         } else{
           
-          Y[i,j,1,a,p,s,r] <- 0
+          Y[i,j,1,a,p,s] <- 0
           
         }
         
       }
       
-      Y[i,j,1,1,p,s,r] <- 0 #no removals of age class 0
+      Y[i,j,1,1,p,s] <- 0 #no removals of age class 0
       
       for(k in 2:K){ #for secondary periods 2: K
         for(a in 1:Ages){ #for each age
           #True population abundance = N.truth
-          N.truth[i,j,k,a,p,s,r] <- max(0, N.truth[i,j,k-1,a,p,s,r] - Y[i,j,k-1,a,p,s,r]) #True pop = population at previous secondary - removals at previous secondary
+          N.truth[i,j,k,a,p,s] <- max(0, N.truth[i,j,k-1,a,p,s] - Y[i,j,k-1,a,p,s]) #True pop = population at previous secondary - removals at previous secondary
         }
         for(a in 2:Ages){
-          if(i %in% site.traps[year[j],1:numrem[r],p,s,r]){
-            Y[i,j,k,a,p,s,r] <- rbinom(1,N.truth[i,j,k,a,p,s,r],p2[p]) * time.traps[j] #removals
+          if(i %in% site.traps[year[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p,s]){
+            Y[i,j,k,a,p,s] <- rbinom(1,N.truth[i,j,k,a,p,s],p2[p]) * time.traps[j] #removals
           } else{
-            Y[i,j,k,a,p,s,r] <- 0
+            Y[i,j,k,a,p,s] <- 0
             
           }
         }
         
-        Y[i,j,k,1,p,s,r] <- 0 #no removals of age class 0
+        Y[i,j,k,1,p,s] <- 0 #no removals of age class 0
       }
       
       for(a in 1:Ages){
         
         #Population remaining at the end of primary removal period j:
-        R[i,j,a,p,s,r] <- N.truth[i,j,K,a,p,s,r]
+        R[i,j,a,p,s] <- N.truth[i,j,K,a,p,s]
         
       } #ends ages loop
       
       #### Population change #####
       #June population change: growth * population and truncated by carrying capacity
       if(j %in% june){ #if month = june
-        D[i,j,,p,s,r] <- round(L.june[,,p] %*% R[i,j,,p,s,r])
+        D[i,j,,p,s] <- round(L.june[,,p] %*% R[i,j,,p,s])
         
       } else{ 
         #not June population change: growth * population and truncated by carrying capacity
-        D[i,j,,p,s,r] <- round(L.notjune[,,p] %*% R[i,j,,p,s,r])
+        D[i,j,,p,s] <- round(L.notjune[,,p] %*% R[i,j,,p,s])
       }
       
       #update D if above carrying capacity.
       #If D is > carrying capacity, remove age 0 individuals
       for(a in 1:Ages){
-        if(sum(D[i,j,1:Ages,p,s,r]) > popK){
-          D.excess[i,j,p,s,r] <- sum(D[i,j,1:Ages,p,s,r]) - (popK)
-          D[i,j,1,p,s,r] <- D[i,j,1,p,s,r] - D.excess[i,j,p,s,r]
-          if(D[i,j,1,p,s,r] < 0){
-            D[i,j,2,p,s,r] <- D[i,j,2,p,s,r] - abs(D[i,j,1,p,s,r])
-            D[i,j,1,p,s,r] <- 0
+        if(sum(D[i,j,1:Ages,p,s]) > popK){
+          D.excess[i,j,p,s] <- sum(D[i,j,1:Ages,p,s]) - (popK)
+          D[i,j,1,p,s] <- D[i,j,1,p,s] - D.excess[i,j,p,s]
+          if(D[i,j,1,p,s] < 0){
+            D[i,j,2,p,s] <- D[i,j,2,p,s] - abs(D[i,j,1,p,s])
+            D[i,j,1,p,s] <- 0
           }
-          if(D[i,j,2,p,s,r] < 0){
-            D[i,j,3,p,s,r] <- D[i,j,3,p,s,r] - abs(D[i,j,2,p,s,r])
-            D[i,j,2,p,s,r] <- 0
+          if(D[i,j,2,p,s] < 0){
+            D[i,j,3,p,s] <- D[i,j,3,p,s] - abs(D[i,j,2,p,s])
+            D[i,j,2,p,s] <- 0
           }
-          if(D[i,j,3,p,s,r] < 0){
-            D[i,j,4,p,s,r] <- D[i,j,4,p,s,r] - abs(D[i,j,3,p,s,r])
-            D[i,j,3,p,s,r] <- 0
+          if(D[i,j,3,p,s] < 0){
+            D[i,j,4,p,s] <- D[i,j,4,p,s] - abs(D[i,j,3,p,s])
+            D[i,j,3,p,s] <- 0
           }
-          if(D[i,j,4,p,s,r] < 0){
-            D[i,j,4,p,s,r] <- 0
+          if(D[i,j,4,p,s] < 0){
+            D[i,j,4,p,s] <- 0
           }
           
         }
@@ -319,117 +313,114 @@ for(s in 1:S){ #simulation
     for(a in 2:Ages){
       for(i in 1:I){
         #calculate individuals that stay
-        D.stay[i,j,a,p,s,r] <- rbinom(1, D[i,j,a,p,s,r], 1- (0.5*move[p]) + (0.5*move[p]*u6.temp[i,j])) 
+        D.stay[i,j,a,p,s] <- rbinom(1, D[i,j,a,p,s], 1- (0.5*move[p]) + (0.5*move[p]*u6.temp[i,j])) 
         
         #calculate individuals that move downstream
-        D.down[i,j,a,p,s,r] <- rbinom(1,D[i,j,a,p,s,r] - D.stay[i,j,a,p,s,r], ds[p])
+        D.down[i,j,a,p,s] <- rbinom(1,D[i,j,a,p,s] - D.stay[i,j,a,p,s], ds[p])
         
         #Calculate individuals that move upstream
-        D.up[i,j,a,p,s,r] <- floor((D[i,j,a,p,s,r] - D.stay[i,j,a,p,s,r] - D.down[i,j,a,p,s,r])/fork1[i])
+        D.up[i,j,a,p,s] <- floor((D[i,j,a,p,s] - D.stay[i,j,a,p,s] - D.down[i,j,a,p,s])/fork1[i])
         
         #Calculating individuals that move to another fork upstream (only possible at i = 6, 8, 25, 31)
-        D.fork[i,j,a,p,s,r] <- fork2[i]*(D[i,j,a,p,s,r] - D.stay[i,j,a,p,s,r] - D.down[i,j,a,p,s,r] - D.up[i,j,a,p,s,r])
+        D.fork[i,j,a,p,s] <- fork2[i]*(D[i,j,a,p,s] - D.stay[i,j,a,p,s] - D.down[i,j,a,p,s] - D.up[i,j,a,p,s])
         #if fork2[i] --> 1 bifurcation, if 0 -> no
       }
       
       for(i in 1:n.not.edge){
-        D.after[not.edge[i],j,a,p,s,r] <- D.stay[not.edge[i],j,a,p,s,r] + #stay
-          sum(D.down[moved.down[not.edge[i],1:n.down[not.edge[i]]],j,a,p,s,r]) + #moved in by going downstream
-          ups[not.edge[i]]*D.up[moved.up[not.edge[i]],j,a,p,s,r] + D.fork[bifurcation[not.edge[i]],j,a,p,s,r] #moved in by going upstream
+        D.after[not.edge[i],j,a,p,s] <- D.stay[not.edge[i],j,a,p,s] + #stay
+          sum(D.down[moved.down[not.edge[i],1:n.down[not.edge[i]]],j,a,p,s]) + #moved in by going downstream
+          ups[not.edge[i]]*D.up[moved.up[not.edge[i]],j,a,p,s] + D.fork[bifurcation[not.edge[i]],j,a,p,s] #moved in by going upstream
       }
       
       #Edges: can only move upstream from each of these spots
-      D.after[1,j,a,p,s,r] <- D.stay[1,j,a,p,s,r] + D.up[2,j,a,p,s,r] + D.up[1,j,a,p,s,r]
-      D.after[23,j,a,p,s,r] <- D.stay[23,j,a,p,s,r] + D.up[24,j,a,p,s,r] + D.up[23,j,a,p,s,r]
-      D.after[27,j,a,p,s,r] <- D.stay[27,j,a,p,s,r] + D.up[28,j,a,p,s,r] + D.up[27,j,a,p,s,r]
-      D.after[29,j,a,p,s,r] <- D.stay[29,j,a,p,s,r] + D.up[30,j,a,p,s,r] + D.up[29,j,a,p,s,r]
-      D.after[34,j,a,p,s,r] <- D.stay[34,j,a,p,s,r] + D.up[35,j,a,p,s,r] + D.up[34,j,a,p,s,r]
+      D.after[1,j,a,p,s] <- D.stay[1,j,a,p,s] + D.up[2,j,a,p,s] + D.up[1,j,a,p,s]
+      D.after[23,j,a,p,s] <- D.stay[23,j,a,p,s] + D.up[24,j,a,p,s] + D.up[23,j,a,p,s]
+      D.after[27,j,a,p,s] <- D.stay[27,j,a,p,s] + D.up[28,j,a,p,s] + D.up[27,j,a,p,s]
+      D.after[29,j,a,p,s] <- D.stay[29,j,a,p,s] + D.up[30,j,a,p,s] + D.up[29,j,a,p,s]
+      D.after[34,j,a,p,s] <- D.stay[34,j,a,p,s] + D.up[35,j,a,p,s] + D.up[34,j,a,p,s]
       
       #Edge: closest to columbia river
-      D.after[22,j,a,p,s,r] <- D.stay[22,j,a,p,s,r] + D.down[21,j,a,p,s,r] 
-      
-      #Entering Columbia
-      D.columbia[j,a,p,s,r] <- D.down[22,j,a,p,s,r]
-      
+      D.after[22,j,a,p,s] <- D.stay[22,j,a,p,s] + D.down[21,j,a,p,s] 
     }
     
-    D.columbia[j,1,p,s,r] <- 0 #age 0 never moves  
-    D.after[1:I,j,1,p,s,r] <- D[1:I,j,1,p,s,r] #age 0 never moves    
+    D.after[1:I,j,1,p,s] <- D[1:I,j,1,p,s] #age 0 never moves    
     
     #Next primary period abundance 
     for(h in 1:I){
       #abundance at the start of each primary period (k = 1) -except for initial abundance 
-      N.truth[h,2:J, 1,1:Ages,p,s,r] <- D.after[h,1:(J-1),1:Ages,p,s,r]
+      N.truth[h,2:J, 1,1:Ages,p,s] <- D.after[h,1:(J-1),1:Ages,p,s]
     }
-   
     
   } #ends J loop
 } #ends simulation
 }
-}
 
 ############################################################################
 #### Save DATA ####
-rem.rate <- 3
+rem.rate <- 1
 #---------N data ---------#
-N_all <- N.truth[,,1,,,,]
-N_all <- adply(N_all, c(1,2,3,4,5,6))
-colnames(N_all) <- c("segment", "primary", "age","param", "sim", "rem", "count")
+N_all <- N.truth[,,1,,,]
+N_all <- adply(N_all, c(1,2,3,4,5))
+colnames(N_all) <- c("segment", "primary", "age","param", "sim", "count")
 N_all$p <- rem.rate
+N_all$rem <- numrem
 file_name = paste(path, 'N.csv',sep = '/')
 write.csv(N_all,file_name)
 
 #--------- D After ---------#
-D_all <- adply(D, c(1,2,3,4,5,6))
-colnames(D_all) <- c("segment", "primary", "age", "param", "sim","rem", "count")
+D_all <- adply(D, c(1,2,3,4,5))
+colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
 D_all$p <- rem.rate
+D_all$rem <- numrem
 file_name = paste(path, 'D.csv',sep = '/')
 write.csv(D_all,file_name)
 
 #--------- Removal data ---------#
-Y_all <- adply(Y, c(1,2,3,4,5,6,7))
-colnames(Y_all) <- c("segment", "primary", "secondary", "age", "param", "sim", "rem", "count")
+Y_all <- adply(Y, c(1,2,3,4,5,6))
+colnames(Y_all) <- c("segment", "primary", "secondary", "age", "param", "sim", "count")
 Y_all$p <- rem.rate
+Y_all$rem <- numrem
 file_name = paste(path, 'Y.csv',sep = '/')
 write.csv(Y_all,file_name)
 
 #--------- Sites visited ---------#
-site.df <- adply(site.traps, c(1,2,3,4,5))
-colnames(site.df) <- c("year", "removal.num", "param", "sim", "rem", "site")
-site.df$p <- rem.rate
+site.df <- adply(site.traps, c(1,2,3,4))
+colnames(site.df) <- c("year", "removal.num", "param", "sim", "site")
+Y_all$p <- rem.rate
+Y_all$rem <- numrem
+
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(site.df,file_name)
 
 #--------- distance traveled ---------#
-d.traveled <- array(NA, c(N.years, P, S, Rem))
+d.traveled <- array(NA, c(N.years, P, S))
 
 load("data/parameters/d.matrix.RData")
 
 for(year in 1:N.years){
   for(p in 1:P){
     for(s in 1:S){
-      for(r in 1:Rem){
-        
-        d.traveled[year,p,s,r] <- d.matrix[site.traps[year,1,p,s,r], site.traps[year,2,p,s,r]]
-        
-        for(v in 2:(numrem[r]-1)){
-          d.traveled[year,p,s,r] <- d.traveled[year,p,s,r] + d.matrix[site.traps[year,v,p,s,r], site.traps[year,v+1,p,s,r]]
-        }
-        
+      
+      d.traveled[year,p,s] <- d.matrix[site.traps[year,1,p,s],site.traps[year,2,p,s]]
+      
+      for(v in 2:(numrem-1)){
+        d.traveled[year,p,s] <- d.traveled[year,p,s] + d.matrix[site.traps[year,v,p,s],site.traps[year,v+1,p,s]]
       }
+      
     }
   }
 }
 
-dist.travel <- adply(d.traveled[1:N.years,1:P, 1:S,1:Rem], c(1,2,3,4))
-colnames(dist.travel) <- c("year", "param", "sim", "rem", "distance")
-site.df$p <- rem.rate
+dist.travel <- adply(d.traveled[1:N.years,1:P, 1:S], c(1,2,3))
+colnames(dist.travel) <- c("year", "param", "sim", "distance")
+dist.travel$p <- rem.rate
+dist.travel$rem <- numrem
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(dist.travel,file_name)
+
 
 #---- timing ---- #
 end.time <- Sys.time()
 time.taken <- end.time - start.time
 file_name = paste(path, 'time.txt',sep = '/')
 write.table(time.taken,file_name)
-
