@@ -372,7 +372,7 @@ for(s in 1:S){ #simulation
 #### Save DATA ####
 rem.rate <- 3
 #---------N data ---------#
-N_all <- N.truth[,,1,,,]
+N_all <- N.truth[,,1,,,,]
 N_all <- adply(N_all, c(1,2,3,4,5,6))
 colnames(N_all) <- c("segment", "primary", "age","param", "sim", "rem", "count")
 N_all$p <- rem.rate
@@ -403,15 +403,17 @@ write.csv(site.df,file_name)
 #--------- distance traveled ---------#
 d.traveled <- array(NA, c(N.years, P, S, Rem))
 
+load("data/parameters/d.matrix.RData")
+
 for(year in 1:N.years){
   for(p in 1:P){
     for(s in 1:S){
       for(r in 1:Rem){
         
-        d.traveled[year,p,s,r] <- abs(site.traps[year,1,p,s,r] - site.traps[year,2,p,s,r])
+        d.traveled[year,p,s,r] <- d.matrix[site.traps[year,1,p,s,r], site.traps[year,2,p,s,r]]
         
         for(v in 2:(numrem[r]-1)){
-          d.traveled[year,p,s,r] <- d.traveled[year,p,s,r] + abs(site.traps[year,v,p,s,r] - site.traps[year,v+1,p,s,r])
+          d.traveled[year,p,s,r] <- d.traveled[year,p,s,r] + d.matrix[site.traps[year,v,p,s,r], site.traps[year,v+1,p,s,r]]
         }
         
       }

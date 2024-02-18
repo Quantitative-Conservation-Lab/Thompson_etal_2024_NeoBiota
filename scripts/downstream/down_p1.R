@@ -234,14 +234,14 @@ for(s in 1:S){ #simulation
         N.decision[i,j,p,s,r] <- sum(D.after[i,(j-1),2:Ages,p,s,r]) #abundance summed across ages 2-4
       }
       
-      site.traps[yearval[j],1:numrem[r],p, s,r] <- tail(which(N.decision[1:22,j,p,s,r] > 0), numrem[r])
+      site.traps[yearval[j],1:min(numrem[r], length(which(N.decision[1:22,j,p,s,r] > 0))),p, s,r] <- tail(which(N.decision[1:22,j,p,s,r] > 0), min(numrem[r], length(which(N.decision[1:22,j,p,s,r] > 0))))
     }
     
     #### Removal ####
     for(i in 1:I){ #for each segment:
       
       for(a in 2:Ages){ #for ages 2-4
-        if(i %in% site.traps[year[j],1:numrem[r],p,s,r]){
+        if(i %in% site.traps[year[j],1:min(numrem[r], length(which(N.decision[1:22,j,p,s,r] > 0))),p,s,r]){
           Y[i,j,1,a,p,s,r] <- rbinom(1,N.truth[i,j,1,a,p,s,r],p2[p]) * time.traps[j] #removals
         } else{
           
@@ -372,7 +372,7 @@ for(s in 1:S){ #simulation
 #### Save DATA ####
 rem.rate <- 1
 #---------N data ---------#
-N_all <- N.truth[,,1,,,]
+N_all <- N.truth[,,1,,,,]
 N_all <- adply(N_all, c(1,2,3,4,5,6))
 colnames(N_all) <- c("segment", "primary", "age","param", "sim", "rem", "count")
 N_all$p <- rem.rate
@@ -401,20 +401,19 @@ site.df$p <- rem.rate
 write.csv(site.df,file_name)
 
 #--------- distance traveled ---------#
-d.traveled <- array(NA, c(N.years, P, S, Rem))
+d.matrix <- matrix(NA, nrow = I, ncol = I)
+
+load("data/parameters/d.matrix.RData")
 
 for(year in 1:N.years){
   for(p in 1:P){
     for(s in 1:S){
-      
-      d.traveled[year,p,s,1] <- 0
-      
-      for(r in 2:Rem){
+      for(r in 1:Rem){
         
-        d.traveled[year,p,s,r] <- abs(site.traps[year,1,p,s,r] - site.traps[year,2,p,s,r])
+        d.traveled[year,p,s,r] <- d.matrix[site.traps[year,1,p,s,r], site.traps[year,2,p,s,r]]
         
         for(v in 2:(numrem[r]-1)){
-          d.traveled[year,p,s,r] <- d.traveled[year,p,s,r] + abs(site.traps[year,v,p,s,r] - site.traps[year,v+1,p,s,r])
+          d.traveled[year,p,s,r] <- d.traveled[year,p,s,r] + d.matrix[site.traps[year,v,p,s,r], site.traps[year,v+1,p,s,r]]
         }
         
       }

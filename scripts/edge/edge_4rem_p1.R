@@ -486,14 +486,16 @@ write.csv(site.df,file_name)
 #--------- distance traveled ---------#
 d.traveled <- array(NA, c(N.years, P, S))
 
+load("data/parameters/d.matrix.RData")
+
 for(year in 1:N.years){
   for(p in 1:P){
     for(s in 1:S){
         
-      d.traveled[year,p,s] <- abs(site.traps[year,1,p,s] - site.traps[year,2,p,s])
+      d.traveled[year,p,s] <- d.matrix[site.traps[year,1,p,s],site.traps[year,2,p,s]]
         
       for(v in 2:(numrem-1)){
-        d.traveled[year,p,s] <- d.traveled[year,p,s] + abs(site.traps[year,v,p,s] - site.traps[year,v+1,p,s])
+        d.traveled[year,p,s] <- d.traveled[year,p,s] + d.matrix[site.traps[year,v,p,s],site.traps[year,v+1,p,s]]
       }
         
     }
