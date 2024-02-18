@@ -14,7 +14,7 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results","grow", "grow_p1")
+path <- here::here("results","abund", "abund_p1_s1")
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -26,7 +26,7 @@ K <- 10 #Number of secondary periods (abundance measurements per site), needs to
 I <- 35 #Number of segments -total spatial units
 Ages <- 4 #4 age classes
 S <- 50 #Number of simulations
-P <- 20 #parameter sets
+P <- 25 #parameter sets
 
 numrem <- c(4,8,16) #segments where removal occurs
 Rem <- length(numrem) #segments where removal occurs
@@ -163,7 +163,11 @@ for(p in 1:P){
 #### Year 1 removal ####
 site.traps <- array(NA, dim = c(N.years, numrem[length(numrem)], P, S,Rem))#rep(NA, S)
 
-decision.date <- c(1, seq(1,6)*12 + 1)
+for(r in 1:Rem){
+  site.traps[1,,1:P, 1:S,r]<- order(initpop, decreasing = T)[1:numrem[r]]
+}
+
+decision.date <- seq(1,6)*12 + 1
 yearval <- rep(seq(1,N.years), each = 12)
 
 #### param 4 ####
@@ -215,18 +219,6 @@ may <- seq(12,N.years*12, by = 12)
 year <- rep(1:N.years, each = 12)
 N.decision <- array(NA, dim = c(I,J,P,S,Rem))
 
-N.decision <- array(NA, dim = c(I,J+1,P,S,Rem))
-grow.jun <- array(NA, dim = c(P,S,Rem))
-grow.notjun <- array(NA, dim = c(P,S,Rem))
-D.decision <- array(NA, dim = c(I,J+1,P,S,Rem))
-D.stay.decision <- array(NA, dim = c(I,J+1,P,S,Rem))
-D.down.decision <- array(NA, dim = c(I,J+1,P,S,Rem))
-D.up.decision <- array(NA, dim = c(I,J+1,P,S,Rem))
-D.fork.decision <- array(NA, dim = c(I,J+1,P,S,Rem))
-D.after.decision <- array(NA, dim = c(I,J+1,P,S,Rem))
-
-growth.decision <- array(NA, dim = c(I,J+1,P,S,Rem))
-
 ###################################################################################
 
 #### Simulate ####
@@ -236,78 +228,13 @@ for(s in 1:S){ #simulation
   for(j in 1:J){ #primary period (month)
     
     ##### Decision Model #####
-    #Project population forward one year and compare growth rates
     if(j %in% decision.date){
       
-      #Population growth -projection
       for(i in 1:I){
-        if(j == 1){
-          N.decision[i,j,p,s,r] <- initpop[i]
-        }else{
-          N.decision[i,j,p,s,r] <- sum(D.after[i,(j-1),2:Ages,p,s,r]) #abundance summed across ages 2-4
-        }
+        N.decision[i,j,p,s,r] <- sum(D.after[i,(j-1),2:Ages,p,s,r]) #abundance summed across ages 2-4
       }
       
-      for(j2 in j:(j+11)){ #making projection for next year
-        if(j2 == j){ #if j2 = june month
-          D.decision[,j2,p,s,r] <- min(popK, rpois(1,N.decision[,j2,p,s,r]*grow.june[p]))
-          
-        }else{
-          D.decision[,j2,p,s,r] <- min(popK, rpois(1,N.decision[,j2,p,s,r]*grow.notjune[p]))
-        }
-        
-        #Movement -projection
-        for(i in 1:I){
-          N.decision[i,(j2+1),p,s,r] <- D.after.decision[i,j2,p,s,r] #feeds into data collection model above
-        }
-        
-        for(i in 1:I){
-          #calculate individuals that stay
-          D.stay.decision[i,j2,p,s,r] <- rbinom(1, D.decision[i,j2,p,s,r], 1- (0.5*move[p]) + (0.5*move[p]*u6.temp[i,j2])) 
-          
-          #calculate individuals that move downstream
-          D.down.decision[i,j2,p,s,r]  <- rbinom(1,D.decision[i,j2,p,s,r] - D.stay.decision[i,j2,p,s,r], ds[p])
-          
-          #Calculate individuals that move upstream
-          D.up.decision[i,j2,p,s,r] <- floor((D.decision[i,j2,p,s,r] - D.stay.decision[i,j2,p,s,r] - D.down.decision[i,j2,p,s,r])/fork1[i])
-          
-          #Calculating individuals that move to another fork upstream (only possible at i = 6, 8, 25, 31)
-          D.fork.decision[i,j2,p,s,r] <- fork2[i]*(D.decision[i,j2,p,s,r] - D.stay.decision[i,j2,p,s,r] - D.down.decision[i,j2,p,s,r] - D.up.decision[i,j2,p,s,r])
-          #if fork2[i] --> 1 bifurcation, if 0 -> no
-        }
-        
-        for(i in 1:n.not.edge){
-          D.after.decision[not.edge[i],j2,p,s,r] <- D.stay.decision[not.edge[i],j2,p,s,r] + #stay
-            sum(D.down.decision[moved.down[not.edge[i],1:n.down[not.edge[i]]],j2,p,s,r]) + #moved in by going downstream
-            ups[not.edge[i]]*D.up.decision[moved.up[not.edge[i]],j2,p,s,r] + D.fork.decision[bifurcation[not.edge[i]],j2,p,s,r] #moved in by going upstream
-        }
-        
-        #Edges: can only move upstream from each of these spots
-        D.after.decision[1,j2,p,s,r] <- D.stay.decision[1,j2,p,s,r] + D.up.decision[2,j2,p,s,r] + D.up.decision[1,j2,p,s,r]
-        D.after.decision[23,j2,p,s,r] <- D.stay.decision[23,j2,p,s,r] + D.up.decision[24,j2,p,s,r] + D.up.decision[23,j2,p,s,r]
-        D.after.decision[27,j2,p,s,r] <- D.stay.decision[27,j2,p,s,r] + D.up.decision[28,j2,p,s,r] + D.up.decision[27,j2,p,s,r]
-        D.after.decision[29,j2,p,s,r] <- D.stay.decision[29,j2,p,s,r] + D.up.decision[30,j2,p,s,r] + D.up.decision[29,j2,p,s,r]
-        D.after.decision[34,j2,p,s,r] <- D.stay.decision[34,j2,p,s,r] + D.up.decision[35,j2,p,s,r] + D.up.decision[34,j2,p,s,r]
-        
-        #Edge: closest to columbia river
-        D.after.decision[22,j2,p,s,r] <- D.stay.decision[22,j2,p,s,r] + D.down.decision[21,j2,p,s,r]
-        
-        #Next months pop:
-        for(i in 1:I){
-          N.decision[i,(j2+1),p,s,r] <- D.after.decision[i,j2,p,s,r] #feeds into data collection model above
-        }
-        
-        
-      }
-      
-      
-      
-      
-      growth.decision[,j,p,s,r] <- (N.decision[,(j+11),p,s,r]-N.decision[,j,p,s,r])/ N.decision[,j,p,s,r]
-      growth.decision[is.infinite(growth.decision)] <- NA #replace infinite values as NA
-      
-      
-      site.traps[yearval[j],1:numrem[r],p, s,r] <- tail(order(growth.decision[,j,p,s,r], na.last = F), numrem[r])
+      site.traps[yearval[j],1:numrem[r],p, s,r] <- tail(order(N.decision[1:I,j,p,s,r]), numrem[r])
     }
     
     #### Removal ####

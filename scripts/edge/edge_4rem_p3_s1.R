@@ -14,7 +14,7 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results", "edge", "edge_8rem_p2")
+path <- here::here("results", "edge", "edge_4rem_p3_s1")
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -26,7 +26,7 @@ K <- 10 #Number of secondary periods (abundance measurements per site), needs to
 I <- 35 #Number of segments -total spatial units
 Ages <- 4 #4 age classes
 
-S <- 50 #Number of simulations
+S <- 25 #Number of simulations
 P <- 20 #chose parameter space p = 1
 
 #Temperature data:
@@ -43,7 +43,7 @@ u6.temp <- do.call(cbind, replicate((ceiling(J/12)), u6.temp, simplify=FALSE)) #
 #### A. Model set up ####
 #### A1: Creating Arrays ####
 ##----1a: Arrays for removal model----## 
-numrem <- 8 #segments where removal occurs
+numrem <- 4 #segments where removal occurs
 segs.remove <- rep(numrem,S)#total segments where removal occurs
 n.trap <- 2000 #number of traps per segment #ignore this for now
 
@@ -64,8 +64,8 @@ time.traps <- rep(time.trap, N.years)
 
 #### param 1 ####
 #removal for each age p
-p <- cap_eff[1:P]
-p2 <- p 
+p <- 0.5
+p2 <- rep(p,P) 
 
 ##----1b: Arrays for population change model----## 
 phi <- array(0, dim = c(I,J,Ages,P,S)) #survival
@@ -162,8 +162,11 @@ site.traps <- array(NA, dim = c(N.years, segs.remove[1], P, S))#rep(NA, S)
 #### Edge parameters ####
 loc <- c(rep("main.up", 11), rep("main.down", 11), rep("sfork",4), rep("murder", 2), rep("nfork", 5), rep("mfork", 2))
 
-edges <- c(3:5, 17:18, 25, 26, 33) #16 edges
-
+if(numrem == 4){
+  edges <- c(18, 25, 26,33) #edges for year 1
+}else{
+  edges <- c(3:8, 12:18, 25, 26, 33) #16 edges
+}
 
 site.traps[1,,1:P, 1:S]<- edges
 decision.date <- seq(1,6)*12 + 1
@@ -223,21 +226,21 @@ N.decision <- array(NA, dim = c(I,J,P,S))
 
 #### Simulate ####
 for(p in 1:P){
-  for(s in 1:S){ #for each simulation
-    for(j in 1:J){ #for months June-May for the current year: (primary periods)
+for(s in 1:S){ #for each simulation
+  for(j in 1:J){ #for months June-May for the current year: (primary periods)
+    
+    ##### Decision Model #####
+    if(j %in% decision.date){
       
-      ##### Decision Model #####
-      if(j %in% decision.date){
-        
-        for(i in 1:I){
-          N.decision[i,j,p,s] <- sum(D.after[i,(j-1),2:Ages,p,s]) #abundance summed across ages 2-4
-        }
-        
-        pos.pop <- list()
-        final.abunds <- matrix(N.decision[,j,p,s])
-        rownames(final.abunds) <- seq(1:I)
-        fins.s <- final.abunds
-        pos.pop[[s]]<- which(final.abunds > 0)
+      for(i in 1:I){
+        N.decision[i,j,p,s] <- sum(D.after[i,(j-1),2:Ages,p,s]) #abundance summed across ages 2-4
+      }
+      
+      pos.pop <- list()
+      final.abunds <- matrix(N.decision[,j,p,s])
+      rownames(final.abunds) <- seq(1:I)
+      fins.s <- final.abunds
+      pos.pop[[s]]<- which(final.abunds > 0)
         
         if(length(pos.pop[[s]]) < numrem){
           
@@ -245,17 +248,17 @@ for(p in 1:P){
           if(length(pos.pop[[s]]) == 0){
             site.traps[yearval[j],,p, s] <- NA
           }else{
-            site.traps[yearval[j],1:segs.remove[s],p, s] <- pos.pop[[s]]
+            site.traps[yearval[j],,p, s] <- pos.pop[[s]]
           }
-          
+        
         }else{
-          #data frame of positive segments and their locations
+          #data frame of positive segments:
           seg.pos <- data.frame(seg = pos.pop[[s]], loc = loc[pos.pop[[s]]], val = fins.s[pos.pop[[s]]])
           #finding number of unique forks with positive population
-          locs <- unique(seg.pos$loc) #unique forks
-          vloc <- rep(NA, length(locs)) #vector of edge locations
+          locs <- unique(seg.pos$loc)
+          vloc <- rep(NA, length(locs))
+          vloc2 <- rep(NA, length(locs))
           
-          #1. Finding vector of edge locations
           for(i in 1:length(locs)){
             if(locs[i] == "main.down"){
               vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[1,1]
@@ -264,216 +267,188 @@ for(p in 1:P){
             }
           }
           
-          #2. assign those locations as removal sites and then remove from seg.pos dataframe
-          site.traps[yearval[j],1:length(vloc),p,s] <- vloc
-          seg.pos <- seg.pos %>% filter(!(seg %in% vloc))
+          if(length(vloc) == numrem){
+            site.traps[yearval[j],,p, s] <- vloc
+          }
           
-          segs.needed <- numrem - length(vloc)
+          if(length(vloc) > numrem){
+            seg.sub <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
+            site.traps[yearval[j],,p, s] <- head(seg.sub,numrem,4)[,1]
+          }
           
-          #3. select more segments for removal (next layer)
-          for(i in 1:length(locs)){
-            if(locs[i] == "main.down"){
-              vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[1,1]
+          if(length(vloc) == 3){
+            for(i in 1:length(vloc)){
+              if(locs[i] == "main.down"){
+                vloc2[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[2,1]
+              }else{
+                vloc2[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[2,1]
+              }
+            }
+            
+            seg.sub <- seg.pos %>% filter(seg %in% vloc2) %>% arrange(val, decreasing = T)
+            extra <- seg.sub[1,1]
+            
+            site.traps[yearval[j],,p, s] <- c(vloc, extra)
+          }
+          
+          if(length(vloc) == 2){
+            for(i in 1:length(vloc)){
+              if(locs[i] == "main.down"){
+                vloc2[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[2,1]
+              }else{
+                vloc2[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[2,1]
+              }
+            }
+            
+            seg.sub <- seg.pos %>% filter(seg %in% vloc2) %>% arrange(val, decreasing = T)
+            extra <- seg.sub[,1]
+            
+            site.traps[yearval[j],,p, s] <- c(vloc, extra)
+          }
+          
+          if(length(vloc) == 1){
+            if(locs[vloc] == "main.down"){
+              extra <- (seg.pos %>% filter(loc == locs) %>% arrange(seg, decreasing = T))[2,1]
+              extra2 <- (seg.pos %>% filter(loc == locs) %>% arrange(seg, decreasing = F))[1:2,1]
             }else{
-              vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[1,1]
-            }
-          }
-          
-          #remove NA values (happens if no removal locations are available at that fork)
-          vloc <- vloc[!is.na(vloc)]
-          
-          vec.start <- 1 +(numrem-segs.needed)
-          vec.end <- min(numrem, vec.start+ length(vloc) - 1)
-          seg.df <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
-          site.traps[yearval[j],vec.start:vec.end,p,s] <- vloc[1:min(segs.needed, length(vloc))]
-          segs.needed <- sum(is.na(site.traps[yearval[j],,p,s]))
-          
-          #4. select more segments for removal (next layer)
-          if(segs.needed > 0){
-            #checking next layer of sites
-            seg.pos <- seg.pos %>% filter(!(seg %in% vloc))
-            
-            for(i in 1:length(locs)){
-              if(locs[i] == "main.down"){
-                vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[1,1]
-              }else{
-                vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[1,1]
-              }
+              extra <- (seg.pos %>% filter(loc == locs) %>% arrange(seg, decreasing = F))[2,1]
+              extra2 <- (seg.pos %>% filter(loc == locs) %>% arrange(seg, decreasing = T))[1:2,1]
             }
             
-            vloc <- vloc[!is.na(vloc)]
-            seg.df <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
-            vec.start <- 1 +(numrem-segs.needed)
-            vec.end <- min(numrem, vec.start+ length(vloc) - 1)
-            seg.df <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
-            site.traps[yearval[j],vec.start:vec.end,p,s] <- vloc[1:min(segs.needed, length(vloc))]
+            site.traps[yearval[j],,p, s] <- c(vloc, extra, extra2)
             
-          }
-          
-          #5. select more segments for removal (next layer)
-          if(segs.needed > 0){
-            #checking next layer of sites
-            seg.pos <- seg.pos %>% filter(!(seg %in% vloc))
-            
-            for(i in 1:length(locs)){
-              if(locs[i] == "main.down"){
-                vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[1,1]
-              }else{
-                vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[1,1]
-              }
-            }
-            
-            vloc <- vloc[!is.na(vloc)]
-            seg.df <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
-            vec.start <- 1 +(numrem-segs.needed)
-            vec.end <- min(numrem, vec.start+ length(vloc) - 1)
-            seg.df <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
-            site.traps[yearval[j],vec.start:vec.end,p,s] <- vloc[1:min(segs.needed, length(vloc))]
-            
-          }
+          } 
           
         }
+    }
+    
+    #### Removal ####
+    for(i in 1:I){ #for each segment:
+      
+      for(a in 2:Ages){ #for ages 2-4
+        if(i %in% site.traps[year[j],,p,s]){
+          Y[i,j,1,a,p,s] <- rbinom(1,N.truth[i,j,1,a,p,s],p2[p]) * time.traps[j] #removals
+        } else{
+          
+          Y[i,j,1,a,p,s] <- 0
+          
+        }
+        
       }
       
-      #### Removal ####
-      for(i in 1:I){ #for each segment:
-        
-        for(a in 2:Ages){ #for ages 2-4
+      Y[i,j,1,1,p,s] <- 0 #no removals of age class 0
+      
+      for(k in 2:K){ #for secondary periods 2: K
+        for(a in 1:Ages){ #for each age
+          #True population abundance = N.truth
+          N.truth[i,j,k,a,p,s] <- max(0, N.truth[i,j,k-1,a,p,s] - Y[i,j,k-1,a,p,s]) #True pop = population at previous secondary - removals at previous secondary
+        }
+        for(a in 2:Ages){
           if(i %in% site.traps[year[j],,p,s]){
-            Y[i,j,1,a,p,s] <- rbinom(1,N.truth[i,j,1,a,p,s],p2[p]) * time.traps[j] #removals
+            Y[i,j,k,a,p,s] <- rbinom(1,N.truth[i,j,k,a,p,s],p2[p]) * time.traps[j] #removals
           } else{
-            
-            Y[i,j,1,a,p,s] <- 0
-            
-          }
-          
-        }
-        
-        Y[i,j,1,1,p,s] <- 0 #no removals of age class 0
-        
-        for(k in 2:K){ #for secondary periods 2: K
-          for(a in 1:Ages){ #for each age
-            #True population abundance = N.truth
-            N.truth[i,j,k,a,p,s] <- max(0, N.truth[i,j,k-1,a,p,s] - Y[i,j,k-1,a,p,s]) #True pop = population at previous secondary - removals at previous secondary
-          }
-          for(a in 2:Ages){
-            if(i %in% site.traps[year[j],,p,s]){
-              Y[i,j,k,a,p,s] <- rbinom(1,N.truth[i,j,k,a,p,s],p2[p]) * time.traps[j] #removals
-            } else{
-              Y[i,j,k,a,p,s] <- 0
-              
-            }
-          }
-          
-          Y[i,j,k,1,p,s] <- 0 #no removals of age class 0
-        }
-        
-        for(a in 1:Ages){
-          
-          #Population remaining at the end of primary removal period j:
-          R[i,j,a,p,s] <- N.truth[i,j,K,a,p,s]
-          
-        } #ends ages loop
-        
-        #### Population change #####
-        #June population change: growth * population and truncated by carrying capacity
-        if(j %in% june){ #if month = june
-          D[i,j,,p,s] <- round(L.june[,,p] %*% R[i,j,,p,s])
-          
-        } else{ 
-          #not June population change: growth * population and truncated by carrying capacity
-          D[i,j,,p,s] <- round(L.notjune[,,p] %*% R[i,j,,p,s])
-        }
-        
-        #update D if above carrying capacity.
-        #If D is > carrying capacity, remove age 0 individuals
-        for(a in 1:Ages){
-          if(sum(D[i,j,1:Ages,p,s]) > popK){
-            D.excess[i,j,p,s] <- sum(D[i,j,1:Ages,p,s]) - (popK)
-            D[i,j,1,p,s] <- D[i,j,1,p,s] - D.excess[i,j,p,s]
-            if(D[i,j,1,p,s] < 0){
-              D[i,j,2,p,s] <- D[i,j,2,p,s] - abs(D[i,j,1,p,s])
-              D[i,j,1,p,s] <- 0
-            }
-            if(D[i,j,2,p,s] < 0){
-              D[i,j,3,p,s] <- D[i,j,3,p,s] - abs(D[i,j,2,p,s])
-              D[i,j,2,p,s] <- 0
-            }
-            if(D[i,j,3,p,s] < 0){
-              D[i,j,4,p,s] <- D[i,j,4,p,s] - abs(D[i,j,3,p,s])
-              D[i,j,3,p,s] <- 0
-            }
-            if(D[i,j,4,p,s] < 0){
-              D[i,j,4,p,s] <- 0
-            }
+            Y[i,j,k,a,p,s] <- 0
             
           }
         }
         
-        
-      } #ends I loop
-      
-      #####  Movement ######  
-      for(a in 2:Ages){
-        for(i in 1:I){
-          #calculate individuals that stay
-          D.stay[i,j,a,p,s] <- rbinom(1, D[i,j,a,p,s], 1- (0.5*move[p]) + (0.5*move[p]*u6.temp[i,j])) 
-          
-          #calculate individuals that move downstream
-          D.down[i,j,a,p,s] <- rbinom(1,D[i,j,a,p,s] - D.stay[i,j,a,p,s], ds[p])
-          
-          #Calculate individuals that move upstream
-          D.up[i,j,a,p,s] <- floor((D[i,j,a,p,s] - D.stay[i,j,a,p,s] - D.down[i,j,a,p,s])/fork1[i])
-          
-          #Calculating individuals that move to another fork upstream (only possible at i = 6, 8, 25, 31)
-          D.fork[i,j,a,p,s] <- fork2[i]*(D[i,j,a,p,s] - D.stay[i,j,a,p,s] - D.down[i,j,a,p,s] - D.up[i,j,a,p,s])
-          #if fork2[i] --> 1 bifurcation, if 0 -> no
-        }
-        
-        for(i in 1:n.not.edge){
-          D.after[not.edge[i],j,a,p,s] <- D.stay[not.edge[i],j,a,p,s] + #stay
-            sum(D.down[moved.down[not.edge[i],1:n.down[not.edge[i]]],j,a,p,s]) + #moved in by going downstream
-            ups[not.edge[i]]*D.up[moved.up[not.edge[i]],j,a,p,s] + D.fork[bifurcation[not.edge[i]],j,a,p,s] #moved in by going upstream
-        }
-        
-        #Edges: can only move upstream from each of these spots
-        D.after[1,j,a,p,s] <- D.stay[1,j,a,p,s] + D.up[2,j,a,p,s] + D.up[1,j,a,p,s]
-        D.after[23,j,a,p,s] <- D.stay[23,j,a,p,s] + D.up[24,j,a,p,s] + D.up[23,j,a,p,s]
-        D.after[27,j,a,p,s] <- D.stay[27,j,a,p,s] + D.up[28,j,a,p,s] + D.up[27,j,a,p,s]
-        D.after[29,j,a,p,s] <- D.stay[29,j,a,p,s] + D.up[30,j,a,p,s] + D.up[29,j,a,p,s]
-        D.after[34,j,a,p,s] <- D.stay[34,j,a,p,s] + D.up[35,j,a,p,s] + D.up[34,j,a,p,s]
-        
-        #Edge: closest to columbia river
-        D.after[22,j,a,p,s] <- D.stay[22,j,a,p,s] + D.down[21,j,a,p,s] 
+        Y[i,j,k,1,p,s] <- 0 #no removals of age class 0
       }
       
-      D.after[1:I,j,1,p,s] <- D[1:I,j,1,p,s] #age 0 never moves    
+      for(a in 1:Ages){
+        
+        #Population remaining at the end of primary removal period j:
+        R[i,j,a,p,s] <- N.truth[i,j,K,a,p,s]
+        
+      } #ends ages loop
       
-      #Next primary period abundance 
-      for(h in 1:I){
-        #abundance at the start of each primary period (k = 1) -except for initial abundance 
-        N.truth[h,2:J, 1,1:Ages,p,s] <- D.after[h,1:(J-1),1:Ages,p,s]
+      #### Population change #####
+      #June population change: growth * population and truncated by carrying capacity
+      if(j %in% june){ #if month = june
+        D[i,j,,p,s] <- round(L.june[,,p] %*% R[i,j,,p,s])
+        
+      } else{ 
+        #not June population change: growth * population and truncated by carrying capacity
+        D[i,j,,p,s] <- round(L.notjune[,,p] %*% R[i,j,,p,s])
       }
       
-    } #ends J loop
-  } #ends simulation
+      #update D if above carrying capacity.
+      #If D is > carrying capacity, remove age 0 individuals
+      for(a in 1:Ages){
+        if(sum(D[i,j,1:Ages,p,s]) > popK){
+          D.excess[i,j,p,s] <- sum(D[i,j,1:Ages,p,s]) - (popK)
+          D[i,j,1,p,s] <- D[i,j,1,p,s] - D.excess[i,j,p,s]
+          if(D[i,j,1,p,s] < 0){
+            D[i,j,2,p,s] <- D[i,j,2,p,s] - abs(D[i,j,1,p,s])
+            D[i,j,1,p,s] <- 0
+          }
+          if(D[i,j,2,p,s] < 0){
+            D[i,j,3,p,s] <- D[i,j,3,p,s] - abs(D[i,j,2,p,s])
+            D[i,j,2,p,s] <- 0
+          }
+          if(D[i,j,3,p,s] < 0){
+            D[i,j,4,p,s] <- D[i,j,4,p,s] - abs(D[i,j,3,p,s])
+            D[i,j,3,p,s] <- 0
+          }
+          if(D[i,j,4,p,s] < 0){
+            D[i,j,4,p,s] <- 0
+          }
+          
+        }
+      }
+      
+      
+    } #ends I loop
+    
+    #####  Movement ######  
+    for(a in 2:Ages){
+      for(i in 1:I){
+        #calculate individuals that stay
+        D.stay[i,j,a,p,s] <- rbinom(1, D[i,j,a,p,s], 1- (0.5*move[p]) + (0.5*move[p]*u6.temp[i,j])) 
+        
+        #calculate individuals that move downstream
+        D.down[i,j,a,p,s] <- rbinom(1,D[i,j,a,p,s] - D.stay[i,j,a,p,s], ds[p])
+        
+        #Calculate individuals that move upstream
+        D.up[i,j,a,p,s] <- floor((D[i,j,a,p,s] - D.stay[i,j,a,p,s] - D.down[i,j,a,p,s])/fork1[i])
+        
+        #Calculating individuals that move to another fork upstream (only possible at i = 6, 8, 25, 31)
+        D.fork[i,j,a,p,s] <- fork2[i]*(D[i,j,a,p,s] - D.stay[i,j,a,p,s] - D.down[i,j,a,p,s] - D.up[i,j,a,p,s])
+        #if fork2[i] --> 1 bifurcation, if 0 -> no
+      }
+      
+      for(i in 1:n.not.edge){
+        D.after[not.edge[i],j,a,p,s] <- D.stay[not.edge[i],j,a,p,s] + #stay
+          sum(D.down[moved.down[not.edge[i],1:n.down[not.edge[i]]],j,a,p,s]) + #moved in by going downstream
+          ups[not.edge[i]]*D.up[moved.up[not.edge[i]],j,a,p,s] + D.fork[bifurcation[not.edge[i]],j,a,p,s] #moved in by going upstream
+      }
+      
+      #Edges: can only move upstream from each of these spots
+      D.after[1,j,a,p,s] <- D.stay[1,j,a,p,s] + D.up[2,j,a,p,s] + D.up[1,j,a,p,s]
+      D.after[23,j,a,p,s] <- D.stay[23,j,a,p,s] + D.up[24,j,a,p,s] + D.up[23,j,a,p,s]
+      D.after[27,j,a,p,s] <- D.stay[27,j,a,p,s] + D.up[28,j,a,p,s] + D.up[27,j,a,p,s]
+      D.after[29,j,a,p,s] <- D.stay[29,j,a,p,s] + D.up[30,j,a,p,s] + D.up[29,j,a,p,s]
+      D.after[34,j,a,p,s] <- D.stay[34,j,a,p,s] + D.up[35,j,a,p,s] + D.up[34,j,a,p,s]
+      
+      #Edge: closest to columbia river
+      D.after[22,j,a,p,s] <- D.stay[22,j,a,p,s] + D.down[21,j,a,p,s] 
+    }
+    
+    D.after[1:I,j,1,p,s] <- D[1:I,j,1,p,s] #age 0 never moves    
+    
+    #Next primary period abundance 
+    for(h in 1:I){
+      #abundance at the start of each primary period (k = 1) -except for initial abundance 
+      N.truth[h,2:J, 1,1:Ages,p,s] <- D.after[h,1:(J-1),1:Ages,p,s]
+    }
+    
+  } #ends J loop
+} #ends simulation
 }
-
-
-# sum(is.na(site.traps[,,p,s]))
-# 
-# for(y in 1:7){
-#   for(p in 1:P){
-#     for(s in 1:S){
-#       if(length(unique(site.traps[y,,p,s])) != numrem)
-#         print("ERROR")
-#     }
-#   }
-# }
 
 ############################################################################
 #### Save DATA ####
-rem.rate <- 2
+rem.rate <- 3
 #---------N data ---------#
 N_all <- N.truth[,,1,,,]
 N_all <- adply(N_all, c(1,2,3,4,5))

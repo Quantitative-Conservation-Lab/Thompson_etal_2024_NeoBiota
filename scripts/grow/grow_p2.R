@@ -163,11 +163,8 @@ for(p in 1:P){
 #### Year 1 removal ####
 site.traps <- array(NA, dim = c(N.years, numrem[length(numrem)], P, S,Rem))#rep(NA, S)
 
-for(r in 1:Rem){
-  site.traps[1,,1:P, 1:S,r]<- order(initpop, decreasing = T)[1:numrem[r]]
-}
+decision.date <- c(1, seq(1,6)*12 + 1)
 
-decision.date <- seq(1,6)*12 + 1
 yearval <- rep(seq(1,N.years), each = 12)
 
 #### param 4 ####

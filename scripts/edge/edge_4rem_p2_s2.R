@@ -14,7 +14,7 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results", "edge", "edge_16rem_p3")
+path <- here::here("results", "edge", "edge_4rem_p2_s2")
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -26,7 +26,7 @@ K <- 10 #Number of secondary periods (abundance measurements per site), needs to
 I <- 35 #Number of segments -total spatial units
 Ages <- 4 #4 age classes
 
-S <- 50 #Number of simulations
+S <- 25 #Number of simulations
 P <- 20 #chose parameter space p = 1
 
 #Temperature data:
@@ -43,7 +43,7 @@ u6.temp <- do.call(cbind, replicate((ceiling(J/12)), u6.temp, simplify=FALSE)) #
 #### A. Model set up ####
 #### A1: Creating Arrays ####
 ##----1a: Arrays for removal model----## 
-numrem <- 16 #segments where removal occurs
+numrem <- 4 #segments where removal occurs
 segs.remove <- rep(numrem,S)#total segments where removal occurs
 n.trap <- 2000 #number of traps per segment #ignore this for now
 
@@ -64,8 +64,8 @@ time.traps <- rep(time.trap, N.years)
 
 #### param 1 ####
 #removal for each age p
-p <- 0.5
-p2 <- rep(p,P) 
+p <- cap_eff[1:P]
+p2 <- p 
 
 ##----1b: Arrays for population change model----## 
 phi <- array(0, dim = c(I,J,Ages,P,S)) #survival
@@ -248,51 +248,16 @@ for(s in 1:S){ #for each simulation
           if(length(pos.pop[[s]]) == 0){
             site.traps[yearval[j],,p, s] <- NA
           }else{
-            site.traps[yearval[j],1:segs.remove[s],p, s] <- pos.pop[[s]]
+            site.traps[yearval[j],,p, s] <- pos.pop[[s]]
           }
         
         }else{
-          #data frame of positive segments and their locations
+          #data frame of positive segments:
           seg.pos <- data.frame(seg = pos.pop[[s]], loc = loc[pos.pop[[s]]], val = fins.s[pos.pop[[s]]])
           #finding number of unique forks with positive population
-          locs <- unique(seg.pos$loc) #unique forks
-          vloc <- rep(NA, length(locs)) #vector of edge locations
-          
-          #1. Finding vector of edge locations
-          for(i in 1:length(locs)){
-            if(locs[i] == "main.down"){
-              vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[1,1]
-            }else{
-              vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[1,1]
-            }
-          }
-          
-          #2. assign those locations as removal sites and then remove from seg.pos dataframe
-          site.traps[yearval[j],1:length(vloc),p,s] <- vloc
-          seg.pos <- seg.pos %>% filter(!(seg %in% vloc))
-          
-          segs.needed <- numrem - length(vloc)
-          
-          #3. select more segments for removal (next layer)
-          for(i in 1:length(locs)){
-            if(locs[i] == "main.down"){
-              vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[1,1]
-            }else{
-              vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[1,1]
-            }
-          }
-          
-          #remove NA values (happens if no removal locations are available at that fork)
-          vloc <- vloc[!is.na(vloc)]
-          vec.start <- 1 +(numrem-segs.needed)
-          vec.end <- vec.start+ length(vloc) - 1
-          site.traps[yearval[j],vec.start:vec.end,p,s] <- vloc
-          seg.pos <- seg.pos %>% filter(!(seg %in% vloc))
-          
-          
-          #at most we will have 12 segments already selected, we still need more:
-          #4. select more segments
-          segs.needed <- sum(is.na(site.traps[yearval[j],,p,s]))
+          locs <- unique(seg.pos$loc)
+          vloc <- rep(NA, length(locs))
+          vloc2 <- rep(NA, length(locs))
           
           for(i in 1:length(locs)){
             if(locs[i] == "main.down"){
@@ -302,68 +267,57 @@ for(s in 1:S){ #for each simulation
             }
           }
           
-          vloc <- vloc[!is.na(vloc)]
+          if(length(vloc) == numrem){
+            site.traps[yearval[j],,p, s] <- vloc
+          }
           
-          if(length(vloc) < segs.needed){ 
-            #If we still need more locations to select:
-            vec.start <- 1 +(numrem-segs.needed)
-            vec.end <- vec.start+ length(vloc) - 1
-            site.traps[yearval[j],vec.start:vec.end,p,s] <- vloc
-            seg.pos <- seg.pos %>% filter(!(seg %in% vloc))
-            
-            #5a. select new segments
-            segs.needed <- sum(is.na(site.traps[yearval[j],,p,s]))
-            
-            for(i in 1:length(locs)){
+          if(length(vloc) > numrem){
+            seg.sub <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
+            site.traps[yearval[j],,p, s] <- head(seg.sub,numrem,4)[,1]
+          }
+          
+          if(length(vloc) == 3){
+            for(i in 1:length(vloc)){
               if(locs[i] == "main.down"){
-                vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[1,1]
+                vloc2[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[2,1]
               }else{
-                vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[1,1]
+                vloc2[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[2,1]
               }
             }
             
-            vloc <- vloc[!is.na(vloc)]
-            seg.df <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
+            seg.sub <- seg.pos %>% filter(seg %in% vloc2) %>% arrange(val, decreasing = T)
+            extra <- seg.sub[1,1]
             
-            vec.start <- 1 +(numrem-segs.needed)
-            vec.end <- vec.start + min(segs.needed, length(vloc)) - 1
-
-            site.traps[yearval[j],vec.start:vec.end,p,s] <- seg.df$seg[1:min(segs.needed, length(vloc))]
-            
-            segs.needed <- sum(is.na(site.traps[yearval[j],,p,s]))
-            
-            #6. If we need any more segments:
-            if(segs.needed > 0){
-              #calculate updated segs.needed:
-              seg.pos <- seg.pos %>% filter(!(seg %in% vloc))
-              
-              for(i in 1:length(locs)){
-                if(locs[i] == "main.down"){
-                  vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[1,1]
-                }else{
-                  vloc[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[1,1]
-                }
-              }
-              vloc <- vloc[!is.na(vloc)]
-              seg.df <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
-              
-              vec.start <- 1 +(numrem-segs.needed)
-              vec.end <- vec.start + min(segs.needed, length(vloc)) - 1
-              
-              site.traps[yearval[j],vec.start:vec.end,p,s] <- seg.df$seg[1:min(segs.needed, length(vloc))]
-            }
-            
-          }else{
-            #5a. select new segments
-            seg.df <- seg.pos %>% filter(seg %in% vloc) %>% arrange(val, decreasing = T)
-            
-            vec.start <- 1 +(numrem-segs.needed)
-            vec.end <- vec.start+ segs.needed - 1
-            
-            site.traps[yearval[j],vec.start:vec.end,p,s] <- seg.df$seg[1:segs.needed]
-            
+            site.traps[yearval[j],,p, s] <- c(vloc, extra)
           }
           
+          if(length(vloc) == 2){
+            for(i in 1:length(vloc)){
+              if(locs[i] == "main.down"){
+                vloc2[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = T))[2,1]
+              }else{
+                vloc2[i] <- (seg.pos %>% filter(loc == locs[i]) %>% arrange(seg, decreasing = F))[2,1]
+              }
+            }
+            
+            seg.sub <- seg.pos %>% filter(seg %in% vloc2) %>% arrange(val, decreasing = T)
+            extra <- seg.sub[,1]
+            
+            site.traps[yearval[j],,p, s] <- c(vloc, extra)
+          }
+          
+          if(length(vloc) == 1){
+            if(locs[vloc] == "main.down"){
+              extra <- (seg.pos %>% filter(loc == locs) %>% arrange(seg, decreasing = T))[2,1]
+              extra2 <- (seg.pos %>% filter(loc == locs) %>% arrange(seg, decreasing = F))[1:2,1]
+            }else{
+              extra <- (seg.pos %>% filter(loc == locs) %>% arrange(seg, decreasing = F))[2,1]
+              extra2 <- (seg.pos %>% filter(loc == locs) %>% arrange(seg, decreasing = T))[1:2,1]
+            }
+            
+            site.traps[yearval[j],,p, s] <- c(vloc, extra, extra2)
+            
+          } 
           
         }
     }
@@ -492,27 +446,16 @@ for(s in 1:S){ #for each simulation
 } #ends simulation
 }
 
-
-# sum(is.na(site.traps[,,p,s]))
-# 
-# for(y in 1:7){
-#   for(p in 1:P){
-#     for(s in 1:S){
-#       if(length(unique(site.traps[y,,p,s])) != numrem)
-#         print("ERROR")
-#     }
-#   }
-# }
-
 ############################################################################
 #### Save DATA ####
-rem.rate <- 3
+rem.rate <- 2
 #---------N data ---------#
 N_all <- N.truth[,,1,,,]
 N_all <- adply(N_all, c(1,2,3,4,5))
 colnames(N_all) <- c("segment", "primary", "age","param", "sim", "count")
 N_all$p <- rem.rate
 N_all$rem <- numrem
+N_all$sim <- as.numeric(N_all$sim) + 25
 file_name = paste(path, 'N.csv',sep = '/')
 write.csv(N_all,file_name)
 
@@ -521,6 +464,7 @@ D_all <- adply(D, c(1,2,3,4,5))
 colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
 D_all$p <- rem.rate
 D_all$rem <- numrem
+D_all$sim <- as.numeric(D_all$sim) + 25
 file_name = paste(path, 'D.csv',sep = '/')
 write.csv(D_all,file_name)
 
@@ -529,14 +473,16 @@ Y_all <- adply(Y, c(1,2,3,4,5,6))
 colnames(Y_all) <- c("segment", "primary", "secondary", "age", "param", "sim", "count")
 Y_all$p <- rem.rate
 Y_all$rem <- numrem
+Y_all$sim <- as.numeric(Y_all$sim) + 25
 file_name = paste(path, 'Y.csv',sep = '/')
 write.csv(Y_all,file_name)
 
 #--------- Sites visited ---------#
 site.df <- adply(site.traps, c(1,2,3,4))
 colnames(site.df) <- c("year", "removal.num", "param", "sim", "site")
-Y_all$p <- rem.rate
-Y_all$rem <- numrem
+site.df$p <- rem.rate
+site.df$rem <- numrem
+site.df$sim <- as.numeric(site.df$sim) + 25
 
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(site.df,file_name)
@@ -564,6 +510,7 @@ dist.travel <- adply(d.traveled[1:N.years,1:P, 1:S], c(1,2,3))
 colnames(dist.travel) <- c("year", "param", "sim", "distance")
 dist.travel$p <- rem.rate
 dist.travel$rem <- numrem
+dist.travel$sim <- as.numeric(dist.travel$sim) + 25
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(dist.travel,file_name)
 

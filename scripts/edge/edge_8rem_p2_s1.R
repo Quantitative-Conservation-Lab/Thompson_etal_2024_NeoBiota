@@ -14,7 +14,7 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results", "edge", "edge_8rem_p1")
+path <- here::here("results", "edge", "edge_8rem_p2_s1")
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -26,7 +26,7 @@ K <- 10 #Number of secondary periods (abundance measurements per site), needs to
 I <- 35 #Number of segments -total spatial units
 Ages <- 4 #4 age classes
 
-S <- 50 #Number of simulations
+S <- 25 #Number of simulations
 P <- 20 #chose parameter space p = 1
 
 #Temperature data:
@@ -65,7 +65,7 @@ time.traps <- rep(time.trap, N.years)
 #### param 1 ####
 #removal for each age p
 p <- cap_eff[1:P]
-p2 <- (n.trap)/(8000)*p 
+p2 <- p 
 
 ##----1b: Arrays for population change model----## 
 phi <- array(0, dim = c(I,J,Ages,P,S)) #survival
@@ -473,7 +473,7 @@ for(p in 1:P){
 
 ############################################################################
 #### Save DATA ####
-rem.rate <- 1
+rem.rate <- 2
 #---------N data ---------#
 N_all <- N.truth[,,1,,,]
 N_all <- adply(N_all, c(1,2,3,4,5))

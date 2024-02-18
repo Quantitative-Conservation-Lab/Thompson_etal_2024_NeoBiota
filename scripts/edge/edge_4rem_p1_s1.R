@@ -14,7 +14,7 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results", "edge", "edge_4rem_p3")
+path <- here::here("results", "edge", "edge_4rem_p1_s1")
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -26,7 +26,7 @@ K <- 10 #Number of secondary periods (abundance measurements per site), needs to
 I <- 35 #Number of segments -total spatial units
 Ages <- 4 #4 age classes
 
-S <- 50 #Number of simulations
+S <- 25 #Number of simulations
 P <- 20 #chose parameter space p = 1
 
 #Temperature data:
@@ -64,8 +64,8 @@ time.traps <- rep(time.trap, N.years)
 
 #### param 1 ####
 #removal for each age p
-p <- 0.5
-p2 <- rep(p,P) 
+p <- cap_eff[1:P]
+p2 <- (n.trap)/(8000)*p 
 
 ##----1b: Arrays for population change model----## 
 phi <- array(0, dim = c(I,J,Ages,P,S)) #survival
@@ -448,7 +448,7 @@ for(s in 1:S){ #for each simulation
 
 ############################################################################
 #### Save DATA ####
-rem.rate <- 3
+rem.rate <- 1
 #---------N data ---------#
 N_all <- N.truth[,,1,,,]
 N_all <- adply(N_all, c(1,2,3,4,5))
@@ -491,13 +491,13 @@ load("data/parameters/d.matrix.RData")
 for(year in 1:N.years){
   for(p in 1:P){
     for(s in 1:S){
-      
+        
       d.traveled[year,p,s] <- d.matrix[site.traps[year,1,p,s],site.traps[year,2,p,s]]
-      
+        
       for(v in 2:(numrem-1)){
         d.traveled[year,p,s] <- d.traveled[year,p,s] + d.matrix[site.traps[year,v,p,s],site.traps[year,v+1,p,s]]
       }
-      
+        
     }
   }
 }

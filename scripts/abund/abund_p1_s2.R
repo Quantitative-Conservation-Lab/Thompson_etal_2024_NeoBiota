@@ -14,7 +14,7 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results","abund", "abund_p1")
+path <- here::here("results","abund", "abund_p1_s2")
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -25,7 +25,7 @@ J <- 12*N.years #Number of total initial primary periods
 K <- 10 #Number of secondary periods (abundance measurements per site), needs to be larger
 I <- 35 #Number of segments -total spatial units
 Ages <- 4 #4 age classes
-S <- 50 #Number of simulations
+S <- 25 #Number of simulations
 P <- 20 #parameter sets
 
 numrem <- c(4,8,16) #segments where removal occurs
