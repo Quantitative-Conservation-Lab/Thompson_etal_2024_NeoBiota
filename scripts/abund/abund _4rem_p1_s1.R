@@ -14,8 +14,7 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results","abund", "abund_4rem_p1_s1")
-
+path <- 'E:\\Chapter2\\results\\abund\\abund_4rem_p1_s1'
 #------------------------------------------------------------------------------#
 #### Data ####
 load("parameters.RData")
