@@ -508,7 +508,6 @@ for(s in 1:S){ #for each simulation
 #### Save DATA ####
 rem.rate <- 1
 
-
 #---------N data ---------#
 N_all <- N.truth[,,1,,,]
 N_all <- as.data.frame.table(N_all)
@@ -520,13 +519,23 @@ file_name = paste(path, 'N.csv',sep = '/')
 fwrite(N_all,file_name)
 
 #--------- D After ---------#
-D_all <- as.data.frame.table(D)
+D_all <- as.data.frame.table(D.after)
 colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
 D_all <-  as.data.frame(sapply(D_all,as.numeric))
 D_all$p <- rem.rate
 D_all$rem <- numrem
 file_name = paste(path, 'D.csv',sep = '/')
 fwrite(D_all,file_name)
+
+#--- D Columbia --- #
+D_columbia <- D.down[22,1:J,1:Ages,1:P,1:S] 
+D_columbia <- as.data.frame.table(D_columbia)
+colnames(D_columbia) <- c("primary", "age", "param", "sim","count")
+D_columbia  <-  as.data.frame(sapply(D_columbia ,as.numeric))
+D_columbia$p <- rem.rate
+D_columbia$rem <- numrem
+file_name = paste(path, 'D_columbia.csv',sep = '/')
+fwrite(D_columbia ,file_name)
 
 #--------- Removal data ---------#
 Y_all <- as.data.frame.table(Y)
