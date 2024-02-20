@@ -508,7 +508,6 @@ for(s in 1:S){ #for each simulation
 #### Save DATA ####
 rem.rate <- 1
 
-
 #---------N data ---------#
 N_all <- N.truth[,,1,,,]
 N_all <- as.data.frame.table(N_all)

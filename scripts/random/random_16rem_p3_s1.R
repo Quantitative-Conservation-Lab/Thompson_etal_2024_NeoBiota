@@ -9,12 +9,13 @@ library(coda)
 library(plyr)
 library(popbio)
 library(dplyr)
+library(data.table)
 
 start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results","random", "random_16rem_p3_s1")
+path <- 'E:\\Chapter2\\results\\random\\random_16rem_p3_s1'
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -354,34 +355,38 @@ for(p in 1:P){
 rem.rate <- 3
 #---------N data ---------#
 N_all <- N.truth[,,1,,,]
-N_all <- adply(N_all, c(1,2,3,4,5))
+N_all <- as.data.frame.table(N_all)
 colnames(N_all) <- c("segment", "primary", "age","param", "sim", "count")
+N_all <-  as.data.frame(sapply(N_all,as.numeric))
 N_all$p <- rem.rate
 N_all$rem <- numrem
 file_name = paste(path, 'N.csv',sep = '/')
-write.csv(N_all,file_name)
+fwrite(N_all,file_name)
 
 #--------- D After ---------#
-D_all <- adply(D, c(1,2,3,4,5))
+D_all <- as.data.frame.table(D)
 colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
+D_all <-  as.data.frame(sapply(D_all,as.numeric))
 D_all$p <- rem.rate
 D_all$rem <- numrem
 file_name = paste(path, 'D.csv',sep = '/')
-write.csv(D_all,file_name)
+fwrite(D_all,file_name)
 
 #--------- Removal data ---------#
-Y_all <- adply(Y, c(1,2,3,4,5,6))
+Y_all <- as.data.frame.table(Y)
 colnames(Y_all) <- c("segment", "primary", "secondary", "age", "param", "sim", "count")
+Y_all <-  as.data.frame(sapply(Y_all,as.numeric))
 Y_all$p <- rem.rate
 Y_all$rem <- numrem
 file_name = paste(path, 'Y.csv',sep = '/')
-write.csv(Y_all,file_name)
+fwrite(Y_all,file_name)
 
 #--------- Sites visited ---------#
-site.df <- adply(site.traps, c(1,2,3,4))
+site.df <- as.data.frame.table(site.traps)
 colnames(site.df) <- c("year", "removal.num", "param", "sim", "site")
-Y_all$p <- rem.rate
-Y_all$rem <- numrem
+site.df <-  as.data.frame(sapply(site.df,as.numeric))
+site.df$p <- rem.rate
+site.df$rem <- numrem
 
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(site.df,file_name)
@@ -405,13 +410,13 @@ for(year in 1:N.years){
   }
 }
 
-dist.travel <- adply(d.traveled[1:N.years,1:P, 1:S], c(1,2,3))
+dist.travel <- as.data.frame.table(d.traveled)
 colnames(dist.travel) <- c("year", "param", "sim", "distance")
+dist.travel <-  as.data.frame(sapply(dist.travel,as.numeric))
 dist.travel$p <- rem.rate
 dist.travel$rem <- numrem
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(dist.travel,file_name)
-
 
 #---- timing ---- #
 end.time <- Sys.time()

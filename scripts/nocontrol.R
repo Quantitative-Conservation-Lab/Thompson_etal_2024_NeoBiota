@@ -9,13 +9,13 @@ library(coda)
 library(plyr)
 library(popbio)
 library(dplyr)
+library(data.table)
 
 start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results", "nocontrol")
-res <- c('results/nocontrol') #subset of path for plot save
+path <- 'E:\\Chapter2\\results\\nocontrol'
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -308,28 +308,25 @@ for(s in 1:S){ #for each simulation
 } #ends parameters
 ######################################################
 
-#### TRUE DATA ####
+#### Save DATA ####
 #---------N data ---------#
 N_all <- N.truth[,,1,,,]
-N_all <- adply(N_all, c(1,2,3,4,5))
+N_all <- as.data.frame.table(N_all)
 colnames(N_all) <- c("segment", "primary", "age","param", "sim", "count")
-
+N_all <-  as.data.frame(sapply(N_all,as.numeric))
+N_all$p <- 0
+N_all$rem <- 0
 file_name = paste(path, 'N.csv',sep = '/')
-write.csv(N_all,file_name)
-
-#Sum across segments:
-N_allsims <- aggregate(count ~ primary + age + sim + param,
-                       data = as.data.frame(N_all), FUN = sum)
-
-file_name = paste(path, 'N.csv',sep = '/')
-write.csv(N_allsims,file_name)
+fwrite(N_all,file_name)
 
 #--------- D After ---------#
-D_all <- adply(D, c(1,2,3,4,5))
-colnames(D_all) <- c("segment", "primary", "age", "param", "sim", "count")
-
+D_all <- as.data.frame.table(D)
+colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
+D_all <-  as.data.frame(sapply(D_all,as.numeric))
+D_all$p <- 0
+D_all$rem <- 0
 file_name = paste(path, 'D.csv',sep = '/')
-write.csv(D_all,file_name)
+fwrite(D_all,file_name)
 
 #---- timing ---- #
 end.time <- Sys.time()
