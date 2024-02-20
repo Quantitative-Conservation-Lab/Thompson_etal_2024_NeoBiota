@@ -457,6 +457,7 @@ colnames(N_all) <- c("segment", "primary", "age","param", "sim", "count")
 N_all <-  as.data.frame(sapply(N_all,as.numeric))
 N_all$p <- rem.rate
 N_all$rem <- numrem
+N_all$sim <- as.numeric(N_all$sim) + 25
 file_name = paste(path, 'N.csv',sep = '/')
 fwrite(N_all,file_name)
 
@@ -466,6 +467,7 @@ colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
 D_all <-  as.data.frame(sapply(D_all,as.numeric))
 D_all$p <- rem.rate
 D_all$rem <- numrem
+D_all$sim <- as.numeric(D_all$sim) + 25
 file_name = paste(path, 'D.csv',sep = '/')
 fwrite(D_all,file_name)
 
@@ -475,6 +477,7 @@ colnames(Y_all) <- c("segment", "primary", "secondary", "age", "param", "sim", "
 Y_all <-  as.data.frame(sapply(Y_all,as.numeric))
 Y_all$p <- rem.rate
 Y_all$rem <- numrem
+Y_all$sim <- as.numeric(Y_all$sim) + 25
 file_name = paste(path, 'Y.csv',sep = '/')
 fwrite(Y_all,file_name)
 
@@ -484,6 +487,7 @@ colnames(site.df) <- c("year", "removal.num", "param", "sim", "site")
 site.df <-  as.data.frame(sapply(site.df,as.numeric))
 site.df$p <- rem.rate
 site.df$rem <- numrem
+site.df$sim <- as.numeric(site.df$sim) + 25
 
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(site.df,file_name)
@@ -512,6 +516,7 @@ colnames(dist.travel) <- c("year", "param", "sim", "distance")
 dist.travel <-  as.data.frame(sapply(dist.travel,as.numeric))
 dist.travel$p <- rem.rate
 dist.travel$rem <- numrem
+dist.travel$sim <- as.numeric(dist.travel$sim) + 25
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(dist.travel,file_name)
 
