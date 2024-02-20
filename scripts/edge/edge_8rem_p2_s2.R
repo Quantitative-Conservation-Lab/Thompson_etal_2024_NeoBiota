@@ -14,8 +14,7 @@ start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results", "edge", "edge_8rem_p2_s2")
-
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p2_s2'
 #------------------------------------------------------------------------------#
 #### Data ####
 load("parameters.RData")
@@ -482,9 +481,8 @@ colnames(N_all) <- c("segment", "primary", "age","param", "sim", "count")
 N_all <-  as.data.frame(sapply(N_all,as.numeric))
 N_all$p <- rem.rate
 N_all$rem <- numrem
-N_all$sim <- as.numeric(N_all$sim) + 25
 file_name = paste(path, 'N.csv',sep = '/')
-write.csv(N_all,file_name)
+fwrite(N_all,file_name)
 
 #--------- D After ---------#
 D_all <- as.data.frame.table(D)
@@ -492,9 +490,8 @@ colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
 D_all <-  as.data.frame(sapply(D_all,as.numeric))
 D_all$p <- rem.rate
 D_all$rem <- numrem
-D_all$sim <- as.numeric(D_all$sim) + 25
 file_name = paste(path, 'D.csv',sep = '/')
-write.csv(D_all,file_name)
+fwrite(D_all,file_name)
 
 #--------- Removal data ---------#
 Y_all <- as.data.frame.table(Y)
@@ -502,9 +499,8 @@ colnames(Y_all) <- c("segment", "primary", "secondary", "age", "param", "sim", "
 Y_all <-  as.data.frame(sapply(Y_all,as.numeric))
 Y_all$p <- rem.rate
 Y_all$rem <- numrem
-Y_all$sim <- as.numeric(Y_all$sim) + 25
 file_name = paste(path, 'Y.csv',sep = '/')
-write.csv(Y_all,file_name)
+fwrite(Y_all,file_name)
 
 #--------- Sites visited ---------#
 site.df <- as.data.frame.table(site.traps)
@@ -512,7 +508,6 @@ colnames(site.df) <- c("year", "removal.num", "param", "sim", "site")
 site.df <-  as.data.frame(sapply(site.df,as.numeric))
 site.df$p <- rem.rate
 site.df$rem <- numrem
-site.df$sim <- as.numeric(site.df$sim) + 25
 
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(site.df,file_name)
@@ -541,7 +536,6 @@ colnames(dist.travel) <- c("year", "param", "sim", "distance")
 dist.travel <-  as.data.frame(sapply(dist.travel,as.numeric))
 dist.travel$p <- rem.rate
 dist.travel$rem <- numrem
-dist.travel$sim <- as.numeric(dist.travel$sim) + 25
 file_name = paste(path, 'site_visit.csv',sep = '/')
 write.csv(dist.travel,file_name)
 
@@ -550,4 +544,3 @@ end.time <- Sys.time()
 time.taken <- end.time - start.time
 file_name = paste(path, 'time.txt',sep = '/')
 write.table(time.taken,file_name)
-

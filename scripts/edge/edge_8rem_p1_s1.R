@@ -9,12 +9,13 @@ library(coda)
 library(plyr)
 library(popbio)
 library(dplyr)
+library(data.table)
 
 start.time <- Sys.time()
 
 #------------------------------------------------------------------------------#
 #### Change name ####
-path <- here::here("results", "edge", "edge_8rem_p1_s1")
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p1_s1'
 
 #------------------------------------------------------------------------------#
 #### Data ####
@@ -483,7 +484,7 @@ N_all <-  as.data.frame(sapply(N_all,as.numeric))
 N_all$p <- rem.rate
 N_all$rem <- numrem
 file_name = paste(path, 'N.csv',sep = '/')
-write.csv(N_all,file_name)
+fwrite(N_all,file_name)
 
 #--------- D After ---------#
 D_all <- as.data.frame.table(D)
@@ -492,7 +493,7 @@ D_all <-  as.data.frame(sapply(D_all,as.numeric))
 D_all$p <- rem.rate
 D_all$rem <- numrem
 file_name = paste(path, 'D.csv',sep = '/')
-write.csv(D_all,file_name)
+fwrite(D_all,file_name)
 
 #--------- Removal data ---------#
 Y_all <- as.data.frame.table(Y)
@@ -501,7 +502,7 @@ Y_all <-  as.data.frame(sapply(Y_all,as.numeric))
 Y_all$p <- rem.rate
 Y_all$rem <- numrem
 file_name = paste(path, 'Y.csv',sep = '/')
-write.csv(Y_all,file_name)
+fwrite(Y_all,file_name)
 
 #--------- Sites visited ---------#
 site.df <- as.data.frame.table(site.traps)
@@ -545,4 +546,3 @@ end.time <- Sys.time()
 time.taken <- end.time - start.time
 file_name = paste(path, 'time.txt',sep = '/')
 write.table(time.taken,file_name)
-
