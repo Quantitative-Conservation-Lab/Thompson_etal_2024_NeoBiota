@@ -373,7 +373,7 @@ file_name = paste(path, 'N.csv',sep = '/')
 fwrite(N_all,file_name)
 
 #--------- D After ---------#
-D_all <- as.data.frame.table(D)
+D_all <- as.data.frame.table(D.after)
 colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
 D_all <-  as.data.frame(sapply(D_all,as.numeric))
 D_all$p <- rem.rate
