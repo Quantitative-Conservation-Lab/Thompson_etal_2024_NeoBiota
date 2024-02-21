@@ -4,11 +4,11 @@ library(plyr)
 library(data.table)
 
 #### down data  ####
-#Might have to change D: to E: depending on the number of external drives used
+#Might have to change E: to E: depending on the number of external drives used
 
 ##### down_1rem_p1 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p1_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_1_p1_s1 <- fread(file_name)
 N_down_1_p1_s1 <- data.frame(N_down_1_p1_s1)
@@ -31,7 +31,7 @@ D_down_1_p1_s1 <- filter(D_down_1_p1_s1, age > 0)
 #Combine init with Dafter
 N_down_1_p1_s1 <- rbind(N_down_1_p1_s1_1, D_down_1_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p1_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_1_p1_s2 <- fread(file_name)
 N_down_1_p1_s2 <- data.frame(N_down_1_p1_s2)
@@ -104,12 +104,12 @@ down_1_p1_Nvtime <- cbind(N_down_1_p1_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p1_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_1_p1_s1 <- fread(file_name)
 Dcol_down_1_p1_s1 <- data.frame(Dcol_down_1_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p1_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_1_p1_s2 <- fread(file_name)
 Dcol_down_1_p1_s2 <- data.frame(Dcol_down_1_p1_s2)
@@ -122,12 +122,12 @@ Dcol_down_1_p1_sum <- aggregate(count ~  sim +p + rem +param,
                                 FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p1_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_1_p1_s1 <- fread(file_name)
 Dtrav_down_1_p1_s1 <- data.frame(Dtrav_down_1_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p1_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_1_p1_s2 <- fread(file_name)
 Dtrav_down_1_p1_s2 <- data.frame(Dtrav_down_1_p1_s2)
@@ -156,7 +156,7 @@ Ninvade_down_1_p1 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_1rem_p2 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p2_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_1_p2_s1 <- fread(file_name)
 N_down_1_p2_s1 <- data.frame(N_down_1_p2_s1)
@@ -179,7 +179,7 @@ D_down_1_p2_s1 <- filter(D_down_1_p2_s1, age > 0)
 #Combine init with Dafter
 N_down_1_p2_s1 <- rbind(N_down_1_p2_s1_1, D_down_1_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p2_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_1_p2_s2 <- fread(file_name)
 N_down_1_p2_s2 <- data.frame(N_down_1_p2_s2)
@@ -252,12 +252,12 @@ down_1_p2_Nvtime <- cbind(N_down_1_p2_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p2_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_1_p2_s1 <- fread(file_name)
 Dcol_down_1_p2_s1 <- data.frame(Dcol_down_1_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p2_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_1_p2_s2 <- fread(file_name)
 Dcol_down_1_p2_s2 <- data.frame(Dcol_down_1_p2_s2)
@@ -270,12 +270,12 @@ Dcol_down_1_p2_sum <- aggregate(count ~  sim +p + rem +param,
                                 FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p2_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_1_p2_s1 <- fread(file_name)
 Dtrav_down_1_p2_s1 <- data.frame(Dtrav_down_1_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p2_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_1_p2_s2 <- fread(file_name)
 Dtrav_down_1_p2_s2 <- data.frame(Dtrav_down_1_p2_s2)
@@ -303,7 +303,7 @@ Ninvade_down_1_p2 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_1rem_p3 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p3_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_1_p3_s1 <- fread(file_name)
 N_down_1_p3_s1 <- data.frame(N_down_1_p3_s1)
@@ -326,7 +326,7 @@ D_down_1_p3_s1 <- filter(D_down_1_p3_s1, age > 0)
 #Combine init with Dafter
 N_down_1_p3_s1 <- rbind(N_down_1_p3_s1_1, D_down_1_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p3_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_1_p3_s2 <- fread(file_name)
 N_down_1_p3_s2 <- data.frame(N_down_1_p3_s2)
@@ -399,12 +399,12 @@ down_1_p3_Nvtime <- cbind(N_down_1_p3_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p3_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_1_p3_s1 <- fread(file_name)
 Dcol_down_1_p3_s1 <- data.frame(Dcol_down_1_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p3_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_1_p3_s2 <- fread(file_name)
 Dcol_down_1_p3_s2 <- data.frame(Dcol_down_1_p3_s2)
@@ -417,12 +417,12 @@ Dcol_down_1_p3_sum <- aggregate(count ~  sim +p + rem +param,
                                 FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p3_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_1_p3_s1 <- fread(file_name)
 Dtrav_down_1_p3_s1 <- data.frame(Dtrav_down_1_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_1rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_1rem_p3_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_1_p3_s2 <- fread(file_name)
 Dtrav_down_1_p3_s2 <- data.frame(Dtrav_down_1_p3_s2)
@@ -451,7 +451,7 @@ Ninvade_down_1_p3 <- aggregate(invade ~  param + sim +p + rem ,
 
 ##### down_4rem_p1 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p1_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_4_p1_s1 <- fread(file_name)
 N_down_4_p1_s1 <- data.frame(N_down_4_p1_s1)
@@ -474,7 +474,7 @@ D_down_4_p1_s1 <- filter(D_down_4_p1_s1, age > 0)
 #Combine init with Dafter
 N_down_4_p1_s1 <- rbind(N_down_4_p1_s1_1, D_down_4_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p1_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_4_p1_s2 <- fread(file_name)
 N_down_4_p1_s2 <- data.frame(N_down_4_p1_s2)
@@ -547,12 +547,12 @@ down_4_p1_Nvtime <- cbind(N_down_4_p1_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p1_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_4_p1_s1 <- fread(file_name)
 Dcol_down_4_p1_s1 <- data.frame(Dcol_down_4_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p1_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_4_p1_s2 <- fread(file_name)
 Dcol_down_4_p1_s2 <- data.frame(Dcol_down_4_p1_s2)
@@ -565,12 +565,12 @@ Dcol_down_4_p1_sum <- aggregate(count ~  sim +p + rem +param,
                                     FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p1_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_4_p1_s1 <- fread(file_name)
 Dtrav_down_4_p1_s1 <- data.frame(Dtrav_down_4_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p1_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_4_p1_s2 <- fread(file_name)
 Dtrav_down_4_p1_s2 <- data.frame(Dtrav_down_4_p1_s2)
@@ -599,7 +599,7 @@ Ninvade_down_4_p1 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_4rem_p2 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p2_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_4_p2_s1 <- fread(file_name)
 N_down_4_p2_s1 <- data.frame(N_down_4_p2_s1)
@@ -622,7 +622,7 @@ D_down_4_p2_s1 <- filter(D_down_4_p2_s1, age > 0)
 #Combine init with Dafter
 N_down_4_p2_s1 <- rbind(N_down_4_p2_s1_1, D_down_4_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p2_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_4_p2_s2 <- fread(file_name)
 N_down_4_p2_s2 <- data.frame(N_down_4_p2_s2)
@@ -695,12 +695,12 @@ down_4_p2_Nvtime <- cbind(N_down_4_p2_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p2_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_4_p2_s1 <- fread(file_name)
 Dcol_down_4_p2_s1 <- data.frame(Dcol_down_4_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p2_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_4_p2_s2 <- fread(file_name)
 Dcol_down_4_p2_s2 <- data.frame(Dcol_down_4_p2_s2)
@@ -713,12 +713,12 @@ Dcol_down_4_p2_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p2_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_4_p2_s1 <- fread(file_name)
 Dtrav_down_4_p2_s1 <- data.frame(Dtrav_down_4_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p2_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_4_p2_s2 <- fread(file_name)
 Dtrav_down_4_p2_s2 <- data.frame(Dtrav_down_4_p2_s2)
@@ -746,7 +746,7 @@ Ninvade_down_4_p2 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_4rem_p3 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p3_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_4_p3_s1 <- fread(file_name)
 N_down_4_p3_s1 <- data.frame(N_down_4_p3_s1)
@@ -769,7 +769,7 @@ D_down_4_p3_s1 <- filter(D_down_4_p3_s1, age > 0)
 #Combine init with Dafter
 N_down_4_p3_s1 <- rbind(N_down_4_p3_s1_1, D_down_4_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p3_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_4_p3_s2 <- fread(file_name)
 N_down_4_p3_s2 <- data.frame(N_down_4_p3_s2)
@@ -842,12 +842,12 @@ down_4_p3_Nvtime <- cbind(N_down_4_p3_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p3_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_4_p3_s1 <- fread(file_name)
 Dcol_down_4_p3_s1 <- data.frame(Dcol_down_4_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p3_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_4_p3_s2 <- fread(file_name)
 Dcol_down_4_p3_s2 <- data.frame(Dcol_down_4_p3_s2)
@@ -860,12 +860,12 @@ Dcol_down_4_p3_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p3_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_4_p3_s1 <- fread(file_name)
 Dtrav_down_4_p3_s1 <- data.frame(Dtrav_down_4_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_4rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_4rem_p3_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_4_p3_s2 <- fread(file_name)
 Dtrav_down_4_p3_s2 <- data.frame(Dtrav_down_4_p3_s2)
@@ -893,7 +893,7 @@ Ninvade_down_4_p3 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_8rem_p1 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p1_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_8_p1_s1 <- fread(file_name)
 N_down_8_p1_s1 <- data.frame(N_down_8_p1_s1)
@@ -916,7 +916,7 @@ D_down_8_p1_s1 <- filter(D_down_8_p1_s1, age > 0)
 #Combine init with Dafter
 N_down_8_p1_s1 <- rbind(N_down_8_p1_s1_1, D_down_8_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p1_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_8_p1_s2 <- fread(file_name)
 N_down_8_p1_s2 <- data.frame(N_down_8_p1_s2)
@@ -989,12 +989,12 @@ down_8_p1_Nvtime <- cbind(N_down_8_p1_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p1_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_8_p1_s1 <- fread(file_name)
 Dcol_down_8_p1_s1 <- data.frame(Dcol_down_8_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p1_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_8_p1_s2 <- fread(file_name)
 Dcol_down_8_p1_s2 <- data.frame(Dcol_down_8_p1_s2)
@@ -1007,12 +1007,12 @@ Dcol_down_8_p1_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p1_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_8_p1_s1 <- fread(file_name)
 Dtrav_down_8_p1_s1 <- data.frame(Dtrav_down_8_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p1_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_8_p1_s2 <- fread(file_name)
 Dtrav_down_8_p1_s2 <- data.frame(Dtrav_down_8_p1_s2)
@@ -1041,7 +1041,7 @@ Ninvade_down_8_p1 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_8rem_p2 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p2_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_8_p2_s1 <- fread(file_name)
 N_down_8_p2_s1 <- data.frame(N_down_8_p2_s1)
@@ -1064,7 +1064,7 @@ D_down_8_p2_s1 <- filter(D_down_8_p2_s1, age > 0)
 #Combine init with Dafter
 N_down_8_p2_s1 <- rbind(N_down_8_p2_s1_1, D_down_8_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p2_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_8_p2_s2 <- fread(file_name)
 N_down_8_p2_s2 <- data.frame(N_down_8_p2_s2)
@@ -1137,12 +1137,12 @@ down_8_p2_Nvtime <- cbind(N_down_8_p2_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p2_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_8_p2_s1 <- fread(file_name)
 Dcol_down_8_p2_s1 <- data.frame(Dcol_down_8_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p2_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_8_p2_s2 <- fread(file_name)
 Dcol_down_8_p2_s2 <- data.frame(Dcol_down_8_p2_s2)
@@ -1155,12 +1155,12 @@ Dcol_down_8_p2_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p2_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_8_p2_s1 <- fread(file_name)
 Dtrav_down_8_p2_s1 <- data.frame(Dtrav_down_8_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p2_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_8_p2_s2 <- fread(file_name)
 Dtrav_down_8_p2_s2 <- data.frame(Dtrav_down_8_p2_s2)
@@ -1188,7 +1188,7 @@ Ninvade_down_8_p2 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_8rem_p3 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p3_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_8_p3_s1 <- fread(file_name)
 N_down_8_p3_s1 <- data.frame(N_down_8_p3_s1)
@@ -1211,7 +1211,7 @@ D_down_8_p3_s1 <- filter(D_down_8_p3_s1, age > 0)
 #Combine init with Dafter
 N_down_8_p3_s1 <- rbind(N_down_8_p3_s1_1, D_down_8_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p3_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_8_p3_s2 <- fread(file_name)
 N_down_8_p3_s2 <- data.frame(N_down_8_p3_s2)
@@ -1284,12 +1284,12 @@ down_8_p3_Nvtime <- cbind(N_down_8_p3_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p3_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_8_p3_s1 <- fread(file_name)
 Dcol_down_8_p3_s1 <- data.frame(Dcol_down_8_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p3_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_8_p3_s2 <- fread(file_name)
 Dcol_down_8_p3_s2 <- data.frame(Dcol_down_8_p3_s2)
@@ -1302,12 +1302,12 @@ Dcol_down_8_p3_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p3_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_8_p3_s1 <- fread(file_name)
 Dtrav_down_8_p3_s1 <- data.frame(Dtrav_down_8_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_8rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_8rem_p3_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_8_p3_s2 <- fread(file_name)
 Dtrav_down_8_p3_s2 <- data.frame(Dtrav_down_8_p3_s2)
@@ -1335,7 +1335,7 @@ Ninvade_down_8_p3 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_8rem_p1 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p1_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_16_p1_s1 <- fread(file_name)
 N_down_16_p1_s1 <- data.frame(N_down_16_p1_s1)
@@ -1358,7 +1358,7 @@ D_down_16_p1_s1 <- filter(D_down_16_p1_s1, age > 0)
 #Combine init with Dafter
 N_down_16_p1_s1 <- rbind(N_down_16_p1_s1_1, D_down_16_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p1_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_16_p1_s2 <- fread(file_name)
 N_down_16_p1_s2 <- data.frame(N_down_16_p1_s2)
@@ -1431,12 +1431,12 @@ down_16_p1_Nvtime <- cbind(N_down_16_p1_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p1_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_16_p1_s1 <- fread(file_name)
 Dcol_down_16_p1_s1 <- data.frame(Dcol_down_16_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p1_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_16_p1_s2 <- fread(file_name)
 Dcol_down_16_p1_s2 <- data.frame(Dcol_down_16_p1_s2)
@@ -1449,12 +1449,12 @@ Dcol_down_16_p1_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p1_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_16_p1_s1 <- fread(file_name)
 Dtrav_down_16_p1_s1 <- data.frame(Dtrav_down_16_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p1_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_16_p1_s2 <- fread(file_name)
 Dtrav_down_16_p1_s2 <- data.frame(Dtrav_down_16_p1_s2)
@@ -1483,7 +1483,7 @@ Ninvade_down_16_p1 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_16rem_p2 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p2_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_16_p2_s1 <- fread(file_name)
 N_down_16_p2_s1 <- data.frame(N_down_16_p2_s1)
@@ -1506,7 +1506,7 @@ D_down_16_p2_s1 <- filter(D_down_16_p2_s1, age > 0)
 #Combine init with Dafter
 N_down_16_p2_s1 <- rbind(N_down_16_p2_s1_1, D_down_16_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p2_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_16_p2_s2 <- fread(file_name)
 N_down_16_p2_s2 <- data.frame(N_down_16_p2_s2)
@@ -1579,12 +1579,12 @@ down_16_p2_Nvtime <- cbind(N_down_16_p2_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p2_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_16_p2_s1 <- fread(file_name)
 Dcol_down_16_p2_s1 <- data.frame(Dcol_down_16_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p2_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_16_p2_s2 <- fread(file_name)
 Dcol_down_16_p2_s2 <- data.frame(Dcol_down_16_p2_s2)
@@ -1597,12 +1597,12 @@ Dcol_down_16_p2_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p2_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_16_p2_s1 <- fread(file_name)
 Dtrav_down_16_p2_s1 <- data.frame(Dtrav_down_16_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p2_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_16_p2_s2 <- fread(file_name)
 Dtrav_down_16_p2_s2 <- data.frame(Dtrav_down_16_p2_s2)
@@ -1630,7 +1630,7 @@ Ninvade_down_16_p2 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### down_16rem_p3 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p3_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_16_p3_s1 <- fread(file_name)
 N_down_16_p3_s1 <- data.frame(N_down_16_p3_s1)
@@ -1653,7 +1653,7 @@ D_down_16_p3_s1 <- filter(D_down_16_p3_s1, age > 0)
 #Combine init with Dafter
 N_down_16_p3_s1 <- rbind(N_down_16_p3_s1_1, D_down_16_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p3_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_down_16_p3_s2 <- fread(file_name)
 N_down_16_p3_s2 <- data.frame(N_down_16_p3_s2)
@@ -1726,12 +1726,12 @@ down_16_p3_Nvtime <- cbind(N_down_16_p3_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p3_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_16_p3_s1 <- fread(file_name)
 Dcol_down_16_p3_s1 <- data.frame(Dcol_down_16_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p3_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_down_16_p3_s2 <- fread(file_name)
 Dcol_down_16_p3_s2 <- data.frame(Dcol_down_16_p3_s2)
@@ -1744,12 +1744,12 @@ Dcol_down_16_p3_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p3_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_16_p3_s1 <- fread(file_name)
 Dtrav_down_16_p3_s1 <- data.frame(Dtrav_down_16_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\down\\down_16rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\down\\down_16rem_p3_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_down_16_p3_s2 <- fread(file_name)
 Dtrav_down_16_p3_s2 <- data.frame(Dtrav_down_16_p3_s2)
@@ -1776,7 +1776,7 @@ Ninvade_down_16_p3 <- aggregate(invade ~  param + sim +p + rem ,
 
 ###############################################################################
 ##### Combined data #####
-path <- 'D:\\Chapter2\\results\\down'
+path <- 'E:\\Chapter2\\results\\down'
 
 #-------------------average final N @ sites -----------------------------------#
 down_segfin  <- rbind(N_down_1_p1_segfin,N_down_1_p2_segfin,N_down_1_p3_segfin,
