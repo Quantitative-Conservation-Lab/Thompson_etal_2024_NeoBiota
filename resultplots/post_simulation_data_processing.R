@@ -5,7 +5,7 @@ library(data.table)
 
 ##### average final N @ sites #####
 path <- 'D:\\Chapter2\\results\\abund'
-file_name = paste(path, 'grow_Nseg.csv',sep = '/')
+file_name = paste(path, 'abund_Nseg.csv',sep = '/')
 abund_segfin <- fread(file_name)
 abund_segfin <- data.frame(abund_segfin)
 
@@ -41,8 +41,7 @@ path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_segfin.csv',sep = '/')
 fwrite(all_segfin,file_name)
 
-
-#------------------- final N total -----------------------------------#
+##### final total N #####
 path <- 'D:\\Chapter2\\results\\abund'
 file_name = paste(path, 'abund_Ntotal.csv',sep = '/')
 abund_Ntotal <- fread(file_name)
@@ -80,7 +79,7 @@ path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_Ntotal.csv',sep = '/')
 fwrite(all_Ntotal,file_name)
 
-#------------------- N vs time -----------------------------------#
+##### N v Time #####
 path <- 'D:\\Chapter2\\results\\abund'
 file_name = paste(path, 'abund_Nvtime.csv',sep = '/')
 abund_Nvtime <- fread(file_name)
@@ -118,7 +117,7 @@ path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_Nvtime.csv',sep = '/')
 fwrite(all_Nvtime,file_name)
 
-#------------------- D Columbia  -----------------------------------#
+##### Dcol #####
 path <- 'D:\\Chapter2\\results\\abund'
 file_name = paste(path, 'abund_Dcol.csv',sep = '/')
 abund_Dcol <- fread(file_name)
@@ -156,7 +155,7 @@ path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_Dcol.csv',sep = '/')
 fwrite(all_Dcol,file_name)
 
-#------------------- distance traveled  -----------------------------------#
+##### Distance Traveled #####
 path <- 'D:\\Chapter2\\results\\abund'
 file_name = paste(path, 'abund_Dtrav.csv',sep = '/')
 abund_Dtrav <- fread(file_name)
@@ -193,23 +192,42 @@ path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_Dtrav.csv',sep = '/')
 fwrite(all_Dtrav,file_name)
 
+##### Segs Invaded #####
+path <- 'D:\\Chapter2\\results\\abund'
+file_name = paste(path, 'abund_Ninvade.csv',sep = '/')
+abund_Ninvade <- fread(file_name)
+abund_Ninvade <- data.frame(abund_Ninvade)
 
+path <- 'D:\\Chapter2\\results\\down'
+file_name = paste(path, 'down_Ninvade.csv',sep = '/')
+down_Ninvade <- fread(file_name)
+down_Ninvade <- data.frame(down_Ninvade)
 
-# ggplot(grow_Dtrav)+
-#   geom_boxplot(aes(x = p, y = distance, group = interaction(p,rem), col = rem))
+path <- 'D:\\Chapter2\\results\\edge'
+file_name = paste(path, 'edge_Ninvade.csv',sep = '/')
+edge_Ninvade <- fread(file_name)
+edge_Ninvade <- data.frame(edge_Ninvade)
 
-#------------------- segs invaded  -----------------------------------#
-grow_Ninvade <- rbind(Ninvade_grow_4_p1,Ninvade_grow_4_p2,Ninvade_grow_4_p3,
-                      Ninvade_grow_8_p1,Ninvade_grow_8_p2,Ninvade_grow_8_p3,
-                      Ninvade_grow_16_p1,Ninvade_grow_16_p2,Ninvade_grow_16_p3)
-
-grow_Ninvade$location <- 'grow'
+path <- 'D:\\Chapter2\\results\\grow'
 file_name = paste(path, 'grow_Ninvade.csv',sep = '/')
-fwrite(grow_Ninvade,file_name)
+grow_Ninvade <- fread(file_name)
+grow_Ninvade <- data.frame(grow_Ninvade)
 
-# ggplot(grow_Ninvade)+
-#   geom_boxplot(aes(x = p, y = invade, group = interaction(p,rem), col = rem))
-# 
+path <- 'D:\\Chapter2\\results\\random'
+file_name = paste(path, 'random_Ninvade.csv',sep = '/')
+random_Ninvade <- fread(file_name)
+random_Ninvade <- data.frame(random_Ninvade)
 
+path <- 'D:\\Chapter2\\results\\nocontrol'
+file_name = paste(path, 'nocontrol_Ninvade.csv',sep = '/')
+nocontrol_Ninvade <- fread(file_name)
+nocontrol_Ninvade <- data.frame(nocontrol_Ninvade)
+
+all_Ninvade <- rbind(abund_Ninvade,down_Ninvade,edge_Ninvade,
+                  grow_Ninvade,random_Ninvade,nocontrol_Ninvade)
+
+path <- 'D:\\Chapter2\\results'
+file_name = paste(path, 'all_Ninvade.csv',sep = '/')
+fwrite(all_Ninvade,file_name)
 
 
