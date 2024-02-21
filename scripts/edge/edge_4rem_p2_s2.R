@@ -467,6 +467,7 @@ colnames(D_all) <- c("segment", "primary", "age", "param", "sim","count")
 D_all <-  as.data.frame(sapply(D_all,as.numeric))
 D_all$p <- rem.rate
 D_all$rem <- numrem
+D_all$sim <- as.numeric(D_all$sim) + 25
 file_name = paste(path, 'D.csv',sep = '/')
 fwrite(D_all,file_name)
 
@@ -477,6 +478,7 @@ colnames(D_columbia) <- c("primary", "age", "param", "sim","count")
 D_columbia  <-  as.data.frame(sapply(D_columbia ,as.numeric))
 D_columbia$p <- rem.rate
 D_columbia$rem <- numrem
+D_columbia$sim <- as.numeric(D_columbia$sim) + 25
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 fwrite(D_columbia ,file_name)
 
@@ -527,7 +529,7 @@ dist.travel <-  as.data.frame(sapply(dist.travel,as.numeric))
 dist.travel$p <- rem.rate
 dist.travel$rem <- numrem
 dist.travel$sim <- as.numeric(dist.travel$sim) + 25
-file_name = paste(path, 'site_visit.csv',sep = '/')
+file_name = paste(path, 'dist_travel.csv',sep = '/')
 write.csv(dist.travel,file_name)
 
 #---- timing ---- #

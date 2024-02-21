@@ -333,8 +333,8 @@ D_columbia <- D.down[22,1:J,1:Ages,1:P,1:S]
 D_columbia <- as.data.frame.table(D_columbia)
 colnames(D_columbia) <- c("primary", "age", "param", "sim","count")
 D_columbia  <-  as.data.frame(sapply(D_columbia ,as.numeric))
-D_columbia$p <- rem.rate
-D_columbia$rem <- numrem
+D_columbia$p <- 0
+D_columbia$rem <- 0
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 fwrite(D_columbia ,file_name)
 

@@ -581,7 +581,7 @@ colnames(dist.travel) <- c("year", "param", "sim", "distance")
 dist.travel <-  as.data.frame(sapply(dist.travel,as.numeric))
 dist.travel$p <- rem.rate
 dist.travel$rem <- numrem
-file_name = paste(path, 'site_visit.csv',sep = '/')
+file_name = paste(path, 'dist_travel.csv',sep = '/')
 write.csv(dist.travel,file_name)
 
 #---- timing ---- #
