@@ -21,7 +21,7 @@ path <- 'E:\\Chapter2\\results\\nocontrol'
 #### Data ####
 load("parameters.RData")
 #### Change  ####
-N.years <- 9 #Number of years that we will be running the simulation
+N.years <- 7 #Number of years that we will be running the simulation
 J <- 12*N.years #Number of total initial primary periods
 K <- 10 #Number of secondary periods (abundance measurements per site), needs to be larger
 I <- 35 #Number of segments -total spatial units

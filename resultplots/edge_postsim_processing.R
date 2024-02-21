@@ -4,11 +4,11 @@ library(plyr)
 library(data.table)
 
 #### edge data  ####
-#Might have to change D: to E: depending on the number of external drives used
+#Might have to change E: to E: depending on the number of external drives used
 
 ##### edge_4rem_p1 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p1_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_4_p1_s1 <- fread(file_name)
 N_edge_4_p1_s1 <- data.frame(N_edge_4_p1_s1)
@@ -31,7 +31,7 @@ D_edge_4_p1_s1 <- filter(D_edge_4_p1_s1, age > 0)
 #Combine init with Dafter
 N_edge_4_p1_s1 <- rbind(N_edge_4_p1_s1_1, D_edge_4_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p1_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_4_p1_s2 <- fread(file_name)
 N_edge_4_p1_s2 <- data.frame(N_edge_4_p1_s2)
@@ -104,12 +104,12 @@ edge_4_p1_Nvtime <- cbind(N_edge_4_p1_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p1_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_4_p1_s1 <- fread(file_name)
 Dcol_edge_4_p1_s1 <- data.frame(Dcol_edge_4_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p1_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_4_p1_s2 <- fread(file_name)
 Dcol_edge_4_p1_s2 <- data.frame(Dcol_edge_4_p1_s2)
@@ -122,12 +122,12 @@ Dcol_edge_4_p1_sum <- aggregate(count ~  sim +p + rem +param,
                                     FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p1_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_4_p1_s1 <- fread(file_name)
 Dtrav_edge_4_p1_s1 <- data.frame(Dtrav_edge_4_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p1_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_4_p1_s2 <- fread(file_name)
 Dtrav_edge_4_p1_s2 <- data.frame(Dtrav_edge_4_p1_s2)
@@ -156,7 +156,7 @@ Ninvade_edge_4_p1 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### edge_4rem_p2 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p2_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_4_p2_s1 <- fread(file_name)
 N_edge_4_p2_s1 <- data.frame(N_edge_4_p2_s1)
@@ -179,7 +179,7 @@ D_edge_4_p2_s1 <- filter(D_edge_4_p2_s1, age > 0)
 #Combine init with Dafter
 N_edge_4_p2_s1 <- rbind(N_edge_4_p2_s1_1, D_edge_4_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p2_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_4_p2_s2 <- fread(file_name)
 N_edge_4_p2_s2 <- data.frame(N_edge_4_p2_s2)
@@ -252,12 +252,12 @@ edge_4_p2_Nvtime <- cbind(N_edge_4_p2_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p2_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_4_p2_s1 <- fread(file_name)
 Dcol_edge_4_p2_s1 <- data.frame(Dcol_edge_4_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p2_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_4_p2_s2 <- fread(file_name)
 Dcol_edge_4_p2_s2 <- data.frame(Dcol_edge_4_p2_s2)
@@ -270,12 +270,12 @@ Dcol_edge_4_p2_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p2_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_4_p2_s1 <- fread(file_name)
 Dtrav_edge_4_p2_s1 <- data.frame(Dtrav_edge_4_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p2_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_4_p2_s2 <- fread(file_name)
 Dtrav_edge_4_p2_s2 <- data.frame(Dtrav_edge_4_p2_s2)
@@ -303,7 +303,7 @@ Ninvade_edge_4_p2 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### edge_4rem_p3 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p3_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_4_p3_s1 <- fread(file_name)
 N_edge_4_p3_s1 <- data.frame(N_edge_4_p3_s1)
@@ -326,7 +326,7 @@ D_edge_4_p3_s1 <- filter(D_edge_4_p3_s1, age > 0)
 #Combine init with Dafter
 N_edge_4_p3_s1 <- rbind(N_edge_4_p3_s1_1, D_edge_4_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p3_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_4_p3_s2 <- fread(file_name)
 N_edge_4_p3_s2 <- data.frame(N_edge_4_p3_s2)
@@ -399,12 +399,12 @@ edge_4_p3_Nvtime <- cbind(N_edge_4_p3_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p3_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_4_p3_s1 <- fread(file_name)
 Dcol_edge_4_p3_s1 <- data.frame(Dcol_edge_4_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p3_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_4_p3_s2 <- fread(file_name)
 Dcol_edge_4_p3_s2 <- data.frame(Dcol_edge_4_p3_s2)
@@ -417,12 +417,12 @@ Dcol_edge_4_p3_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p3_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_4_p3_s1 <- fread(file_name)
 Dtrav_edge_4_p3_s1 <- data.frame(Dtrav_edge_4_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_4rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_4rem_p3_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_4_p3_s2 <- fread(file_name)
 Dtrav_edge_4_p3_s2 <- data.frame(Dtrav_edge_4_p3_s2)
@@ -450,7 +450,7 @@ Ninvade_edge_4_p3 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### edge_8rem_p1 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p1_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_8_p1_s1 <- fread(file_name)
 N_edge_8_p1_s1 <- data.frame(N_edge_8_p1_s1)
@@ -473,7 +473,7 @@ D_edge_8_p1_s1 <- filter(D_edge_8_p1_s1, age > 0)
 #Combine init with Dafter
 N_edge_8_p1_s1 <- rbind(N_edge_8_p1_s1_1, D_edge_8_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p1_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_8_p1_s2 <- fread(file_name)
 N_edge_8_p1_s2 <- data.frame(N_edge_8_p1_s2)
@@ -546,12 +546,12 @@ edge_8_p1_Nvtime <- cbind(N_edge_8_p1_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p1_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_8_p1_s1 <- fread(file_name)
 Dcol_edge_8_p1_s1 <- data.frame(Dcol_edge_8_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p1_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_8_p1_s2 <- fread(file_name)
 Dcol_edge_8_p1_s2 <- data.frame(Dcol_edge_8_p1_s2)
@@ -564,12 +564,12 @@ Dcol_edge_8_p1_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p1_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_8_p1_s1 <- fread(file_name)
 Dtrav_edge_8_p1_s1 <- data.frame(Dtrav_edge_8_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p1_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_8_p1_s2 <- fread(file_name)
 Dtrav_edge_8_p1_s2 <- data.frame(Dtrav_edge_8_p1_s2)
@@ -598,7 +598,7 @@ Ninvade_edge_8_p1 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### edge_8rem_p2 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p2_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_8_p2_s1 <- fread(file_name)
 N_edge_8_p2_s1 <- data.frame(N_edge_8_p2_s1)
@@ -621,7 +621,7 @@ D_edge_8_p2_s1 <- filter(D_edge_8_p2_s1, age > 0)
 #Combine init with Dafter
 N_edge_8_p2_s1 <- rbind(N_edge_8_p2_s1_1, D_edge_8_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p2_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_8_p2_s2 <- fread(file_name)
 N_edge_8_p2_s2 <- data.frame(N_edge_8_p2_s2)
@@ -694,12 +694,12 @@ edge_8_p2_Nvtime <- cbind(N_edge_8_p2_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p2_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_8_p2_s1 <- fread(file_name)
 Dcol_edge_8_p2_s1 <- data.frame(Dcol_edge_8_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p2_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_8_p2_s2 <- fread(file_name)
 Dcol_edge_8_p2_s2 <- data.frame(Dcol_edge_8_p2_s2)
@@ -712,12 +712,12 @@ Dcol_edge_8_p2_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p2_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_8_p2_s1 <- fread(file_name)
 Dtrav_edge_8_p2_s1 <- data.frame(Dtrav_edge_8_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p2_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_8_p2_s2 <- fread(file_name)
 Dtrav_edge_8_p2_s2 <- data.frame(Dtrav_edge_8_p2_s2)
@@ -745,7 +745,7 @@ Ninvade_edge_8_p2 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### edge_8rem_p3 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p3_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_8_p3_s1 <- fread(file_name)
 N_edge_8_p3_s1 <- data.frame(N_edge_8_p3_s1)
@@ -768,7 +768,7 @@ D_edge_8_p3_s1 <- filter(D_edge_8_p3_s1, age > 0)
 #Combine init with Dafter
 N_edge_8_p3_s1 <- rbind(N_edge_8_p3_s1_1, D_edge_8_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p3_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_8_p3_s2 <- fread(file_name)
 N_edge_8_p3_s2 <- data.frame(N_edge_8_p3_s2)
@@ -841,12 +841,12 @@ edge_8_p3_Nvtime <- cbind(N_edge_8_p3_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p3_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_8_p3_s1 <- fread(file_name)
 Dcol_edge_8_p3_s1 <- data.frame(Dcol_edge_8_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p3_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_8_p3_s2 <- fread(file_name)
 Dcol_edge_8_p3_s2 <- data.frame(Dcol_edge_8_p3_s2)
@@ -859,12 +859,12 @@ Dcol_edge_8_p3_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p3_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_8_p3_s1 <- fread(file_name)
 Dtrav_edge_8_p3_s1 <- data.frame(Dtrav_edge_8_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_8rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_8rem_p3_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_8_p3_s2 <- fread(file_name)
 Dtrav_edge_8_p3_s2 <- data.frame(Dtrav_edge_8_p3_s2)
@@ -892,7 +892,7 @@ Ninvade_edge_8_p3 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### edge_8rem_p1 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p1_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_16_p1_s1 <- fread(file_name)
 N_edge_16_p1_s1 <- data.frame(N_edge_16_p1_s1)
@@ -915,7 +915,7 @@ D_edge_16_p1_s1 <- filter(D_edge_16_p1_s1, age > 0)
 #Combine init with Dafter
 N_edge_16_p1_s1 <- rbind(N_edge_16_p1_s1_1, D_edge_16_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p1_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_16_p1_s2 <- fread(file_name)
 N_edge_16_p1_s2 <- data.frame(N_edge_16_p1_s2)
@@ -988,12 +988,12 @@ edge_16_p1_Nvtime <- cbind(N_edge_16_p1_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p1_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_16_p1_s1 <- fread(file_name)
 Dcol_edge_16_p1_s1 <- data.frame(Dcol_edge_16_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p1_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_16_p1_s2 <- fread(file_name)
 Dcol_edge_16_p1_s2 <- data.frame(Dcol_edge_16_p1_s2)
@@ -1006,12 +1006,12 @@ Dcol_edge_16_p1_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p1_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p1_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_16_p1_s1 <- fread(file_name)
 Dtrav_edge_16_p1_s1 <- data.frame(Dtrav_edge_16_p1_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p1_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p1_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_16_p1_s2 <- fread(file_name)
 Dtrav_edge_16_p1_s2 <- data.frame(Dtrav_edge_16_p1_s2)
@@ -1040,7 +1040,7 @@ Ninvade_edge_16_p1 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### edge_16rem_p2 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p2_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_16_p2_s1 <- fread(file_name)
 N_edge_16_p2_s1 <- data.frame(N_edge_16_p2_s1)
@@ -1063,7 +1063,7 @@ D_edge_16_p2_s1 <- filter(D_edge_16_p2_s1, age > 0)
 #Combine init with Dafter
 N_edge_16_p2_s1 <- rbind(N_edge_16_p2_s1_1, D_edge_16_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p2_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_16_p2_s2 <- fread(file_name)
 N_edge_16_p2_s2 <- data.frame(N_edge_16_p2_s2)
@@ -1136,12 +1136,12 @@ edge_16_p2_Nvtime <- cbind(N_edge_16_p2_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p2_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_16_p2_s1 <- fread(file_name)
 Dcol_edge_16_p2_s1 <- data.frame(Dcol_edge_16_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p2_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_16_p2_s2 <- fread(file_name)
 Dcol_edge_16_p2_s2 <- data.frame(Dcol_edge_16_p2_s2)
@@ -1154,12 +1154,12 @@ Dcol_edge_16_p2_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p2_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p2_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_16_p2_s1 <- fread(file_name)
 Dtrav_edge_16_p2_s1 <- data.frame(Dtrav_edge_16_p2_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p2_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p2_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_16_p2_s2 <- fread(file_name)
 Dtrav_edge_16_p2_s2 <- data.frame(Dtrav_edge_16_p2_s2)
@@ -1187,7 +1187,7 @@ Ninvade_edge_16_p2 <- aggregate(invade ~  param + sim +p + rem ,
 ################################################################################
 ##### edge_16rem_p3 #####
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p3_s1'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_16_p3_s1 <- fread(file_name)
 N_edge_16_p3_s1 <- data.frame(N_edge_16_p3_s1)
@@ -1210,7 +1210,7 @@ D_edge_16_p3_s1 <- filter(D_edge_16_p3_s1, age > 0)
 #Combine init with Dafter
 N_edge_16_p3_s1 <- rbind(N_edge_16_p3_s1_1, D_edge_16_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p3_s2'
 file_name = paste(path, 'N.csv',sep = '/')
 N_edge_16_p3_s2 <- fread(file_name)
 N_edge_16_p3_s2 <- data.frame(N_edge_16_p3_s2)
@@ -1283,12 +1283,12 @@ edge_16_p3_Nvtime <- cbind(N_edge_16_p3_Nsum_mean,
 #   geom_ribbon(aes(x = primary, ymin = low.1, ymax = high.9),fill = 'grey70', alpha = 0.6)+
 #   geom_line(aes(x = primary, y = count))
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p3_s1'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_16_p3_s1 <- fread(file_name)
 Dcol_edge_16_p3_s1 <- data.frame(Dcol_edge_16_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p3_s2'
 file_name = paste(path, 'D_columbia.csv',sep = '/')
 Dcol_edge_16_p3_s2 <- fread(file_name)
 Dcol_edge_16_p3_s2 <- data.frame(Dcol_edge_16_p3_s2)
@@ -1301,12 +1301,12 @@ Dcol_edge_16_p3_sum <- aggregate(count ~  sim +p + rem +param,
                                  FUN = sum)
 
 #-----------------------------------------------------------------------------#
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p3_s1'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p3_s1'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_16_p3_s1 <- fread(file_name)
 Dtrav_edge_16_p3_s1 <- data.frame(Dtrav_edge_16_p3_s1)
 
-path <- 'D:\\Chapter2\\results\\edge\\edge_16rem_p3_s2'
+path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p3_s2'
 file_name = paste(path, 'dist_travel.csv',sep = '/')
 Dtrav_edge_16_p3_s2 <- fread(file_name)
 Dtrav_edge_16_p3_s2 <- data.frame(Dtrav_edge_16_p3_s2)
@@ -1333,7 +1333,7 @@ Ninvade_edge_16_p3 <- aggregate(invade ~  param + sim +p + rem ,
 
 ###############################################################################
 ##### Combined data #####
-path <- 'D:\\Chapter2\\results\\edge'
+path <- 'E:\\Chapter2\\results\\edge'
 
 #-------------------average final N @ sites -----------------------------------#
 edge_segfin  <- rbind(N_edge_4_p1_segfin,N_edge_4_p2_segfin,N_edge_4_p3_segfin,
