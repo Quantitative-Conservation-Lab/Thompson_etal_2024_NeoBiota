@@ -96,7 +96,7 @@ ggplot(all_Dcol)+
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
   xlab("Removal location") + ylab("Total crayfish in the Columbia River")+
-  #scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
@@ -158,7 +158,9 @@ names(new) <-  c("1", "4", "8", "16")
 
 
 ggplot(all_Ninvade)+
-  geom_boxplot(aes(x = factor(location, level = level_order), y = invade, 
+  # geom_violin(aes(x = factor(location, level = level_order), y = invasion, 
+  #                  group = interaction(p,rem, location), col = as.factor(p)))+
+  geom_boxplot(aes(x = factor(location, level = level_order), y = invasion, 
                    group = interaction(p,rem, location), col = as.factor(p)))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
                             "down" = "Downstream", "edge" = "Edge",
