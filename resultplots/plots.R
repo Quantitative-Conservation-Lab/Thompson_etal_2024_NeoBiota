@@ -70,8 +70,20 @@ all_Dcol <- fread(file_name)
 all_Dcol <- data.frame(all_Dcol)
 
 ggplot(all_Dcol)+
-  geom_boxplot(aes(x = location, y = count, group = interaction(p,rem, location), col = p))+
-  facet_wrap(~rem)
+  geom_boxplot(aes(x = factor(location, level = level_order), y = count, 
+                   group = interaction(p,rem, location), col = as.factor(p)))+
+  scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
+                            "down" = "Downstream", "edge" = "Edge",
+                            "grow" = "Growth", "random" = "Random"))+
+  scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
+  xlab("Removal location") + ylab("Total crayfish in the Columbia River")+
+  #scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
+  theme_bw() +   
+  theme(strip.background=element_rect(colour="white",
+                                      fill="white"))+
+  theme(panel.border = element_rect(colour = "gray", size = 1.5), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 ###### Distance Traveled #####
 file_name = paste(path, 'all_Dtrav.csv',sep = '/')
@@ -79,8 +91,20 @@ all_Dtrav <- fread(file_name)
 all_Dtrav <- data.frame(all_Dtrav)
 
 ggplot(all_Dtrav)+
-  geom_boxplot(aes(x = location, y = distance, group = interaction(p,rem, location), col = p))+
-  facet_wrap(~rem)
+  geom_boxplot(aes(x = factor(location, level = level_order), y = distance, 
+                   group = interaction(p,rem, location), col = as.factor(p)))+
+  scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
+                            "down" = "Downstream", "edge" = "Edge",
+                            "grow" = "Growth", "random" = "Random"))+
+  scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
+  xlab("Removal location") + ylab("Total distance traveled")+
+  facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
+  theme_bw() +   
+  theme(strip.background=element_rect(colour="white",
+                                      fill="white"))+
+  theme(panel.border = element_rect(colour = "gray", size = 1.5), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
 
 ###### Invaded #####
 file_name = paste(path, 'all_Ninvade.csv',sep = '/')
@@ -88,5 +112,16 @@ all_Ninvade <- fread(file_name)
 all_Ninvade <- data.frame(all_Ninvade)
 
 ggplot(all_Ninvade)+
-  geom_boxplot(aes(x = location, y = invade, group = interaction(p,rem, location), col = p))+
-  facet_wrap(~rem)
+  geom_boxplot(aes(x = factor(location, level = level_order), y = invade, 
+                   group = interaction(p,rem, location), col = as.factor(p)))+
+  scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
+                            "down" = "Downstream", "edge" = "Edge",
+                            "grow" = "Growth", "random" = "Random"))+
+  scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
+  xlab("Removal location") + ylab("Number of segments invaded")+
+  facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
+  theme_bw() +   
+  theme(strip.background=element_rect(colour="white",
+                                      fill="white"))+
+  theme(panel.border = element_rect(colour = "gray", size = 1.5), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())
