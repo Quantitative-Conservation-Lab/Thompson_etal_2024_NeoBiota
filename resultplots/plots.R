@@ -13,13 +13,13 @@ all_Ntotal <- fread(file_name)
 all_Ntotal <- data.frame(all_Ntotal)
 
 Nocontrol <- all_Ntotal %>% filter(location == 'nocontrol')
-Nocontrol1 <- all_Ntotal
+Nocontrol1 <- Nocontrol
 Nocontrol1$rem <- 1
-Nocontrol4 <- all_Ntotal
+Nocontrol4 <- Nocontrol
 Nocontrol4$rem <- 4
-Nocontrol8 <- all_Ntotal
+Nocontrol8 <- Nocontrol
 Nocontrol8$rem <- 8
-Nocontrol16 <- all_Ntotal
+Nocontrol16 <- Nocontrol
 Nocontrol16$rem <- 16
 
 all_Ntotal <- all_Ntotal %>% filter(rem > 1)
@@ -69,6 +69,25 @@ file_name = paste(path, 'all_Dcol.csv',sep = '/')
 all_Dcol <- fread(file_name)
 all_Dcol <- data.frame(all_Dcol)
 
+Nocontrol <- all_Dcol %>% filter(location == 'nocontrol')
+Nocontrol1 <- Nocontrol
+Nocontrol1$rem <- 1
+Nocontrol4 <- Nocontrol
+Nocontrol4$rem <- 4
+Nocontrol8 <- Nocontrol
+Nocontrol8$rem <- 8
+Nocontrol16 <- Nocontrol
+Nocontrol16$rem <- 16
+
+all_Dcol <- all_Dcol %>% filter(rem > 0)
+all_Dcol <- rbind(all_Dcol, Nocontrol1, Nocontrol4, Nocontrol8, Nocontrol16)
+
+
+all_Dcol$rem <- as.factor(all_Dcol$rem)
+
+new <- c("1 segment", "4 segments", "8 segments",  "16 segments") 
+names(new) <-  c("1", "4", "8", "16") 
+
 ggplot(all_Dcol)+
   geom_boxplot(aes(x = factor(location, level = level_order), y = count, 
                    group = interaction(p,rem, location), col = as.factor(p)))+
@@ -90,6 +109,13 @@ file_name = paste(path, 'all_Dtrav.csv',sep = '/')
 all_Dtrav <- fread(file_name)
 all_Dtrav <- data.frame(all_Dtrav)
 
+all_Dtrav <- all_Dtrav %>% filter(rem > 1)
+
+all_Dtrav$rem <- as.factor(all_Dtrav$rem)
+
+new <- c("4 segments", "8 segments",  "16 segments") 
+names(new) <-  c("4", "8", "16") 
+
 ggplot(all_Dtrav)+
   geom_boxplot(aes(x = factor(location, level = level_order), y = distance, 
                    group = interaction(p,rem, location), col = as.factor(p)))+
@@ -110,6 +136,26 @@ ggplot(all_Dtrav)+
 file_name = paste(path, 'all_Ninvade.csv',sep = '/')
 all_Ninvade <- fread(file_name)
 all_Ninvade <- data.frame(all_Ninvade)
+
+Nocontrol <- all_Ninvade %>% filter(location == 'nocontrol')
+Nocontrol1 <- Nocontrol
+Nocontrol1$rem <- 1
+Nocontrol4 <- Nocontrol
+Nocontrol4$rem <- 4
+Nocontrol8 <- Nocontrol
+Nocontrol8$rem <- 8
+Nocontrol16 <- Nocontrol
+Nocontrol16$rem <- 16
+
+all_Ninvade <- all_Ninvade %>% filter(rem > 0)
+all_Ninvade <- rbind(all_Ninvade, Nocontrol1, Nocontrol4, Nocontrol8, Nocontrol16)
+
+
+all_Ninvade$rem <- as.factor(all_Ninvade$rem)
+
+new <- c("1 segment", "4 segments", "8 segments",  "16 segments") 
+names(new) <-  c("1", "4", "8", "16") 
+
 
 ggplot(all_Ninvade)+
   geom_boxplot(aes(x = factor(location, level = level_order), y = invade, 
