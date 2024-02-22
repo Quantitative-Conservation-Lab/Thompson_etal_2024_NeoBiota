@@ -1339,7 +1339,7 @@ path <- 'E:\\Chapter2\\results\\abund'
 #------------------- final N @ sites -----------------------------------#
 abund_segfin_sum  <- rbind(N_abund_4_p1,N_abund_4_p2,N_abund_4_p3,
                        N_abund_8_p1,N_abund_8_p2,N_abund_8_p3,
-                       N_abund_16_p1,N_abund_16_p2,N_abund_16_p3,)
+                       N_abund_16_p1,N_abund_16_p2,N_abund_16_p3)
 
 abund_segfin_sum$location <- 'abund'
 
