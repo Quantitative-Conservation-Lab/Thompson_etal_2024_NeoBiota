@@ -1335,6 +1335,16 @@ Ninvade_grow_16_p3 <- aggregate(invade ~  param + sim +p + rem ,
 ##### Combined data #####
 path <- 'E:\\Chapter2\\results\\grow'
 
+#------------------- final N @ sites -----------------------------------#
+grow_segfin_sum  <- rbind(N_grow_4_p1,N_grow_4_p2,N_grow_4_p3,
+                           N_grow_8_p1,N_grow_8_p2,N_grow_8_p3,
+                           N_grow_16_p1,N_grow_16_p2,N_grow_16_p3,)
+
+grow_segfin_sum$location <- 'grow'
+
+file_name = paste(path, 'grow_segfin_summary.csv',sep = '/')
+fwrite(grow_segfin_sum,file_name)
+
 #-------------------average final N @ sites -----------------------------------#
 grow_segfin  <- rbind(N_grow_4_p1_segfin,N_grow_4_p2_segfin,N_grow_4_p3_segfin,
                        N_grow_8_p1_segfin,N_grow_8_p2_segfin,N_grow_8_p3_segfin,

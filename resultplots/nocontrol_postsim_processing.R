@@ -101,6 +101,13 @@ Ninvade_nocontrol <- aggregate(invade ~  param + sim +p + rem ,
 ##### Combined data #####
 path <- 'E:\\Chapter2\\results\\nocontrol'
 
+#------------------- final N @ sites -----------------------------------#
+N_nocontrol$location <- 'nocontrol'
+
+file_name = paste(path, 'nocontrol_segfin_summary.csv',sep = '/')
+fwrite(N_nocontrol,file_name)
+
+#-------------------average final N @ sites -----------------------------------#
 N_nocontrol_segfin$location <- 'nocontrol'
 file_name = paste(path, 'nocontrol_Nseg.csv',sep = '/')
 fwrite(N_nocontrol_segfin,file_name)

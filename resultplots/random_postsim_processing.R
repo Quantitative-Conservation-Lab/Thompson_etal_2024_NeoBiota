@@ -1334,6 +1334,15 @@ Ninvade_random_16_p3 <- aggregate(invade ~  param + sim +p + rem ,
 ###############################################################################
 ##### Combined data #####
 path <- 'E:\\Chapter2\\results\\random'
+#------------------- final N @ sites -----------------------------------#
+random_segfin_sum  <- rbind(N_random_4_p1,N_random_4_p2,N_random_4_p3,
+                          N_random_8_p1,N_random_8_p2,N_random_8_p3,
+                          N_random_16_p1,N_random_16_p2,N_random_16_p3,)
+
+random_segfin_sum$location <- 'random'
+
+file_name = paste(path, 'random_segfin_summary.csv',sep = '/')
+fwrite(random_segfin_sum,file_name)
 
 #-------------------average final N @ sites -----------------------------------#
 random_segfin  <- rbind(N_random_4_p1_segfin,N_random_4_p2_segfin,N_random_4_p3_segfin,

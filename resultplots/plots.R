@@ -5,7 +5,7 @@ library(data.table)
 library(scales)
 library(RColorBrewer) 
 
-path <- 'D:\\Chapter2\\results'
+path <- 'E:\\Chapter2\\results'
 
 ###### Final total N #####
 file_name = paste(path, 'all_Ntotal.csv',sep = '/')
