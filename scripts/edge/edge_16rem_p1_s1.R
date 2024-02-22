@@ -9,6 +9,7 @@ library(coda)
 library(plyr)
 library(popbio)
 library(dplyr)
+library(data.table)
 
 start.time <- Sys.time()
 
@@ -20,7 +21,7 @@ path <- 'E:\\Chapter2\\results\\edge\\edge_16rem_p1_s1'
 #### Data ####
 load("parameters.RData")
 
-N.years <- 8 #Number of years that we will be running the simulation
+N.years <- 7 #Number of years that we will be running the simulation
 J <- 12*N.years #Number of total initial primary periods
 K <- 10 #Number of secondary periods (abundance measurements per site), needs to be larger
 I <- 35 #Number of segments -total spatial units

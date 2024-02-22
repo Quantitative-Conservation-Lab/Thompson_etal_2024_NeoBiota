@@ -1338,7 +1338,7 @@ path <- 'E:\\Chapter2\\results\\grow'
 #------------------- final N @ sites -----------------------------------#
 grow_segfin_sum  <- rbind(N_grow_4_p1,N_grow_4_p2,N_grow_4_p3,
                            N_grow_8_p1,N_grow_8_p2,N_grow_8_p3,
-                           N_grow_16_p1,N_grow_16_p2,N_grow_16_p3,)
+                           N_grow_16_p1,N_grow_16_p2,N_grow_16_p3)
 
 grow_segfin_sum$location <- 'grow'
 

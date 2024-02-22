@@ -1337,7 +1337,7 @@ path <- 'E:\\Chapter2\\results\\random'
 #------------------- final N @ sites -----------------------------------#
 random_segfin_sum  <- rbind(N_random_4_p1,N_random_4_p2,N_random_4_p3,
                           N_random_8_p1,N_random_8_p2,N_random_8_p3,
-                          N_random_16_p1,N_random_16_p2,N_random_16_p3,)
+                          N_random_16_p1,N_random_16_p2,N_random_16_p3)
 
 random_segfin_sum$location <- 'random'
 
