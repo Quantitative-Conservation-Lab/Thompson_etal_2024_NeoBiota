@@ -209,24 +209,129 @@ nocontrol_Ntotal_avgp$invasioncut <- (nocontrol_Ntotal_avgp$count*0.1)/ 35
 
 #then for each alternative under each parameter set and simulation...
 #a segment is invaded if it is > the invasion cut off value
+###### Abund ######
+path <- 'E:\\Chapter2\\results\\abund'
 file_name = paste(path, 'abund_segfin_summary.csv',sep = '/')
+abund_seg <- fread(file_name)
+abund_seg <- data.frame(abund_seg)
+abund_seg <- abund_seg %>% filter(primary == max(abund_seg$primary))
+
+invasion_abund <- abund_seg
+invasion_abund$invasion <- NA
+invasion_cutoff <- nocontrol_Ntotal_avgp %>% select(param, invasioncut)
+invasion_abund <- left_join(invasion_abund, invasion_cutoff, by = 'param')
+invasion_abund$invasion <- ifelse(invasion_abund$count > invasion_abund$invasioncut, 1, 0)
+
+
+abund_Ninvade <- aggregate(invasion ~ param +sim + p + rem , 
+                                   data = as.data.frame(invasion_abund), 
+                                   FUN = sum)
+
+abund_Ninvade$location <- 'abund'
+
+###### Down ######
+path <- 'E:\\Chapter2\\results\\down'
 file_name = paste(path, 'down_segfin_summary.csv',sep = '/')
+down_seg <- fread(file_name)
+down_seg <- data.frame(down_seg)
+down_seg <- down_seg %>% filter(primary == max(down_seg$primary))
+
+invasion_down <- down_seg
+invasion_down$invasion <- NA
+invasion_cutoff <- nocontrol_Ntotal_avgp %>% select(param, invasioncut)
+invasion_down <- left_join(invasion_down, invasion_cutoff, by = 'param')
+invasion_down$invasion <- ifelse(invasion_down$count > invasion_down$invasioncut, 1, 0)
+
+
+down_Ninvade <- aggregate(invasion ~ param +sim + p + rem , 
+                           data = as.data.frame(invasion_down), 
+                           FUN = sum)
+
+down_Ninvade$location <- 'down'
+
+###### Edge ######
+path <- 'E:\\Chapter2\\results\\edge'
 file_name = paste(path, 'edge_segfin_summary.csv',sep = '/')
+edge_seg <- fread(file_name)
+edge_seg <- data.frame(edge_seg)
+edge_seg <- edge_seg %>% filter(primary == max(edge_seg$primary))
+
+invasion_edge <- edge_seg
+invasion_edge$invasion <- NA
+invasion_cutoff <- nocontrol_Ntotal_avgp %>% select(param, invasioncut)
+invasion_edge <- left_join(invasion_edge, invasion_cutoff, by = 'param')
+invasion_edge$invasion <- ifelse(invasion_edge$count > invasion_edge$invasioncut, 1, 0)
+
+
+edge_Ninvade <- aggregate(invasion ~ param +sim + p + rem , 
+                          data = as.data.frame(invasion_edge), 
+                          FUN = sum)
+
+edge_Ninvade$location <- 'edge'
+
+###### grow ######
+path <- 'E:\\Chapter2\\results\\grow'
 file_name = paste(path, 'grow_segfin_summary.csv',sep = '/')
+grow_seg <- fread(file_name)
+grow_seg <- data.frame(grow_seg)
+grow_seg <- grow_seg %>% filter(primary == max(grow_seg$primary))
+
+invasion_grow <- grow_seg
+invasion_grow$invasion <- NA
+invasion_cutoff <- nocontrol_Ntotal_avgp %>% select(param, invasioncut)
+invasion_grow <- left_join(invasion_grow, invasion_cutoff, by = 'param')
+invasion_grow$invasion <- ifelse(invasion_grow$count > invasion_grow$invasioncut, 1, 0)
+
+
+grow_Ninvade <- aggregate(invasion ~ param +sim + p + rem , 
+                          data = as.data.frame(invasion_grow), 
+                          FUN = sum)
+
+grow_Ninvade$location <- 'grow'
+
+###### random ######
+path <- 'E:\\Chapter2\\results\\random'
 file_name = paste(path, 'random_segfin_summary.csv',sep = '/')
+random_seg <- fread(file_name)
+random_seg <- data.frame(random_seg)
+random_seg <- random_seg %>% filter(primary == max(random_seg$primary))
+
+invasion_random <- random_seg
+invasion_random$invasion <- NA
+invasion_cutoff <- nocontrol_Ntotal_avgp %>% select(param, invasioncut)
+invasion_random <- left_join(invasion_random, invasion_cutoff, by = 'param')
+invasion_random$invasion <- ifelse(invasion_random$count > invasion_random$invasioncut, 1, 0)
+
+random_Ninvade <- aggregate(invasion ~ param +sim + p + rem , 
+                          data = as.data.frame(invasion_random), 
+                          FUN = sum)
+
+random_Ninvade$location <- 'random'
+
+###### No Control ######
+path <- 'E:\\Chapter2\\results\\nocontrol'
 file_name = paste(path, 'nocontrol_segfin_summary.csv',sep = '/')
+nocontrol_seg <- fread(file_name)
+nocontrol_seg <- data.frame(nocontrol_seg)
+nocontrol_seg <- nocontrol_seg %>% filter(primary == max(nocontrol_seg$primary))
 
+invasion_nocontrol <- nocontrol_seg
+invasion_nocontrol$invasion <- NA
+invasion_cutoff <- nocontrol_Ntotal_avgp %>% select(param, invasioncut)
+invasion_nocontrol <- left_join(invasion_nocontrol, invasion_cutoff, by = 'param')
+invasion_nocontrol$invasion <- ifelse(invasion_nocontrol$count > invasion_nocontrol$invasioncut, 1, 0)
 
+nocontrol_Ninvade <- aggregate(invasion ~ param +sim + p + rem , 
+                            data = as.data.frame(invasion_nocontrol), 
+                            FUN = sum)
 
-
-
-
-
+nocontrol_Ninvade$location <- 'nocontrol'
 
 all_Ninvade <- rbind(abund_Ninvade,down_Ninvade,edge_Ninvade,
                      grow_Ninvade,random_Ninvade,nocontrol_Ninvade)
 
-path <- 'D:\\Chapter2\\results'
+
+path <- 'E:\\Chapter2\\results'
 file_name = paste(path, 'all_Ninvade.csv',sep = '/')
 fwrite(all_Ninvade,file_name)
 

@@ -1338,7 +1338,7 @@ path <- 'E:\\Chapter2\\results\\edge'
 #------------------- final N @ sites -----------------------------------#
 edge_segfin_sum  <- rbind(N_edge_4_p1,N_edge_4_p2,N_edge_4_p3,
                            N_edge_8_p1,N_edge_8_p2,N_edge_8_p3,
-                           N_edge_16_p1,N_edge_16_p2,N_edge_16_p3,)
+                           N_edge_16_p1,N_edge_16_p2,N_edge_16_p3)
 
 edge_segfin_sum$location <- 'edge'
 

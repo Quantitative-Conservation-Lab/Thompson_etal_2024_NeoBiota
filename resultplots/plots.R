@@ -5,7 +5,7 @@ library(data.table)
 library(scales)
 library(RColorBrewer) 
 
-path <- 'E:\\Chapter2\\results'
+path <- 'D:\\Chapter2\\results'
 
 ###### Final total N #####
 file_name = paste(path, 'all_Ntotal.csv',sep = '/')
@@ -59,10 +59,46 @@ file_name = paste(path, 'all_Nvtime.csv',sep = '/')
 all_Nvtime <- fread(file_name)
 all_Nvtime <- data.frame(all_Nvtime)
 
+all_Nvtime$year <- (all_Nvtime$primary/12) + 1
+  
+
+colnames(all_Nvtime)[3] <- "segments"
+
 ggplot(all_Nvtime)+
- # geom_ribbon(aes(x = primary, ymin = low.1, group = interaction(p,rem, location), ymax = high.9, fill = p), alpha = 0.6)+
-  geom_line(aes(x = primary, y = count, group = interaction(p,rem, location), color = p))+
-  facet_wrap(~rem+ location)
+ geom_ribbon(aes(x = year, ymin = low.1, group = interaction(p,segments, location), ymax = high.9, fill = p), alpha = 0.6)+
+  geom_line(aes(x = year, y = count, group = interaction(p,segments, location), color = p))+
+  facet_wrap(~segments+ location + p, labeller=label_both)+
+  xlab("Year") + ylab("Final total crayfish abundance (millions)")+
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 7)) +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  theme_bw() +   
+  theme(strip.background=element_rect(colour="white",
+                                      fill="white"))+
+  theme(panel.border = element_rect(colour = "gray", size = 1.5), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+
+colD <- brewer.pal(9, "Set1") 
+colorsD <- c(colD[2], colD[3], colD[4], colD[5], "black", colD[9])
+labelD <- c("Abundance", "Down", "Edge", "Growth", "No control", "Random")
+
+all_Nvtime$p[all_Nvtime$p ==0] <- 'none'
+
+colnames(all_Nvtime)[3] <- "segments"
+
+ggplot(all_Nvtime)+
+  geom_line(aes(x = year, y = count, group = interaction(p,segments, location),color = location), lwd = 0.75)+
+  scale_color_manual(name = "Removal location", labels = labelD, values = colorsD) +
+  facet_wrap(~segments+ p, labeller=label_both)+
+  xlab("Year") + ylab("Final total crayfish abundance (millions)")+
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 7)) +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  theme_bw() +   
+  theme(strip.background=element_rect(colour="white",
+                                      fill="white"))+
+  theme(panel.border = element_rect(colour = "gray", size = 1.5), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
 
 ###### Entered Columbia #####
 file_name = paste(path, 'all_Dcol.csv',sep = '/')
@@ -96,7 +132,7 @@ ggplot(all_Dcol)+
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
   xlab("Removal location") + ylab("Total crayfish in the Columbia River")+
-  #scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
@@ -158,7 +194,9 @@ names(new) <-  c("1", "4", "8", "16")
 
 
 ggplot(all_Ninvade)+
-  geom_boxplot(aes(x = factor(location, level = level_order), y = invade, 
+  # geom_violin(aes(x = factor(location, level = level_order), y = invasion, 
+  #                  group = interaction(p,rem, location), col = as.factor(p)))+
+  geom_boxplot(aes(x = factor(location, level = level_order), y = invasion, 
                    group = interaction(p,rem, location), col = as.factor(p)))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
                             "down" = "Downstream", "edge" = "Edge",
@@ -171,3 +209,7 @@ ggplot(all_Ninvade)+
                                       fill="white"))+
   theme(panel.border = element_rect(colour = "gray", size = 1.5), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+
+
+
