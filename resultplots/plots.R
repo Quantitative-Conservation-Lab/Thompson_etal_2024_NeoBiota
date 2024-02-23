@@ -209,3 +209,7 @@ ggplot(all_Ninvade)+
                                       fill="white"))+
   theme(panel.border = element_rect(colour = "gray", size = 1.5), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+
+
+
