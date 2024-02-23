@@ -1779,7 +1779,8 @@ Ninvade_down_16_p3 <- aggregate(invade ~  param + sim +p + rem ,
 path <- 'E:\\Chapter2\\results\\down'
 
 #------------------- final N @ sites -----------------------------------#
-down_segfin_sum  <- rbind(N_down_4_p1,N_down_4_p2,N_down_4_p3,
+down_segfin_sum  <- rbind(N_down_1_p1,N_down_1_p2,N_down_1_p3,
+                          N_down_4_p1,N_down_4_p2,N_down_4_p3,
                            N_down_8_p1,N_down_8_p2,N_down_8_p3,
                            N_down_16_p1,N_down_16_p2,N_down_16_p3)
 
