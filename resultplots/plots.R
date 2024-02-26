@@ -1,52 +1,86 @@
+library(plyr)
 library(tidyverse)
 library(here)
-library(plyr)
 library(data.table)
 library(scales)
 library(RColorBrewer) 
 
 path <- 'D:\\Chapter2\\results'
 
-###### Final total N #####
+#### Final total N ####
 file_name = paste(path, 'all_Ntotal.csv',sep = '/')
 all_Ntotal <- fread(file_name)
 all_Ntotal <- data.frame(all_Ntotal)
 
-Nocontrol <- all_Ntotal %>% filter(location == 'nocontrol')
-Nocontrol1 <- Nocontrol
-Nocontrol1$rem <- 1
-Nocontrol4 <- Nocontrol
-Nocontrol4$rem <- 4
-Nocontrol8 <- Nocontrol
-Nocontrol8$rem <- 8
-Nocontrol16 <- Nocontrol
-Nocontrol16$rem <- 16
+nocontrol <- all_Ntotal %>% filter(location == 'nocontrol')
+nocontrol$p <- 1
+all_Ntotal <- rbind(all_Ntotal, nocontrol)
 
-all_Ntotal <- all_Ntotal %>% filter(rem > 1)
-all_Ntotal <- rbind(all_Ntotal, Nocontrol4, Nocontrol8, Nocontrol16)
+all_Ntotal <- all_Ntotal %>% filter(p == 1 & rem != 8)
 
 level_order <- c("nocontrol", "abund", "down", "edge", "grow", "random")
 
 all_Ntotal$rem <- as.factor(all_Ntotal$rem)
 
-new <- c("4 segments", "8 segments",  "16 segments") 
-names(new) <-  c("4", "8", "16") 
+new <- c( "None", "1 segment", "4 segments", "16 segments") 
+names(new) <-  c("0", "1", "4", "16") 
 
 
-col <- brewer.pal(5, "Set1") 
-colors <- c(col[1], col[2], col[4], col[5])
-rem.label <- c("None", "Trap effect", "No trap effect", "Constant 0.5")
+col <- brewer.pal(8, "Dark2") 
+colors <- c(col[8], col[2], col[1], col[3])
+rem.label <- c("None", "1", "4", "16")
 
-ggplot(all_Ntotal)+
-  geom_boxplot(aes(x = factor(location, level = level_order), y = count, 
-                   group = interaction(p,rem, location), col = as.factor(p)))+
+all_Ntotal %>%
+  filter(rem == '0') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+all_Ntotal %>%
+  filter(rem == '1') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+all_Ntotal %>%
+  filter(rem == '4') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+all_Ntotal %>%
+  filter(rem == '16') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+###### Plot ######
+exp.val <- all_Ntotal %>% filter(location == 'abund' & rem == 16)
+exp.val <- mean(exp.val$count)
+
+minimax.val <- all_Ntotal %>% filter(location == 'grow' & rem == 16)
+minimax.val <- max(minimax.val$count)
+
+nc.val <- all_Ntotal %>% filter(location == 'nocontrol')
+nc.val <- mean(nc.val$count)
+
+all_Ntotal %>% 
+ggplot(aes(x = factor(location, level = level_order), y = count, 
+           group = interaction(rem, location)))+
+  geom_violin(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = exp.val, linetype = 2, color = 'chartreuse3', linewidth = 1) + 
+  geom_hline(yintercept = minimax.val, linetype = 2, color = 'blue3', linewidth = 1) + 
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  stat_summary(fun.y=mean,
+               geom="point", color="black",
+               shape = 19, size = 2,
+               position = position_dodge(width = 0.9))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
                             "down" = "Downstream", "edge" = "Edge",
                             "grow" = "Growth", "random" = "Random"))+
-  scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
+  scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors) +
   xlab("Removal location") + ylab("Final total crayfish abundance (millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
-  facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
                                       fill="white"))+
@@ -54,113 +88,70 @@ ggplot(all_Ntotal)+
         panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
-###### N v Time #####
-file_name = paste(path, 'all_Nvtime.csv',sep = '/')
-all_Nvtime <- fread(file_name)
-all_Nvtime <- data.frame(all_Nvtime)
-
-all_Nvtime$year <- (all_Nvtime$primary/12) + 1
-  
-
-colnames(all_Nvtime)[3] <- "segments"
-
-ggplot(all_Nvtime)+
- geom_ribbon(aes(x = year, ymin = low.1, group = interaction(p,segments, location), ymax = high.9, fill = p), alpha = 0.6)+
-  geom_line(aes(x = year, y = count, group = interaction(p,segments, location), color = p))+
-  facet_wrap(~segments+ location + p, labeller=label_both)+
-  xlab("Year") + ylab("Final total crayfish abundance (millions)")+
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 7)) +
-  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
-  theme_bw() +   
-  theme(strip.background=element_rect(colour="white",
-                                      fill="white"))+
-  theme(panel.border = element_rect(colour = "gray", size = 1.5), 
-        panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
-
-colD <- brewer.pal(9, "Set1") 
-colorsD <- c(colD[2], colD[3], colD[4], colD[5], "black", colD[9])
-labelD <- c("Abundance", "Down", "Edge", "Growth", "No control", "Random")
-
-all_Nvtime$p[all_Nvtime$p ==0] <- 'none'
-
-colnames(all_Nvtime)[3] <- "segments"
-
-ggplot(all_Nvtime)+
-  geom_line(aes(x = year, y = count, group = interaction(p,segments, location),color = location), lwd = 0.75)+
-  scale_color_manual(name = "Removal location", labels = labelD, values = colorsD) +
-  facet_wrap(~segments+ p, labeller=label_both)+
-  xlab("Year") + ylab("Final total crayfish abundance (millions)")+
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 7)) +
-  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
-  theme_bw() +   
-  theme(strip.background=element_rect(colour="white",
-                                      fill="white"))+
-  theme(panel.border = element_rect(colour = "gray", size = 1.5), 
-        panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
-
-###### Entered Columbia #####
+#### Entered Columbia ####
 file_name = paste(path, 'all_Dcol.csv',sep = '/')
 all_Dcol <- fread(file_name)
 all_Dcol <- data.frame(all_Dcol)
 
-Nocontrol <- all_Dcol %>% filter(location == 'nocontrol')
-Nocontrol1 <- Nocontrol
-Nocontrol1$rem <- 1
-Nocontrol4 <- Nocontrol
-Nocontrol4$rem <- 4
-Nocontrol8 <- Nocontrol
-Nocontrol8$rem <- 8
-Nocontrol16 <- Nocontrol
-Nocontrol16$rem <- 16
+nocontrol <- all_Dcol %>% filter(location == 'nocontrol')
+nocontrol$p <- 1
+all_Dcol <- rbind(all_Dcol, nocontrol)
 
-all_Dcol <- all_Dcol %>% filter(rem > 0)
-all_Dcol <- rbind(all_Dcol, Nocontrol1, Nocontrol4, Nocontrol8, Nocontrol16)
-
+all_Dcol <- all_Dcol %>% filter(p == 1 & rem != 8)
 
 all_Dcol$rem <- as.factor(all_Dcol$rem)
 
-new <- c("1 segment", "4 segments", "8 segments",  "16 segments") 
-names(new) <-  c("1", "4", "8", "16") 
+all_Dcol %>%
+  filter(rem == '0') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
 
-ggplot(all_Dcol)+
-  geom_boxplot(aes(x = factor(location, level = level_order), y = count, 
-                   group = interaction(p,rem, location), col = as.factor(p)))+
+all_Dcol %>%
+  filter(rem == '1') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+all_Dcol %>%
+  filter(rem == '4') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+all_Dcol %>%
+  filter(rem == '16') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+##### Plot ####
+exp.val <- all_Dcol %>% filter(location == 'edge' & rem == 16)
+exp.val <- mean(exp.val$count)
+
+minimax.val <- all_Dcol %>% filter(location == 'grow' & rem == 16)
+minimax.val <- max(minimax.val$count)
+
+nc.val <- all_Dcol %>% filter(location == 'nocontrol')
+nc.val <- mean(nc.val$count)
+
+all_Dcol %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_violin(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = exp.val, linetype = 2, color = 'chartreuse3', linewidth = 1) + 
+  geom_hline(yintercept = minimax.val, linetype = 2, color = 'blue3', linewidth = 1) + 
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  stat_summary(fun.y=mean,
+               geom="point", color="black",
+               shape = 19, size = 2,
+               position = position_dodge(width = 0.9))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
                             "down" = "Downstream", "edge" = "Edge",
                             "grow" = "Growth", "random" = "Random"))+
-  scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
+  scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors) +
   xlab("Removal location") + ylab("Total crayfish in the Columbia River")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
-  facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
-  theme_bw() +   
-  theme(strip.background=element_rect(colour="white",
-                                      fill="white"))+
-  theme(panel.border = element_rect(colour = "gray", size = 1.5), 
-        panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
-###### Distance Traveled #####
-file_name = paste(path, 'all_Dtrav.csv',sep = '/')
-all_Dtrav <- fread(file_name)
-all_Dtrav <- data.frame(all_Dtrav)
-
-all_Dtrav <- all_Dtrav %>% filter(rem > 1)
-
-all_Dtrav$rem <- as.factor(all_Dtrav$rem)
-
-new <- c("4 segments", "8 segments",  "16 segments") 
-names(new) <-  c("4", "8", "16") 
-
-ggplot(all_Dtrav)+
-  geom_boxplot(aes(x = factor(location, level = level_order), y = distance, 
-                   group = interaction(p,rem, location), col = as.factor(p)))+
-  scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
-                            "down" = "Downstream", "edge" = "Edge",
-                            "grow" = "Growth", "random" = "Random"))+
-  scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Removal location") + ylab("Total distance traveled")+
-  facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
                                       fill="white"))+
@@ -168,48 +159,74 @@ ggplot(all_Dtrav)+
         panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
-###### Invaded #####
+#### Invaded ####
 file_name = paste(path, 'all_Ninvade.csv',sep = '/')
 all_Ninvade <- fread(file_name)
 all_Ninvade <- data.frame(all_Ninvade)
 
-Nocontrol <- all_Ninvade %>% filter(location == 'nocontrol')
-Nocontrol1 <- Nocontrol
-Nocontrol1$rem <- 1
-Nocontrol4 <- Nocontrol
-Nocontrol4$rem <- 4
-Nocontrol8 <- Nocontrol
-Nocontrol8$rem <- 8
-Nocontrol16 <- Nocontrol
-Nocontrol16$rem <- 16
+nocontrol <- all_Ninvade %>% filter(location == 'nocontrol')
+nocontrol$p <- 1
+all_Ninvade <- rbind(all_Ninvade, nocontrol)
 
-all_Ninvade <- all_Ninvade %>% filter(rem > 0)
-all_Ninvade <- rbind(all_Ninvade, Nocontrol1, Nocontrol4, Nocontrol8, Nocontrol16)
-
+all_Ninvade <- all_Ninvade %>% filter(p == 1 & rem != 8)
 
 all_Ninvade$rem <- as.factor(all_Ninvade$rem)
 
-new <- c("1 segment", "4 segments", "8 segments",  "16 segments") 
-names(new) <-  c("1", "4", "8", "16") 
+all_Ninvade$count <- all_Ninvade$invasion/ 35
 
+all_Ninvade %>%
+  filter(rem == '0') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
 
-ggplot(all_Ninvade)+
-  # geom_violin(aes(x = factor(location, level = level_order), y = invasion, 
-  #                  group = interaction(p,rem, location), col = as.factor(p)))+
-  geom_boxplot(aes(x = factor(location, level = level_order), y = invasion, 
-                   group = interaction(p,rem, location), col = as.factor(p)))+
+all_Ninvade %>%
+  filter(rem == '1') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+all_Ninvade %>%
+  filter(rem == '4') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+all_Ninvade %>%
+  filter(rem == '16') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count))
+
+##### Plot ####
+exp.val <- all_Ninvade %>% filter(location == 'edge' & rem == 16)
+exp.val <- mean(exp.val$count)
+
+minimax.val <- all_Ninvade %>% filter(location == 'grow' & rem == 16)
+minimax.val <- max(minimax.val$count)
+
+nc.val <- all_Ninvade %>% filter(location == 'nocontrol')
+nc.val <- mean(nc.val$count)
+
+all_Ninvade %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_violin(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = exp.val, linetype = 2, color = 'chartreuse3', linewidth = 1) + 
+  geom_hline(yintercept = minimax.val, linetype = 2, color = 'blue3', linewidth = 1) + 
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  stat_summary(fun.y=mean,
+               geom="point", color="black",
+               shape = 19, size = 2,
+               position = position_dodge(width = 0.9))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
                             "down" = "Downstream", "edge" = "Edge",
                             "grow" = "Growth", "random" = "Random"))+
-  scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Removal location") + ylab("Number of segments invaded")+
-  facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
+  scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors) +
+  xlab("Removal location") + ylab("Percent invaded")+
+  scale_y_continuous(labels=scales::percent) +
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
                                       fill="white"))+
   theme(panel.border = element_rect(colour = "gray", size = 1.5), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
-
-
-
