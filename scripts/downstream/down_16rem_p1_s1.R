@@ -236,7 +236,7 @@ for(s in 1:S){ #simulation
     for(i in 1:I){ #for each segment:
       
       for(a in 2:Ages){ #for ages 2-4
-        if(i %in% site.traps[year[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p,s]){
+        if(i %in% site.traps[yearval[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p,s]){
           Y[i,j,1,a,p,s] <- rbinom(1,N.truth[i,j,1,a,p,s],p2[p]) * time.traps[j] #removals
         } else{
           
@@ -396,6 +396,19 @@ Y_all$p <- rem.rate
 Y_all$rem <- numrem
 file_name = paste(path, 'Y.csv',sep = '/')
 fwrite(Y_all,file_name)
+
+Y_alla <- Y_all %>% filter(age > 1)
+Y_alls <- aggregate(count ~  segment + param + sim +p + rem , 
+                          data = as.data.frame(Y_all), 
+                          FUN = sum)
+
+Y_alls <- aggregate(count ~  primary + segment + param + sim +p + rem , 
+                    data = as.data.frame(Y_all), 
+                    FUN = sum)
+
+Y_allsm <- aggregate(count ~  primary + segment , 
+                    data = as.data.frame(Y_alls), 
+                    FUN = mean)
 
 #--------- Sites visited ---------#
 site.df <- as.data.frame.table(site.traps)
