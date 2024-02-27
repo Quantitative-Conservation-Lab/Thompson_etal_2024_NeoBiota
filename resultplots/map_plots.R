@@ -21,12 +21,17 @@ all_segfin <- all_segfin %>% select(segment, count, location)
 colnames(all_segfin)[1] <- "Segment"
 colnames(all_segfin)[2] <- "Crayfish abundance"
 
-all_segfin$location[all_segfin$location == 'abund'] <- "Abundance"
-all_segfin$location[all_segfin$location == 'down'] <- "Downstream"
-all_segfin$location[all_segfin$location == 'edge'] <- "Edge"
-all_segfin$location[all_segfin$location == 'grow'] <- "Growth"
-all_segfin$location[all_segfin$location == 'random'] <- "Random"
-all_segfin$location[all_segfin$location == 'nocontrol'] <- "No control"
+all_segfin$location[all_segfin$location == 'abund'] <- 2
+all_segfin$location[all_segfin$location == 'down'] <- 3
+all_segfin$location[all_segfin$location == 'edge'] <- 4
+all_segfin$location[all_segfin$location == 'grow'] <- 5
+all_segfin$location[all_segfin$location == 'random'] <- 6
+all_segfin$location[all_segfin$location == 'nocontrol'] <- 1
+
+
+all_segfin$location <- as.numeric(all_segfin$location)
+
+level_order <- c("No removal", "Abundance", "Downstream", "Edge", "Growth", "Random")
 
 jdr_20k_sf <- read_sf(here::here("data", "initial_population", "JDR_20km_initpop.shp"))
 jdr_abund <- merge(jdr_20k_sf, all_segfin, by  = "Segment")
@@ -47,6 +52,7 @@ tmap_options(bg.color = 'white', legend.text.color = 'black') +
   ) + 
   tm_facets(by=c("location"))+
   tm_layout(legend.position = c("right", "center"), 
+            panel.labels = level_order,
             panel.label.size = 1.2,
             legend.text.size = 0.9, 
             legend.width = 2, 
