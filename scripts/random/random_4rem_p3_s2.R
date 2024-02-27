@@ -230,7 +230,7 @@ for(p in 1:P){
       for(i in 1:I){ #for each segment:
         
         for(a in 2:Ages){ #for ages 2-4
-          if(i %in% site.traps[year[j],,p,s]){
+          if(i %in% site.traps[yearval[j],,p,s]){
             Y[i,j,1,a,p,s] <- rbinom(1,N.truth[i,j,1,a,p,s],p2[p]) * time.traps[j] #removals
           } else{
             
@@ -248,7 +248,7 @@ for(p in 1:P){
             N.truth[i,j,k,a,p,s] <- max(0, N.truth[i,j,k-1,a,p,s] - Y[i,j,k-1,a,p,s]) #True pop = population at previous secondary - removals at previous secondary
           }
           for(a in 2:Ages){
-            if(i %in% site.traps[year[j],,p,s]){
+            if(i %in% site.traps[yearval[j],,p,s]){
               Y[i,j,k,a,p,s] <- rbinom(1,N.truth[i,j,k,a,p,s],p2[p]) * time.traps[j] #removals
             } else{
               Y[i,j,k,a,p,s] <- 0

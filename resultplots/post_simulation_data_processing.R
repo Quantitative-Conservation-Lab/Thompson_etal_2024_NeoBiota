@@ -193,7 +193,7 @@ file_name = paste(path, 'all_Dtrav.csv',sep = '/')
 fwrite(all_Dtrav,file_name)
 
 ##### Segs Invaded #####
-path <- 'E:\\Chapter2\\results\\nocontrol'
+path <- 'D:\\Chapter2\\results\\nocontrol'
 file_name = paste(path, 'nocontrol_Ntotal.csv',sep = '/')
 nocontrol_Ntotal <- fread(file_name)
 nocontrol_Ntotal <- data.frame(nocontrol_Ntotal)
@@ -210,7 +210,7 @@ nocontrol_Ntotal_avgp$invasioncut <- (nocontrol_Ntotal_avgp$count*0.1)/ 35
 #then for each alternative under each parameter set and simulation...
 #a segment is invaded if it is > the invasion cut off value
 ###### Abund ######
-path <- 'E:\\Chapter2\\results\\abund'
+path <- 'D:\\Chapter2\\results\\abund'
 file_name = paste(path, 'abund_segfin_summary.csv',sep = '/')
 abund_seg <- fread(file_name)
 abund_seg <- data.frame(abund_seg)
@@ -230,7 +230,7 @@ abund_Ninvade <- aggregate(invasion ~ param +sim + p + rem ,
 abund_Ninvade$location <- 'abund'
 
 ###### Down ######
-path <- 'E:\\Chapter2\\results\\down'
+path <- 'D:\\Chapter2\\results\\down'
 file_name = paste(path, 'down_segfin_summary.csv',sep = '/')
 down_seg <- fread(file_name)
 down_seg <- data.frame(down_seg)
@@ -250,7 +250,7 @@ down_Ninvade <- aggregate(invasion ~ param +sim + p + rem ,
 down_Ninvade$location <- 'down'
 
 ###### Edge ######
-path <- 'E:\\Chapter2\\results\\edge'
+path <- 'D:\\Chapter2\\results\\edge'
 file_name = paste(path, 'edge_segfin_summary.csv',sep = '/')
 edge_seg <- fread(file_name)
 edge_seg <- data.frame(edge_seg)
@@ -270,7 +270,7 @@ edge_Ninvade <- aggregate(invasion ~ param +sim + p + rem ,
 edge_Ninvade$location <- 'edge'
 
 ###### grow ######
-path <- 'E:\\Chapter2\\results\\grow'
+path <- 'D:\\Chapter2\\results\\grow'
 file_name = paste(path, 'grow_segfin_summary.csv',sep = '/')
 grow_seg <- fread(file_name)
 grow_seg <- data.frame(grow_seg)
@@ -290,7 +290,7 @@ grow_Ninvade <- aggregate(invasion ~ param +sim + p + rem ,
 grow_Ninvade$location <- 'grow'
 
 ###### random ######
-path <- 'E:\\Chapter2\\results\\random'
+path <- 'D:\\Chapter2\\results\\random'
 file_name = paste(path, 'random_segfin_summary.csv',sep = '/')
 random_seg <- fread(file_name)
 random_seg <- data.frame(random_seg)
@@ -309,7 +309,7 @@ random_Ninvade <- aggregate(invasion ~ param +sim + p + rem ,
 random_Ninvade$location <- 'random'
 
 ###### No Control ######
-path <- 'E:\\Chapter2\\results\\nocontrol'
+path <- 'D:\\Chapter2\\results\\nocontrol'
 file_name = paste(path, 'nocontrol_segfin_summary.csv',sep = '/')
 nocontrol_seg <- fread(file_name)
 nocontrol_seg <- data.frame(nocontrol_seg)
@@ -331,7 +331,7 @@ all_Ninvade <- rbind(abund_Ninvade,down_Ninvade,edge_Ninvade,
                      grow_Ninvade,random_Ninvade,nocontrol_Ninvade)
 
 
-path <- 'E:\\Chapter2\\results'
+path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_Ninvade.csv',sep = '/')
 fwrite(all_Ninvade,file_name)
 
