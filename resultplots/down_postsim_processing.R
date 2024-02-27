@@ -1333,7 +1333,7 @@ Ninvade_down_8_p3 <- aggregate(invade ~  param + sim +p + rem ,
                                 FUN = sum)
 
 ################################################################################
-##### down_8rem_p1 #####
+##### down_16rem_p1 #####
 #-----------------------------------------------------------------------------#
 path <- 'E:\\Chapter2\\results\\down\\down_16rem_p1_s1'
 file_name = paste(path, 'N.csv',sep = '/')
