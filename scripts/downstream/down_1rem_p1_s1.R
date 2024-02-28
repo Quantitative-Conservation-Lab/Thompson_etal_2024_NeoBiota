@@ -162,7 +162,7 @@ site.traps <- array(NA, dim = c(N.years, numrem, P, S))#rep(NA, S)
 
 site.traps[1,1:numrem,1:P, 1:S]<- tail(which(initpop[1:22] > 0), numrem)
 
-decision.date <- seq(1,6)*12 + 1
+decision.date <- c(1, seq(1,6)*12 + 1)
 yearval <- rep(seq(1,N.years), each = 12)
 
 #### param 4 ####
@@ -225,18 +225,28 @@ for(s in 1:S){ #simulation
     ##### Decision Model #####
     if(j %in% decision.date){
       
-      for(i in 1:I){
-        N.decision[i,j,p,s] <- sum(D.after[i,(j-1),2:Ages,p,s]) #abundance summed across ages 2-4
+      if(j == 1){
+        N.decision[i,1,p,s] <- initpop[i]
+        site.traps[1,1:numrem,p, s]<- tail(which(initpop[1:22] > 0), numrem)
+        rem.val <- numrem
+      }else{
+        
+        for(i in 1:I){
+          N.decision[i,j,p,s] <- sum(D.after[i,(j-1),2:Ages,p,s]) #abundance summed across ages 2-4
+        }
+        
+        rem.val <- min(numrem, length(which(N.decision[1:22,j,p,s] > 0)))
+        site.traps[yearval[j],1:rem.val,p, s] <- tail(which(N.decision[1:22,j,p,s] > 0), rem.val)
       }
       
-      site.traps[yearval[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p, s] <- tail(which(N.decision[1:22,j,p,s] > 0), min(numrem, length(which(N.decision[1:22,j,p,s] > 0))))
+      
     }
     
     #### Removal ####
     for(i in 1:I){ #for each segment:
       
       for(a in 2:Ages){ #for ages 2-4
-        if(i %in% site.traps[year[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p,s]){
+        if(i %in% site.traps[yearval[j],1:rem.val,p,s]){
           Y[i,j,1,a,p,s] <- rbinom(1,N.truth[i,j,1,a,p,s],p2[p]) * time.traps[j] #removals
         } else{
           
@@ -254,7 +264,7 @@ for(s in 1:S){ #simulation
           N.truth[i,j,k,a,p,s] <- max(0, N.truth[i,j,k-1,a,p,s] - Y[i,j,k-1,a,p,s]) #True pop = population at previous secondary - removals at previous secondary
         }
         for(a in 2:Ages){
-          if(i %in% site.traps[year[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p,s]){
+          if(i %in% site.traps[yearval[j],1:rem.val,p,s]){
             Y[i,j,k,a,p,s] <- rbinom(1,N.truth[i,j,k,a,p,s],p2[p]) * time.traps[j] #removals
           } else{
             Y[i,j,k,a,p,s] <- 0
@@ -355,6 +365,7 @@ for(s in 1:S){ #simulation
   } #ends J loop
 } #ends simulation
 }
+
 
 ############################################################################
 #### Save DATA ####
