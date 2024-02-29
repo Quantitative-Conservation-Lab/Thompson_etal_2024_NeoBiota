@@ -542,7 +542,8 @@ t1 <- ggplot(Objectives,aes(x = Expected_Suppress, y = Expected_Prevent))+
         strip.text.x = element_blank(),
         panel.border = element_rect(colour = "gray", size = 1.5), 
         panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),legend.position = "none")
+        panel.grid.minor = element_blank(),legend.position = "none")+
+  facet_wrap(~rem)
 
 
 #### trade off 2 ####
