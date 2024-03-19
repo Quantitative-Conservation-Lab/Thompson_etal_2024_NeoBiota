@@ -161,7 +161,7 @@ site.traps <- array(NA, dim = c(N.years, numrem, P, S))#rep(NA, S)
 
 site.traps[1,1:numrem,1:P, 1:S]<- tail(which(initpop[1:22] > 0), numrem)
 
-decision.date <- seq(1,6)*12 + 1
+decision.date <- c(1, seq(1,6)*12 + 1)
 yearval <- rep(seq(1,N.years), each = 12)
 
 #### param 4 ####
@@ -218,58 +218,68 @@ N.decision <- array(NA, dim = c(I,J,P,S))
 
 #### Simulate ####
 for(p in 1:P){ #parameter set
-for(s in 1:S){ #simulation
-  for(j in 1:J){ #primary period (month)
-    
-    ##### Decision Model #####
-    if(j %in% decision.date){
+  for(s in 1:S){ #simulation
+    for(j in 1:J){ #primary period (month)
       
-      for(i in 1:I){
-        N.decision[i,j,p,s] <- sum(D.after[i,(j-1),2:Ages,p,s]) #abundance summed across ages 2-4
-      }
-      
-      site.traps[yearval[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p, s] <- tail(which(N.decision[1:22,j,p,s] > 0), min(numrem, length(which(N.decision[1:22,j,p,s] > 0))))
-    }
-    
-    #### Removal ####
-    for(i in 1:I){ #for each segment:
-      
-      for(a in 2:Ages){ #for ages 2-4
-        if(i %in% site.traps[year[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p,s]){
-          Y[i,j,1,a,p,s] <- rbinom(1,N.truth[i,j,1,a,p,s],p2[p]) * time.traps[j] #removals
-        } else{
+      ##### Decision Model #####
+      if(j %in% decision.date){
+        
+        if(j == 1){
+          N.decision[i,1,p,s] <- initpop[i]
+          site.traps[1,1:numrem,p, s]<- tail(which(initpop[1:22] > 0), numrem)
+          rem.val <- numrem
+        }else{
           
-          Y[i,j,1,a,p,s] <- 0
+          for(i in 1:I){
+            N.decision[i,j,p,s] <- sum(D.after[i,(j-1),2:Ages,p,s]) #abundance summed across ages 2-4
+          }
           
+          rem.val <- min(numrem, length(which(N.decision[1:22,j,p,s] > 0)))
+          site.traps[yearval[j],1:rem.val,p, s] <- tail(which(N.decision[1:22,j,p,s] > 0), rem.val)
         }
+        
         
       }
       
-      Y[i,j,1,1,p,s] <- 0 #no removals of age class 0
-      
-      for(k in 2:K){ #for secondary periods 2: K
-        for(a in 1:Ages){ #for each age
-          #True population abundance = N.truth
-          N.truth[i,j,k,a,p,s] <- max(0, N.truth[i,j,k-1,a,p,s] - Y[i,j,k-1,a,p,s]) #True pop = population at previous secondary - removals at previous secondary
-        }
-        for(a in 2:Ages){
-          if(i %in% site.traps[year[j],1:min(numrem, length(which(N.decision[1:22,j,p,s] > 0))),p,s]){
-            Y[i,j,k,a,p,s] <- rbinom(1,N.truth[i,j,k,a,p,s],p2[p]) * time.traps[j] #removals
+      #### Removal ####
+      for(i in 1:I){ #for each segment:
+        
+        for(a in 2:Ages){ #for ages 2-4
+          if(i %in% site.traps[yearval[j],1:rem.val,p,s]){
+            Y[i,j,1,a,p,s] <- rbinom(1,N.truth[i,j,1,a,p,s],p2[p]) * time.traps[j] #removals
           } else{
-            Y[i,j,k,a,p,s] <- 0
+            
+            Y[i,j,1,a,p,s] <- 0
             
           }
+          
         }
         
-        Y[i,j,k,1,p,s] <- 0 #no removals of age class 0
-      }
-      
-      for(a in 1:Ages){
+        Y[i,j,1,1,p,s] <- 0 #no removals of age class 0
         
-        #Population remaining at the end of primary removal period j:
-        R[i,j,a,p,s] <- N.truth[i,j,K,a,p,s]
+        for(k in 2:K){ #for secondary periods 2: K
+          for(a in 1:Ages){ #for each age
+            #True population abundance = N.truth
+            N.truth[i,j,k,a,p,s] <- max(0, N.truth[i,j,k-1,a,p,s] - Y[i,j,k-1,a,p,s]) #True pop = population at previous secondary - removals at previous secondary
+          }
+          for(a in 2:Ages){
+            if(i %in% site.traps[yearval[j],1:rem.val,p,s]){
+              Y[i,j,k,a,p,s] <- rbinom(1,N.truth[i,j,k,a,p,s],p2[p]) * time.traps[j] #removals
+            } else{
+              Y[i,j,k,a,p,s] <- 0
+              
+            }
+          }
+          
+          Y[i,j,k,1,p,s] <- 0 #no removals of age class 0
+        }
         
-      } #ends ages loop
+        for(a in 1:Ages){
+          
+          #Population remaining at the end of primary removal period j:
+          R[i,j,a,p,s] <- N.truth[i,j,K,a,p,s]
+          
+        } #ends ages loop
       
       #### Population change #####
       #June population change: growth * population and truncated by carrying capacity
