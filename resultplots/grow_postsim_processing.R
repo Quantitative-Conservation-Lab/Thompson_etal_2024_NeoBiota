@@ -1824,7 +1824,8 @@ file_name = paste(path, 'grow_Nvtime.csv',sep = '/')
 fwrite(grow_Nvtime,file_name)
 
 #------------------- D Columbia  -----------------------------------#
-grow_Dcol <- rbind(Dcol_grow_4_p1_sum,Dcol_grow_4_p2_sum,Dcol_grow_4_p3_sum,
+grow_Dcol <- rbind(Dcol_grow_1_p1_sum,Dcol_grow_1_p2_sum,Dcol_grow_1_p3_sum,
+                   Dcol_grow_4_p1_sum,Dcol_grow_4_p2_sum,Dcol_grow_4_p3_sum,
                     Dcol_grow_8_p1_sum,Dcol_grow_8_p2_sum,Dcol_grow_8_p3_sum,
                     Dcol_grow_16_p1_sum,Dcol_grow_16_p2_sum,Dcol_grow_16_p3_sum)
 
