@@ -60,7 +60,11 @@ nc.val <- mean(nc.val$count)
 all_Ntotal <- all_Ntotal %>% filter(p == 1 & rem != '8')
 
 all_Ntotal_rem1 <- all_Ntotal %>% filter(rem == '1')
-all_Ntotal_rem1$location <- 'down1'
+all_Ntotal_rem1$location[all_Ntotal_rem1$location == 'abund'] <- 'abund1'
+all_Ntotal_rem1$location[all_Ntotal_rem1$location == 'down'] <- 'down1'
+all_Ntotal_rem1$location[all_Ntotal_rem1$location == 'edge'] <- 'edge1'
+all_Ntotal_rem1$location[all_Ntotal_rem1$location == 'grow'] <- 'grow1'
+all_Ntotal_rem1$location[all_Ntotal_rem1$location == 'random'] <- 'random1'
 
 all_Ntotal_rem4 <- all_Ntotal %>% filter(rem == '4')
 all_Ntotal_rem4$location[all_Ntotal_rem4$location == 'abund'] <- 'abund4'
@@ -77,8 +81,8 @@ all_Ntotal_rem16$location[all_Ntotal_rem16$location == 'grow'] <- 'grow16'
 all_Ntotal_rem16$location[all_Ntotal_rem16$location == 'random'] <- 'random16'
 
 all_Ntotal <- rbind(all_Ntotal_rem1,all_Ntotal_rem4, all_Ntotal_rem16 )
-level_order <- c("abund4","abund16", "down1", "down4","down16", "edge4","edge16",
-                 "grow4","grow16", "random4", "random16")
+level_order <- c("abund1", "abund4","abund16", "down1", "down4","down16", "edge1", "edge4","edge16",
+                 "grow1","grow4","grow16", "random1", "random4", "random16")
 new <- c("1 segment", "4 segments", "16 segments") 
 names(new) <-  c("1", "4", "16") 
 
@@ -89,7 +93,7 @@ rem.label <- c("1", "4", "16")
 
 
 all_Ntotal$rem2 <- all_Ntotal$rem
-all_Ntotal$rem2[all_Ntotal$rem2 == '1'] <- '4'
+# all_Ntotal$rem2[all_Ntotal$rem2 == '1'] <- '4'
 
 p1 <- all_Ntotal %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
@@ -100,17 +104,21 @@ p1 <- all_Ntotal %>%
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(drop = TRUE) +
   scale_x_discrete(labels=c(
-                            "abund4" = "Abundance, 4",
-                            "abund16" = "Abundance, 16",
-                            "down1" = "Downstream, 1",
-                            "down4" = "Downstream, 4",
-                            "down16" = "Downstream, 16",
-                            "edge4" = "Edge, 4",
-                            "edge16" = "Edge, 16",
-                            "grow4" = "Growth, 4", 
-                            "grow16" = "Growth, 16", 
-                            "random4" = "Random, 4",
-                            "random16" = "Random, 16"))+
+                            "abund1" = "Abundance",
+                            "abund4" = "Abundance",
+                            "abund16" = "Abundance",
+                            "down1" = "Downstream",
+                            "down4" = "Downstream",
+                            "down16" = "Downstream",
+                            "edge1" = "Edge",
+                            "edge4" = "Edge",
+                            "edge16" = "Edge",
+                            "grow1" = "Growth", 
+                            "grow4" = "Growth", 
+                            "grow16" = "Growth",
+                            "random1" = "Random",
+                            "random4" = "Random",
+                            "random16" = "Random"))+
   scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("Final total crayfish abundance (millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
@@ -122,7 +130,7 @@ p1 <- all_Ntotal %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none", 
-        axis.text.x = element_text(angle = 315, hjust = -0.1))+
+        axis.text.x = element_text(angle = 330, hjust = 0))+
   facet_grid(~rem2, scales = "free")
 
 
@@ -178,7 +186,11 @@ nc.val <- mean(nc.val$count)
 all_Dcol <- all_Dcol %>% filter(p == 1 & rem != '8')
 
 all_Dcol_rem1 <- all_Dcol %>% filter(rem == '1')
-all_Dcol_rem1$location <- 'down1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'abund'] <- 'abund1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'down'] <- 'down1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'edge'] <- 'edge1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'grow'] <- 'grow1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'random'] <- 'random1'
 
 all_Dcol_rem4 <- all_Dcol %>% filter(rem == '4')
 all_Dcol_rem4$location[all_Dcol_rem4$location == 'abund'] <- 'abund4'
@@ -195,8 +207,6 @@ all_Dcol_rem16$location[all_Dcol_rem16$location == 'grow'] <- 'grow16'
 all_Dcol_rem16$location[all_Dcol_rem16$location == 'random'] <- 'random16'
 
 all_Dcol <- rbind(all_Dcol_rem1,all_Dcol_rem4, all_Dcol_rem16 )
-level_order <- c("abund4","abund16", "down1", "down4","down16", "edge4","edge16",
-                 "grow4","grow16", "random4", "random16")
 new <- c("1 segment", "4 segments", "16 segments") 
 names(new) <-  c("1", "4", "16") 
 
@@ -207,7 +217,7 @@ rem.label <- c("1", "4", "16")
 
 
 all_Dcol$rem2 <- all_Dcol$rem
-all_Dcol$rem2[all_Dcol$rem2 == '1'] <- '4'
+#all_Dcol$rem2[all_Dcol$rem2 == '1'] <- '4'
 
 p2 <- all_Dcol %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
@@ -218,17 +228,21 @@ p2 <- all_Dcol %>%
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(drop = TRUE) +
   scale_x_discrete(labels=c(
-    "abund4" = "Abundance, 4",
-    "abund16" = "Abundance, 16",
-    "down1" = "Downstream, 1",
-    "down4" = "Downstream, 4",
-    "down16" = "Downstream, 16",
-    "edge4" = "Edge, 4",
-    "edge16" = "Edge, 16",
-    "grow4" = "Growth, 4", 
-    "grow16" = "Growth, 16", 
-    "random4" = "Random, 4",
-    "random16" = "Random, 16"))+
+    "abund1" = "Abundance",
+    "abund4" = "Abundance",
+    "abund16" = "Abundance",
+    "down1" = "Downstream",
+    "down4" = "Downstream",
+    "down16" = "Downstream",
+    "edge1" = "Edge",
+    "edge4" = "Edge",
+    "edge16" = "Edge",
+    "grow1" = "Growth", 
+    "grow4" = "Growth", 
+    "grow16" = "Growth",
+    "random1" = "Random",
+    "random4" = "Random",
+    "random16" = "Random"))+
   scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("Total crayfish in the Columbia River (Millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
@@ -298,7 +312,12 @@ nc.val <- mean(nc.val$count)
 all_Ninvade <- all_Ninvade %>% filter(p == 1 & rem != '8')
 
 all_Ninvade_rem1 <- all_Ninvade %>% filter(rem == '1')
-all_Ninvade_rem1$location <- 'down1'
+all_Ninvade_rem1$location[all_Ninvade_rem1$location == 'abund'] <- 'abund1'
+all_Ninvade_rem1$location[all_Ninvade_rem1$location == 'down'] <- 'down1'
+all_Ninvade_rem1$location[all_Ninvade_rem1$location == 'edge'] <- 'edge1'
+all_Ninvade_rem1$location[all_Ninvade_rem1$location == 'grow'] <- 'grow1'
+all_Ninvade_rem1$location[all_Ninvade_rem1$location == 'random'] <- 'random1'
+
 
 all_Ninvade_rem4 <- all_Ninvade %>% filter(rem == '4')
 all_Ninvade_rem4$location[all_Ninvade_rem4$location == 'abund'] <- 'abund4'
@@ -315,8 +334,7 @@ all_Ninvade_rem16$location[all_Ninvade_rem16$location == 'grow'] <- 'grow16'
 all_Ninvade_rem16$location[all_Ninvade_rem16$location == 'random'] <- 'random16'
 
 all_Ninvade <- rbind(all_Ninvade_rem1,all_Ninvade_rem4, all_Ninvade_rem16 )
-level_order <- c("abund4","abund16", "down1", "down4","down16", "edge4","edge16",
-                 "grow4","grow16", "random4", "random16")
+
 new <- c("1 segment", "4 segments", "16 segments") 
 names(new) <-  c("1", "4", "16") 
 
@@ -327,7 +345,7 @@ rem.label <- c("1", "4", "16")
 
 
 all_Ninvade$rem2 <- all_Ninvade$rem
-all_Ninvade$rem2[all_Ninvade$rem2 == '1'] <- '4'
+#all_Ninvade$rem2[all_Ninvade$rem2 == '1'] <- '4'
 
 p3 <- all_Ninvade %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
@@ -338,17 +356,21 @@ p3 <- all_Ninvade %>%
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(drop = TRUE) +
   scale_x_discrete(labels=c(
-    "abund4" = "Abundance, 4",
-    "abund16" = "Abundance, 16",
-    "down1" = "Downstream, 1",
-    "down4" = "Downstream, 4",
-    "down16" = "Downstream, 16",
-    "edge4" = "Edge, 4",
-    "edge16" = "Edge, 16",
-    "grow4" = "Growth, 4", 
-    "grow16" = "Growth, 16", 
-    "random4" = "Random, 4",
-    "random16" = "Random, 16"))+
+    "abund1" = "Abundance",
+    "abund4" = "Abundance",
+    "abund16" = "Abundance",
+    "down1" = "Downstream",
+    "down4" = "Downstream",
+    "down16" = "Downstream",
+    "edge1" = "Edge",
+    "edge4" = "Edge",
+    "edge16" = "Edge",
+    "grow1" = "Growth", 
+    "grow4" = "Growth", 
+    "grow16" = "Growth",
+    "random1" = "Random",
+    "random4" = "Random",
+    "random16" = "Random"))+
   scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("Percent invaded")+
   scale_y_continuous(labels=scales::percent) +
@@ -376,7 +398,7 @@ legend <- get_legend(
 )
 
 plot_grid(
-  plot_grid(p1, p2, nrow = 1, ncol = 2,
+  plot_grid(p1, p2, nrow = 2, ncol = 2,
             labels = c("A", "B")),
   plot_grid(p3, legend, NULL, nrow = 1, rel_widths = c(0.35, 0.15, 0.2), labels = c("C", "")),
   nrow = 2
