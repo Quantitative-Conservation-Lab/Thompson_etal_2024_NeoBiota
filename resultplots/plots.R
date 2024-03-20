@@ -95,11 +95,17 @@ rem.label <- c("1", "4", "16")
 all_Ntotal$rem2 <- all_Ntotal$rem
 # all_Ntotal$rem2[all_Ntotal$rem2 == '1'] <- '4'
 
+max.data <- all_Ntotal %>%
+  group_by(location, rem) %>%
+  filter(count == max(count)) 
+
 p1 <- all_Ntotal %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
              group = interaction(rem, location)))+
-  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5)+
+  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5, outlier.shape = NA)+
   geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location))) +
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(drop = TRUE) +
@@ -120,7 +126,7 @@ p1 <- all_Ntotal %>%
                             "random4" = "Random",
                             "random16" = "Random"))+
   scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
-  xlab("") + ylab("Final total crayfish abundance (millions)")+
+  xlab("") + ylab("Suppression")+ #Final total crayfish abundance (millions)
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
@@ -219,11 +225,17 @@ rem.label <- c("1", "4", "16")
 all_Dcol$rem2 <- all_Dcol$rem
 #all_Dcol$rem2[all_Dcol$rem2 == '1'] <- '4'
 
+max.data <- all_Dcol %>%
+  group_by(location, rem) %>%
+  filter(count == max(count)) 
+
 p2 <- all_Dcol %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
              group = interaction(rem, location)))+
-  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5)+
+  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5,outlier.shape = NA)+
   geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location))) +
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(drop = TRUE) +
@@ -244,7 +256,7 @@ p2 <- all_Dcol %>%
     "random4" = "Random",
     "random16" = "Random"))+
   scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
-  xlab("") + ylab("Total crayfish in the Columbia River (Millions)")+
+  xlab("") + ylab("Prevention") + #ylab("Total crayfish in the Columbia River (Millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
@@ -305,6 +317,8 @@ contain4 <-all_Ninvade %>%
             lower = quantile(count, low),
             upper = quantile(count, high))
 
+
+
 ##### Plot ####
 nc.val <- all_Ninvade %>% filter(location == 'nocontrol')
 nc.val <- mean(nc.val$count)
@@ -347,11 +361,17 @@ rem.label <- c("1", "4", "16")
 all_Ninvade$rem2 <- all_Ninvade$rem
 #all_Ninvade$rem2[all_Ninvade$rem2 == '1'] <- '4'
 
+max.data <- all_Ninvade %>%
+  group_by(location, rem) %>%
+  filter(count == max(count)) 
+
 p3 <- all_Ninvade %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
              group = interaction(rem, location)))+
-  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5)+
+  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5,outlier.shape = NA)+
   geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location))) +
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(drop = TRUE) +
@@ -372,7 +392,7 @@ p3 <- all_Ninvade %>%
     "random4" = "Random",
     "random16" = "Random"))+
   scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
-  xlab("") + ylab("Percent invaded")+
+  xlab("") + ylab("Containment") +  #ylab("Percent invaded")+
   scale_y_continuous(labels=scales::percent) +
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
@@ -394,24 +414,35 @@ legend <- get_legend(
   p2 + 
     guides(color = guide_legend(title.position = "right", nrow = 1)) +
     theme(legend.position = "right",
-          legend.key.size = unit(1.5, 'cm'))
+          legend.key.size = unit(0.8, 'cm'))
 )
+
 
 plot_grid(
-  plot_grid(p1, p2, nrow = 2, ncol = 2,
-            labels = c("A", "B")),
-  plot_grid(p3, legend, NULL, nrow = 1, rel_widths = c(0.35, 0.15, 0.2), labels = c("C", "")),
-  nrow = 2
+  plot_grid(p1, NULL, NULL, 
+            nrow = 1, rel_widths = c(0.35, 0.2, 0.2), 
+            labels = c("C", "")),
+  
+  plot_grid(p2, legend, NULL,  
+            nrow = 1, rel_widths = c(0.35, 0.2, 0.2), 
+            labels = c("C", "")),
+  
+  plot_grid(p3, NULL, NULL, 
+            nrow = 1, rel_widths = c(0.35, 0.2, 0.2), 
+            labels = c("C", "")), 
+  nrow = 3
 )
 
 
 
-# plot_grid(
-#   plot_grid(p1, p2, nrow = 1, ncol = 2,
-#             labels = c("A", "B")),
-#   plot_grid(p3, legend, nrow = 1, rel_widths = c(0.25, 0.25), labels = c("C", "")),
-#   nrow = 2
-# )
+
+plot_grid(
+  
+  p1, p2, p3,legend, nrow = 4, ncol = 1,
+            labels = c("A", "B", "A", " "))
+
+
+
 
 #### TRADE OFFS ####
 suppress1$location <- 'No removal' 
