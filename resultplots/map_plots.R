@@ -9,34 +9,86 @@ library(tmap)
 library(RColorBrewer)
 library(cowplot)
 
-#### plot 4 and 1 ####
+##### plot 1 ####
 path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_segfin.csv',sep = '/')
 all_segfin <- fread(file_name)
 all_segfin <- data.frame(all_segfin)
 
 nc <- all_segfin %>% filter(location == 'nocontrol')
-rem1 <- all_segfin %>%  filter(p == 1 & rem == 1)
-rem1$location <- 'down1'
-all_segfin <- all_segfin %>%  filter(p == 1 & rem == 4)
+all_segfin <- all_segfin %>%  filter(p == 1 & rem == 1)
 
-all_segfin <- rbind(all_segfin, nc, rem1)
+all_segfin <- rbind(all_segfin, nc)
 all_segfin <- all_segfin %>% select(segment, count, location)
 colnames(all_segfin)[1] <- "Segment"
 colnames(all_segfin)[2] <- "Crayfish abundance"
 
 all_segfin$location[all_segfin$location == 'abund'] <- 2
-all_segfin$location[all_segfin$location == 'down1'] <- 4
-all_segfin$location[all_segfin$location == 'down'] <- 4
-all_segfin$location[all_segfin$location == 'edge'] <- 5
-all_segfin$location[all_segfin$location == 'grow'] <- 6
-all_segfin$location[all_segfin$location == 'random'] <- 7
+all_segfin$location[all_segfin$location == 'down'] <- 3
+all_segfin$location[all_segfin$location == 'edge'] <- 4
+all_segfin$location[all_segfin$location == 'grow'] <- 5
+all_segfin$location[all_segfin$location == 'random'] <- 6
 all_segfin$location[all_segfin$location == 'nocontrol'] <- 1
 
 
 all_segfin$location <- as.numeric(all_segfin$location)
 
-level_order <- c("No removal", "Abundance, 4", "Downstream, 1", "Downstream, 4", "Edge, 4", "Growth, 4", "Random, 4")
+level_order <- c("No removal", "Abundance, 1", "Downstream, 1", "Edge, 1", "Growth, 1", "Random, 1")
+
+jdr_20k_sf <- read_sf(here::here("data", "initial_population", "JDR_20km_initpop.shp"))
+jdr_abund <- merge(jdr_20k_sf, all_segfin, by  = "Segment")
+
+
+breaks = c(0.00001, 1, 2, 4, 6, 8, 10) * 100000
+colors <- c("grey", "lightblue", "gold", "darkorange", "red", "black" )
+color <- RColorBrewer::brewer.pal(11, "Paired")[1]
+
+jdr_abund <- jdr_abund %>% filter(location != 'No removal')
+
+tmap_options(bg.color = 'white', legend.text.color = 'black') +
+  tm_shape(jdr_abund) +
+  tm_lines(
+    col = "Crayfish abundance",
+    palette = colors,
+    breaks = breaks, 
+    lwd = 5
+  ) + 
+  tm_facets(by=c("location"))+
+  tm_layout(legend.position = c("right", "center"), 
+            panel.labels = level_order,
+            panel.label.size = 1.2,
+            legend.text.size = 0.9, 
+            legend.width = 2, 
+            frame = "white",
+            legend.show=FALSE,
+            frame.lwd = 0,
+            panel.label.bg.color = "white")
+
+##### plot 4 ####
+path <- 'D:\\Chapter2\\results'
+file_name = paste(path, 'all_segfin.csv',sep = '/')
+all_segfin <- fread(file_name)
+all_segfin <- data.frame(all_segfin)
+
+nc <- all_segfin %>% filter(location == 'nocontrol')
+all_segfin <- all_segfin %>%  filter(p == 1 & rem == 4)
+
+all_segfin <- rbind(all_segfin) #, nc)
+all_segfin <- all_segfin %>% select(segment, count, location)
+colnames(all_segfin)[1] <- "Segment"
+colnames(all_segfin)[2] <- "Crayfish abundance"
+
+all_segfin$location[all_segfin$location == 'abund'] <- 2
+all_segfin$location[all_segfin$location == 'down'] <- 3
+all_segfin$location[all_segfin$location == 'edge'] <- 4
+all_segfin$location[all_segfin$location == 'grow'] <- 5
+all_segfin$location[all_segfin$location == 'random'] <- 6
+#all_segfin$location[all_segfin$location == 'nocontrol'] <- 1
+
+
+all_segfin$location <- as.numeric(all_segfin$location)
+
+level_order <- c("Abundance, 4", "Downstream, 4", "Edge, 4", "Growth, 4", "Random, 4")
 
 jdr_20k_sf <- read_sf(here::here("data", "initial_population", "JDR_20km_initpop.shp"))
 jdr_abund <- merge(jdr_20k_sf, all_segfin, by  = "Segment")
@@ -60,30 +112,11 @@ tmap_options(bg.color = 'white', legend.text.color = 'black') +
             panel.labels = level_order,
             panel.label.size = 1.2,
             legend.text.size = 0.9, 
-            legend.show=FALSE,
             legend.width = 2, 
             frame = "white",
+            legend.show=FALSE,
             frame.lwd = 0,
             panel.label.bg.color = "white")
-
-
-
-# t3 <- tm_shape(jdr_abund) +
-#   tm_lines(
-#     col = "Crayfish abundance",
-#     palette = colors,
-#     breaks = breaks, 
-#     lwd = 5
-#   ) + 
-#   tm_layout(legend.position = c("left", "center"), 
-#             legend.text.size = 2, 
-#             legend.title.size = 2,
-#             legend.only = TRUE,
-#             legend.show=TRUE,
-#             legend.width = 4, 
-#             frame.lwd = 0,
-#             legend.bg.alpha = 3)
-
 
 
 ##### plot 16 ####
@@ -139,11 +172,6 @@ tmap_options(bg.color = 'white', legend.text.color = 'black') +
             legend.show=FALSE,
             frame.lwd = 0,
             panel.label.bg.color = "white")
-
-
-plot_grid(t1, NULL, t2, t3, labels = c("A", "", "B"),
-          rel_widths = c(0.35, 0.5, 0.25), 
-          rel_heights = c(0.5, 0.5, 0.8))
 
 ##################################################################################
 ###### Animation######

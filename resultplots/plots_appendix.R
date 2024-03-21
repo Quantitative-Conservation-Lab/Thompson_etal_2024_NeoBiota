@@ -47,7 +47,7 @@ ggplot(all_Ntotal)+
                             "down" = "Downstream", "edge" = "Edge",
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Removal location") + ylab("Final total crayfish abundance (millions)")+
+  xlab("Management Strategy") + ylab("Final total crayfish abundance (millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
@@ -76,14 +76,16 @@ all_Nvtime$p <- as.factor(all_Nvtime$p)
 
 rem.labelp <- c("0 = None", "1 = Trap effect", "2 = No trap effect", "3 = Constant 0.5")
 
+all_Nvtime$Strategy <- all_Nvtime$location
+
 ggplot(all_Nvtime)+
- geom_ribbon(aes(x = year, ymin = low.1, group = interaction(p,segments, location), ymax = high.9), fill = 'lightgrey', alpha = 0.6)+
-  geom_line(aes(x = year, y = count, group = interaction(p,segments, location), color = p))+
-  facet_wrap(~segments+ location + p, labeller = label_both)+
+ geom_ribbon(aes(x = year, ymin = low.1, group = interaction(p,segments, Strategy), ymax = high.9), fill = 'lightgrey', alpha = 0.6)+
+  geom_line(aes(x = year, y = count, group = interaction(p,segments, Strategy), color = p))+
+  facet_wrap(~segments+ Strategy + p, labeller = label_both)+
   xlab("Year") + ylab("Final total crayfish abundance (millions)")+
   scale_color_manual(name = "Removal rate (p)", labels = rem.labelp, values = colors)+
   scale_x_continuous(breaks = scales::pretty_breaks(n = 7)) +
-  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(breaks = c(0, 150000000), labels = unit_format(unit = "M", scale = 1e-6))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
                                       fill="white"))+
@@ -111,7 +113,7 @@ colnames(all_Nvtime)[3] <- "segments"
 
 ggplot(all_Nvtime)+
   geom_line(aes(x = year, y = count, group = interaction(p,segments, location),color = location), lwd = 0.75)+
-  scale_color_manual(name = "Removal location", labels = labelD, values = colorsD) +
+  scale_color_manual(name = "Management Strategy", labels = labelD, values = colorsD) +
   facet_wrap(~segments+ p, labeller=label_both)+
   xlab("Year") + ylab("Final total crayfish abundance (millions)")+
   scale_x_continuous(breaks = scales::pretty_breaks(n = 7)) +
@@ -154,7 +156,7 @@ ggplot(all_Dcol)+
                             "down" = "Downstream", "edge" = "Edge",
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Removal location") + ylab("Total crayfish in the Columbia River")+
+  xlab("Management Strategy") + ylab("Total crayfish in the Columbia River")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
@@ -172,8 +174,8 @@ all_Dtrav <- all_Dtrav %>% filter(rem > 1)
 
 all_Dtrav$rem <- as.factor(all_Dtrav$rem)
 
-new <- c("4 segments", "8 segments",  "16 segments") 
-names(new) <-  c("4", "8", "16") 
+new <- c("1 segments", "4 segments", "8 segments",  "16 segments") 
+names(new) <-  c("1", "4", "8", "16") 
 
 ggplot(all_Dtrav)+
   geom_boxplot(aes(x = factor(location, level = level_order), y = distance, 
@@ -182,7 +184,7 @@ ggplot(all_Dtrav)+
                             "down" = "Downstream", "edge" = "Edge",
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Removal location") + ylab("Total distance traveled")+
+  xlab("Management Strategy") + ylab("Total distance traveled")+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
@@ -223,7 +225,7 @@ ggplot(all_Ninvade)+
                             "down" = "Downstream", "edge" = "Edge",
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Removal location") + ylab("Number of segments invaded")+
+  xlab("Management Strategy") + ylab("Number of segments invaded")+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
