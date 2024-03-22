@@ -637,7 +637,7 @@ t3 <- ggplot(Objectives,aes(x = Expected_Prevent, y = Expected_Contain))+
   geom_errorbarh(aes(xmin = Low_Prevent,xmax = High_Prevent, color = type)) + 
   geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
   scale_colour_manual(name = "Alternative", values = colors_all) +
-  geom_point(data = Objectives_pvsc, size = 3) +
+  geom_point(data = Objectives_pvsc, size = 2) +
   geom_text_repel(data=Objectives_pvsc, aes(x = Expected_Prevent, y = Expected_Contain+ 0.01,
                                       label=Objectives_pvsc$location), 
             color="black", 
@@ -661,17 +661,26 @@ legend2<- get_legend(
 )
 
 plot_grid(
- # plot_grid(t1, NULL,
- #          nrow = 1, rel_widths = c(0.35, 0.1),
- #         labels = c("A", "")))#,
+  plot_grid(t1, NULL,
+           nrow = 1, rel_widths = c(0.35, 0.1),
+          labels = c("A", "")),#)#,
 
-  # plot_grid(t2, legend2,
-  #           nrow = 1, rel_widths = c(0.35, 0.1),
-  #           labels = c("B", ""))) #,
+  plot_grid(t2, legend2,
+            nrow = 1, rel_widths = c(0.35, 0.1),
+            labels = c("B", "")),#) #,
 
-  plot_grid(t3, NULL, 
-            nrow = 1, rel_widths = c(0.35, 0.1), 
-            labels = c("C", ""))) #, 
- # nrow = 3
-#)
+  plot_grid(t3, NULL,
+            nrow = 1, rel_widths = c(0.35, 0.1),
+            labels = c("C", "")),
+  nrow = 3
+)
 
+ggsave2(
+  filename = 'paretoplot.png',
+  plot = ggplot2::last_plot(),
+  scale = 1,
+  width = 7,
+  height = 10,
+  units = "in",
+  dpi = 800
+)
