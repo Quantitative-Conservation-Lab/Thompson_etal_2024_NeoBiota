@@ -8,7 +8,7 @@ library("cowplot")
 library(rPref)
 library(ggrepel)
 
-path <- 'D:\\Chapter2\\results'
+path <- 'E:\\Chapter2\\results'
 
 low <- 0.1
 high <- 0.9
@@ -20,8 +20,9 @@ all_Ntotal <- data.frame(all_Ntotal)
 
 all_Ntotal$rem <- as.factor(all_Ntotal$rem)
 
+detach(package:plyr)
 
-suppress1 <- all_Ntotal %>%
+suppress0 <- all_Ntotal %>%
   filter(rem == '0') %>% 
   group_by(location) %>%
   summarise(mean_c = mean(count),
@@ -29,16 +30,8 @@ suppress1 <- all_Ntotal %>%
             lower = quantile(count, low),
             upper = quantile(count, high))
 
-suppress2 <-all_Ntotal %>%
-  filter(rem == '1') %>% 
-  group_by(location) %>%
-  summarise(mean_c = mean(count),
-            max_c = max(count),
-            lower = quantile(count, low),
-            upper = quantile(count, high))
-
-suppress3 <-all_Ntotal %>%
-  filter(rem == '4') %>% 
+suppress1 <-all_Ntotal %>%
+  filter(rem == '1'& p == 1) %>% 
   group_by(location) %>%
   summarise(mean_c = mean(count),
             max_c = max(count),
@@ -46,7 +39,23 @@ suppress3 <-all_Ntotal %>%
             upper = quantile(count, high))
 
 suppress4 <-all_Ntotal %>%
-  filter(rem == '16') %>% 
+  filter(rem == '4'& p == 1) %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count),
+            lower = quantile(count, low),
+            upper = quantile(count, high))
+
+suppress8 <-all_Ntotal %>%
+  filter(rem == '8'& p == 1) %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count),
+            lower = quantile(count, low),
+            upper = quantile(count, high))
+
+suppress16 <-all_Ntotal %>%
+  filter(rem == '16'& p == 1) %>% 
   group_by(location) %>%
   summarise(mean_c = mean(count),
             max_c = max(count),
@@ -57,7 +66,7 @@ suppress4 <-all_Ntotal %>%
 nc.val <- all_Ntotal %>% filter(location == 'nocontrol')
 nc.val <- mean(nc.val$count)
 
-all_Ntotal <- all_Ntotal %>% filter(p == 1 & rem != '8')
+all_Ntotal <- all_Ntotal %>% filter(p == 1)
 
 all_Ntotal_rem1 <- all_Ntotal %>% filter(rem == '1')
 all_Ntotal_rem1$location[all_Ntotal_rem1$location == 'abund'] <- 'abund1'
@@ -73,6 +82,13 @@ all_Ntotal_rem4$location[all_Ntotal_rem4$location == 'edge'] <- 'edge4'
 all_Ntotal_rem4$location[all_Ntotal_rem4$location == 'grow'] <- 'grow4'
 all_Ntotal_rem4$location[all_Ntotal_rem4$location == 'random'] <- 'random4'
 
+all_Ntotal_rem8 <- all_Ntotal %>% filter(rem == '8')
+all_Ntotal_rem8$location[all_Ntotal_rem8$location == 'abund'] <- 'abund8'
+all_Ntotal_rem8$location[all_Ntotal_rem8$location == 'down'] <- 'down8'
+all_Ntotal_rem8$location[all_Ntotal_rem8$location == 'edge'] <- 'edge8'
+all_Ntotal_rem8$location[all_Ntotal_rem8$location == 'grow'] <- 'grow8'
+all_Ntotal_rem8$location[all_Ntotal_rem8$location == 'random'] <- 'random8'
+
 all_Ntotal_rem16 <- all_Ntotal %>% filter(rem == '16')
 all_Ntotal_rem16$location[all_Ntotal_rem16$location == 'abund'] <- 'abund16'
 all_Ntotal_rem16$location[all_Ntotal_rem16$location == 'down'] <- 'down16'
@@ -80,196 +96,335 @@ all_Ntotal_rem16$location[all_Ntotal_rem16$location == 'edge'] <- 'edge16'
 all_Ntotal_rem16$location[all_Ntotal_rem16$location == 'grow'] <- 'grow16'
 all_Ntotal_rem16$location[all_Ntotal_rem16$location == 'random'] <- 'random16'
 
-all_Ntotal <- rbind(all_Ntotal_rem1,all_Ntotal_rem4, all_Ntotal_rem16 )
-level_order <- c("abund1", "abund4","abund16", "down1", "down4","down16", "edge1", "edge4","edge16",
-                 "grow1","grow4","grow16", "random1", "random4", "random16")
-new <- c("1 segment", "4 segments", "16 segments") 
-names(new) <-  c("1", "4", "16") 
-
-
-col <- brewer.pal(8, "Dark2") 
-colors2 <- c(col[2], col[1], col[3])
-rem.label <- c("1", "4", "16")
-
+all_Ntotal <- rbind(all_Ntotal_rem1,all_Ntotal_rem4, all_Ntotal_rem8, all_Ntotal_rem16 )
+level_order <- c("abund1", "abund4", "abund8","abund16", 
+                 "grow1","grow4", "grow8","grow16", 
+                 "edge1", "edge4","edge8","edge16",
+                 "down1", "down4", "down8", "down16",
+                 "random1", "random4", "random8","random16")
+new <- c("1 segment", "4 segments", "8 segments", "16 segments") 
+names(new) <-  c("1", "4", "8", "16") 
 
 all_Ntotal$rem2 <- all_Ntotal$rem
-# all_Ntotal$rem2[all_Ntotal$rem2 == '1'] <- '4'
+
+###### Plot 1 ####
 
 max.data <- all_Ntotal %>%
-  group_by(location, rem) %>%
-  filter(count == max(count)) 
+  group_by(location, rem2) %>%
+  filter(count == max(count) & rem == '1') 
 
-p1 <- all_Ntotal %>% 
+s1 <- all_Ntotal %>% 
+  filter(rem == '1') %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
-             group = interaction(rem, location)))+
-  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5, outlier.shape = NA)+
+             group = interaction(rem2, location)))+
+  geom_boxplot(
+    position="dodge",alpha = 0.5)+
   geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_vline(xintercept = 0, linetype = 2) + 
   geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
-                                  group = interaction(rem, location))) +
+                                  group = interaction(rem2, location)), color = "red") +
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
-  scale_x_discrete(drop = TRUE) +
   scale_x_discrete(labels=c(
-                            "abund1" = "Abundance",
-                            "abund4" = "Abundance",
-                            "abund16" = "Abundance",
-                            "down1" = "Downstream",
-                            "down4" = "Downstream",
-                            "down16" = "Downstream",
-                            "edge1" = "Edge",
-                            "edge4" = "Edge",
-                            "edge16" = "Edge",
-                            "grow1" = "Growth", 
-                            "grow4" = "Growth", 
-                            "grow16" = "Growth",
-                            "random1" = "Random",
-                            "random4" = "Random",
-                            "random16" = "Random"))+
-  scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
-  xlab("") + ylab("Suppression")+ #Final total crayfish abundance (millions)
-  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
+  xlab("") + ylab("Suppression")+ 
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 80000000))+
   theme_bw() +   
-  theme(strip.background=element_rect(colour="white",
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
                                       fill="white"),
-        strip.text.x = element_blank(),
-        panel.border = element_rect(colour = "gray", size = 1.5), 
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        legend.position = "none", 
-        axis.text.x = element_text(angle = 330, hjust = 0))+
-  facet_grid(~rem2, scales = "free")
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold"),
+       # axis.text.x = element_text(angle = 310, hjust = 0)
+        )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
 
+###### Plot 4 ####
 
-#### Entered Columbia ####
-file_name = paste(path, 'all_Dcol.csv',sep = '/')
-all_Dcol <- fread(file_name)
-all_Dcol <- data.frame(all_Dcol)
+max.data <- all_Ntotal %>%
+  group_by(location, rem2) %>%
+  filter(count == max(count) & rem == '4') 
 
-nocontrol <- all_Dcol %>% filter(location == 'nocontrol')
-nocontrol$p <- 1
-all_Dcol <- rbind(all_Dcol, nocontrol)
-
-all_Dcol <- all_Dcol %>% filter(p == 1 & rem != 8)
-
-all_Dcol$rem <- as.factor(all_Dcol$rem)
-
-prevent1 <- all_Dcol %>%
-  filter(rem == '0') %>% 
-  group_by(location) %>%
-  summarise(mean_c = mean(count),
-            max_c = max(count),
-            lower = quantile(count, low),
-            upper = quantile(count, high))
-
-prevent2 <-all_Dcol %>%
-  filter(rem == '1') %>% 
-  group_by(location) %>%
-  summarise(mean_c = mean(count),
-            max_c = max(count),
-            lower = quantile(count, low),
-            upper = quantile(count, high))
-
-prevent3 <-all_Dcol %>%
+s4 <- all_Ntotal %>% 
   filter(rem == '4') %>% 
-  group_by(location) %>%
-  summarise(mean_c = mean(count),
-            max_c = max(count),
-            lower = quantile(count, low),
-            upper = quantile(count, high))
-
-prevent4 <-all_Dcol %>%
-  filter(rem == '16') %>% 
-  group_by(location) %>%
-  summarise(mean_c = mean(count),
-            max_c = max(count),
-            lower = quantile(count, low),
-            upper = quantile(count, high))
-
-##### Plot ####
-nc.val <- all_Dcol %>% filter(location == 'nocontrol')
-nc.val <- mean(nc.val$count)
-
-all_Dcol <- all_Dcol %>% filter(p == 1 & rem != '8')
-
-all_Dcol_rem1 <- all_Dcol %>% filter(rem == '1')
-all_Dcol_rem1$location[all_Dcol_rem1$location == 'abund'] <- 'abund1'
-all_Dcol_rem1$location[all_Dcol_rem1$location == 'down'] <- 'down1'
-all_Dcol_rem1$location[all_Dcol_rem1$location == 'edge'] <- 'edge1'
-all_Dcol_rem1$location[all_Dcol_rem1$location == 'grow'] <- 'grow1'
-all_Dcol_rem1$location[all_Dcol_rem1$location == 'random'] <- 'random1'
-
-all_Dcol_rem4 <- all_Dcol %>% filter(rem == '4')
-all_Dcol_rem4$location[all_Dcol_rem4$location == 'abund'] <- 'abund4'
-all_Dcol_rem4$location[all_Dcol_rem4$location == 'down'] <- 'down4'
-all_Dcol_rem4$location[all_Dcol_rem4$location == 'edge'] <- 'edge4'
-all_Dcol_rem4$location[all_Dcol_rem4$location == 'grow'] <- 'grow4'
-all_Dcol_rem4$location[all_Dcol_rem4$location == 'random'] <- 'random4'
-
-all_Dcol_rem16 <- all_Dcol %>% filter(rem == '16')
-all_Dcol_rem16$location[all_Dcol_rem16$location == 'abund'] <- 'abund16'
-all_Dcol_rem16$location[all_Dcol_rem16$location == 'down'] <- 'down16'
-all_Dcol_rem16$location[all_Dcol_rem16$location == 'edge'] <- 'edge16'
-all_Dcol_rem16$location[all_Dcol_rem16$location == 'grow'] <- 'grow16'
-all_Dcol_rem16$location[all_Dcol_rem16$location == 'random'] <- 'random16'
-
-all_Dcol <- rbind(all_Dcol_rem1,all_Dcol_rem4, all_Dcol_rem16 )
-new <- c("1 segment", "4 segments", "16 segments") 
-names(new) <-  c("1", "4", "16") 
-
-
-col <- brewer.pal(8, "Dark2") 
-colors2 <- c(col[2], col[1], col[3])
-rem.label <- c("1", "4", "16")
-
-
-all_Dcol$rem2 <- all_Dcol$rem
-#all_Dcol$rem2[all_Dcol$rem2 == '1'] <- '4'
-
-max.data <- all_Dcol %>%
-  group_by(location, rem) %>%
-  filter(count == max(count)) 
-
-p2 <- all_Dcol %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
-             group = interaction(rem, location)))+
-  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5,outlier.shape = NA)+
+             group = interaction(rem2, location)))+
+  geom_boxplot(
+    position="dodge",alpha = 0.5)+
   geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_vline(xintercept = 0, linetype = 2) + 
   geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
-                                  group = interaction(rem, location))) +
+                                  group = interaction(rem2, location)), color = "red") +
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
-  scale_x_discrete(drop = TRUE) +
+  
+  scale_x_discrete(labels=c(
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
+  xlab("") + ylab("")+ 
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 80000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        #axis.title=element_text(size=14,face="bold"),
+        #axis.text.x = element_text(angle = 310, hjust = 0)
+        )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+###### Plot 8 ####
+
+max.data <- all_Ntotal %>%
+  group_by(location, rem2) %>%
+  filter(count == max(count) & rem == '8') 
+
+s8 <- all_Ntotal %>% 
+  filter(rem == '8') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem2, location)))+
+  geom_boxplot(
+    position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_vline(xintercept = 0, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem2, location)), color = "red") +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+      "abund1" = "",
+      "abund4" = "",
+      "abund8" = "",
+      "abund16" = "",
+      "grow1" = "", 
+      "grow4" = "", 
+      "grow8" = "", 
+      "grow16" = "", 
+      "edge1" = "",
+      "edge4" = "",
+      "edge8" = "",
+      "edge16" = "",
+      "down1" = "",
+      "down4" = "",
+      "down8" = "",
+      "down16" = "",
+      "random1" = "",
+      "random4" = "",
+      "random8" = "",
+      "random16" = ""))+
+  xlab("") + ylab("")+ 
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 80000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        #axis.title=element_text(size=14,face="bold"),
+        axis.text.x = element_text(angle = 310, hjust = 0)
+        )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+###### Plot 16 ####
+
+max.data <- all_Ntotal %>%
+  group_by(location, rem2) %>%
+  filter(count == max(count) & rem == '16') 
+
+s16 <- all_Ntotal %>% 
+  filter(rem == '16') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem2, location)))+
+  geom_boxplot(
+    position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_vline(xintercept = 0, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem2, location)), color = "red") +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
     "abund1" = "Abundance",
     "abund4" = "Abundance",
+    "abund8" = "Abundance",
     "abund16" = "Abundance",
-    "down1" = "Downstream",
-    "down4" = "Downstream",
-    "down16" = "Downstream",
-    "edge1" = "Edge",
-    "edge4" = "Edge",
-    "edge16" = "Edge",
     "grow1" = "Growth", 
     "grow4" = "Growth", 
-    "grow16" = "Growth",
+    "grow8" = "Growth", 
+    "grow16" = "Growth", 
+    "edge1" = "Edge",
+    "edge4" = "Edge",
+    "edge8" = "Edge",
+    "edge16" = "Edge",
+    "down1" = "Downstream",
+    "down4" = "Downstream",
+    "down8" = "Downstream",
+    "down16" = "Downstream",
     "random1" = "Random",
     "random4" = "Random",
+    "random8" = "Random",
     "random16" = "Random"))+
-  scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
-  xlab("") + ylab("Prevention") + #ylab("Total crayfish in the Columbia River (Millions)")+
-  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  xlab("") + ylab("")+ 
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 80000000))+
   theme_bw() +   
-  theme(strip.background=element_rect(colour="white",
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
                                       fill="white"),
-        strip.text.x = element_blank(),
-        panel.border = element_rect(colour = "gray", size = 1.5), 
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        legend.position = "none", 
-        axis.text.x = element_text(angle = 315, hjust = -0.1))+
-  facet_grid(~rem2, scales = "free")
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold"),
+        axis.text.x = element_text(angle = 310, hjust = 0)
+        )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
 
 
+splots <- plot_grid(s1,s4,s8,s16, nrow = 1)
+
+###### Plot different ####
+
+max.data <- all_Ntotal %>%
+  group_by(location, rem2) %>%
+  filter(count == max(count)) 
+
+sall <- all_Ntotal %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem2, location)))+
+  geom_boxplot(
+    position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_vline(xintercept = 0, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem2, location)), color = "red") +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A",
+    "abund4" = "A",
+    "abund8" = "A",
+    "abund16" = "A",
+    "grow1" = "G", 
+    "grow4" = "G", 
+    "grow8" = "G", 
+    "grow16" = "G",
+    "edge1" = "E",
+    "edge4" = "E",
+    "edge8" = "E",
+    "edge16" = "E",
+    "down1" = "D",
+    "down4" = "D",
+    "down8" = "D",
+    "down16" = "D",
+    "random1" = "R",
+    "random4" = "R",
+    "random8" = "R",
+    "random16" = "R"))+
+  xlab("") + ylab("Suppression")+ 
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 80000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold"))+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+
+#splots <- plot_grid(sall, nrow = 1)
 
 #### Invaded ####
 file_name = paste(path, 'all_Ninvade.csv',sep = '/')
@@ -280,13 +435,13 @@ nocontrol <- all_Ninvade %>% filter(location == 'nocontrol')
 nocontrol$p <- 1
 all_Ninvade <- rbind(all_Ninvade, nocontrol)
 
-all_Ninvade <- all_Ninvade %>% filter(p == 1 & rem != 8)
+all_Ninvade <- all_Ninvade %>% filter(p == 1)
 
 all_Ninvade$rem <- as.factor(all_Ninvade$rem)
 
 all_Ninvade$count <- all_Ninvade$invasion/ 35
 
-contain1 <- all_Ninvade %>%
+contain0 <- all_Ninvade %>%
   filter(rem == '0') %>% 
   group_by(location) %>%
   summarise(mean_c = mean(count),
@@ -294,7 +449,7 @@ contain1 <- all_Ninvade %>%
             lower = quantile(count, low),
             upper = quantile(count, high))
 
-contain2 <-all_Ninvade %>%
+contain1 <-all_Ninvade %>%
   filter(rem == '1') %>% 
   group_by(location) %>%
   summarise(mean_c = mean(count),
@@ -302,14 +457,23 @@ contain2 <-all_Ninvade %>%
             lower = quantile(count, low),
             upper = quantile(count, high))
 
-contain3 <- all_Ninvade %>%
+contain4 <- all_Ninvade %>%
   filter(rem == '4') %>% 
   group_by(location) %>%
   summarise(mean_c = mean(count),
             max_c = max(count),
             lower = quantile(count, low),
             upper = quantile(count, high))
-contain4 <-all_Ninvade %>%
+
+contain8 <- all_Ninvade %>%
+  filter(rem == '8') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count),
+            lower = quantile(count, low),
+            upper = quantile(count, high))
+
+contain16 <-all_Ninvade %>%
   filter(rem == '16') %>% 
   group_by(location) %>%
   summarise(mean_c = mean(count),
@@ -323,7 +487,7 @@ contain4 <-all_Ninvade %>%
 nc.val <- all_Ninvade %>% filter(location == 'nocontrol')
 nc.val <- mean(nc.val$count)
 
-all_Ninvade <- all_Ninvade %>% filter(p == 1 & rem != '8')
+all_Ninvade <- all_Ninvade %>% filter(p == 1)
 
 all_Ninvade_rem1 <- all_Ninvade %>% filter(rem == '1')
 all_Ninvade_rem1$location[all_Ninvade_rem1$location == 'abund'] <- 'abund1'
@@ -340,6 +504,13 @@ all_Ninvade_rem4$location[all_Ninvade_rem4$location == 'edge'] <- 'edge4'
 all_Ninvade_rem4$location[all_Ninvade_rem4$location == 'grow'] <- 'grow4'
 all_Ninvade_rem4$location[all_Ninvade_rem4$location == 'random'] <- 'random4'
 
+all_Ninvade_rem8 <- all_Ninvade %>% filter(rem == '8')
+all_Ninvade_rem8$location[all_Ninvade_rem8$location == 'abund'] <- 'abund8'
+all_Ninvade_rem8$location[all_Ninvade_rem8$location == 'down'] <- 'down8'
+all_Ninvade_rem8$location[all_Ninvade_rem8$location == 'edge'] <- 'edge8'
+all_Ninvade_rem8$location[all_Ninvade_rem8$location == 'grow'] <- 'grow8'
+all_Ninvade_rem8$location[all_Ninvade_rem8$location == 'random'] <- 'random8'
+
 all_Ninvade_rem16 <- all_Ninvade %>% filter(rem == '16')
 all_Ninvade_rem16$location[all_Ninvade_rem16$location == 'abund'] <- 'abund16'
 all_Ninvade_rem16$location[all_Ninvade_rem16$location == 'down'] <- 'down16'
@@ -347,159 +518,830 @@ all_Ninvade_rem16$location[all_Ninvade_rem16$location == 'edge'] <- 'edge16'
 all_Ninvade_rem16$location[all_Ninvade_rem16$location == 'grow'] <- 'grow16'
 all_Ninvade_rem16$location[all_Ninvade_rem16$location == 'random'] <- 'random16'
 
-all_Ninvade <- rbind(all_Ninvade_rem1,all_Ninvade_rem4, all_Ninvade_rem16 )
+all_Ninvade <- rbind(all_Ninvade_rem1,all_Ninvade_rem4, all_Ninvade_rem8 , all_Ninvade_rem16 )
 
-new <- c("1 segment", "4 segments", "16 segments") 
-names(new) <-  c("1", "4", "16") 
-
-
-col <- brewer.pal(8, "Dark2") 
-colors2 <- c(col[2], col[1], col[3])
-rem.label <- c("1", "4", "16")
-
+new <- c("1 segment", "4 segments", "8 segments", "16 segments") 
+names(new) <-  c("1", "4", "8", "16") 
 
 all_Ninvade$rem2 <- all_Ninvade$rem
-#all_Ninvade$rem2[all_Ninvade$rem2 == '1'] <- '4'
+
+###### Plot 1 ####
 
 max.data <- all_Ninvade %>%
-  group_by(location, rem) %>%
-  filter(count == max(count)) 
+  group_by(location, rem2) %>%
+  filter(count == max(count) & rem == '1') 
 
-p3 <- all_Ninvade %>% 
+c1 <- all_Ninvade %>% 
+  filter(rem == '1') %>% 
   ggplot(aes(x = factor(location, level = level_order), y = count, 
              group = interaction(rem, location)))+
-  geom_boxplot(aes( fill = as.factor(rem)), position="dodge",alpha = 0.5,outlier.shape = NA)+
+  geom_boxplot(position="dodge",alpha = 0.5)+
   geom_hline(yintercept = nc.val, linetype = 2) + 
   geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
-                                  group = interaction(rem, location))) +
+                                  group = interaction(rem, location)), color = 'red') +
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
-  scale_x_discrete(drop = TRUE) +
   scale_x_discrete(labels=c(
-    "abund1" = "Abundance",
-    "abund4" = "Abundance",
-    "abund16" = "Abundance",
-    "down1" = "Downstream",
-    "down4" = "Downstream",
-    "down16" = "Downstream",
-    "edge1" = "Edge",
-    "edge4" = "Edge",
-    "edge16" = "Edge",
-    "grow1" = "Growth", 
-    "grow4" = "Growth", 
-    "grow16" = "Growth",
-    "random1" = "Random",
-    "random4" = "Random",
-    "random16" = "Random"))+
-  scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+    "abund1" = "A", #Abundance",
+    "abund4" = "A", #"Abundance",
+    "abund8" = "A", #"Abundance",
+    "abund16" = "A", #"Abundance",
+    "grow1" = "G", #"Growth", 
+    "grow4" = "G", #"Growth", 
+    "grow8" = "G", #"Growth", 
+    "grow16" = "G", #"Growth", 
+    "edge1" = "E", #"Edge",
+    "edge4" = "E", #"Edge",
+    "edge8" = "E", #"Edge",
+    "edge16" = "E", #"Edge",
+    "down1" = "D", #"Downstream",
+    "down4" = "D", #"Downstream",
+    "down8" = "D", #"Downstream",
+    "down16" = "D", #"Downstream",
+    "random1" = "R", #"Random",
+    "random4" = "R", #"Random",
+    "random8" = "R", #"Random",
+    "random16" = "R")) + #, #"Random",))+
+ # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("Containment") +  #ylab("Percent invaded")+
   scale_y_continuous(labels=scales::percent) +
   theme_bw() +   
-  theme(strip.background=element_rect(colour="white",
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
                                       fill="white"),
-        strip.text.x = element_blank(),
-        panel.border = element_rect(colour = "gray", size = 1.5), 
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
-        legend.position = "none", 
-        axis.text.x = element_text(angle = 315, hjust = -0.1))+
-  facet_grid(~rem2, scales = "free")
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold")#,
+       # axis.text.x = element_text(angle = 310, hjust = 0)
+        )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+###### Plot 4 ####
+
+max.data <- all_Ninvade %>%
+  group_by(location, rem2) %>%
+  filter(count == max(count) & rem == '4') 
+
+c4 <- all_Ninvade %>% 
+  filter(rem == '4') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A", #Abundance",
+    "abund4" = "A", #"Abundance",
+    "abund8" = "A", #"Abundance",
+    "abund16" = "A", #"Abundance",
+    "grow1" = "G", #"Growth", 
+    "grow4" = "G", #"Growth", 
+    "grow8" = "G", #"Growth", 
+    "grow16" = "G", #"Growth", 
+    "edge1" = "E", #"Edge",
+    "edge4" = "E", #"Edge",
+    "edge8" = "E", #"Edge",
+    "edge16" = "E", #"Edge",
+    "down1" = "D", #"Downstream",
+    "down4" = "D", #"Downstream",
+    "down8" = "D", #"Downstream",
+    "down16" = "D", #"Downstream",
+    "random1" = "R", #"Random",
+    "random4" = "R", #"Random",
+    "random8" = "R", #"Random",
+    "random16" = "R")) + #, #"Random",))+
+ # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("") +  #ylab("Percent invaded")+
+  scale_y_continuous(labels=scales::percent) +
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+      #  axis.title=element_text(size=14,face="bold"),
+        #axis.text.x = element_text(angle = 310, hjust = 0)
+      )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+###### Plot 8 ####
+
+max.data <- all_Ninvade %>%
+  group_by(location, rem2) %>%
+  filter(count == max(count) & rem == '8') 
+
+c8 <- all_Ninvade %>% 
+  filter(rem == '8') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A", #Abundance",
+    "abund4" = "A", #"Abundance",
+    "abund8" = "A", #"Abundance",
+    "abund16" = "A", #"Abundance",
+    "grow1" = "G", #"Growth", 
+    "grow4" = "G", #"Growth", 
+    "grow8" = "G", #"Growth", 
+    "grow16" = "G", #"Growth", 
+    "edge1" = "E", #"Edge",
+    "edge4" = "E", #"Edge",
+    "edge8" = "E", #"Edge",
+    "edge16" = "E", #"Edge",
+    "down1" = "D", #"Downstream",
+    "down4" = "D", #"Downstream",
+    "down8" = "D", #"Downstream",
+    "down16" = "D", #"Downstream",
+    "random1" = "R", #"Random",
+    "random4" = "R", #"Random",
+    "random8" = "R", #"Random",
+    "random16" = "R")) + #, #"Random",))+
+# scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("") +  #ylab("Percent invaded")+
+  scale_y_continuous(labels=scales::percent) +
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+       # axis.title=element_text(size=14,face="bold"),
+       # axis.text.x = element_text(angle = 310, hjust = 0)
+       )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+###### Plot 16 ####
+
+max.data <- all_Ninvade %>%
+  group_by(location, rem2) %>%
+  filter(count == max(count) & rem == '16') 
+
+c16 <- all_Ninvade %>% 
+  filter(rem == '16') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A", #Abundance",
+    "abund4" = "A", #"Abundance",
+    "abund8" = "A", #"Abundance",
+    "abund16" = "A", #"Abundance",
+    "grow1" = "G", #"Growth", 
+    "grow4" = "G", #"Growth", 
+    "grow8" = "G", #"Growth", 
+    "grow16" = "G", #"Growth", 
+    "edge1" = "E", #"Edge",
+    "edge4" = "E", #"Edge",
+    "edge8" = "E", #"Edge",
+    "edge16" = "E", #"Edge",
+    "down1" = "D", #"Downstream",
+    "down4" = "D", #"Downstream",
+    "down8" = "D", #"Downstream",
+    "down16" = "D", #"Downstream",
+    "random1" = "R", #"Random",
+    "random4" = "R", #"Random",
+    "random8" = "R", #"Random",
+    "random16" = "R")) + #, #"Random",))+
+ # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("") +  #ylab("Percent invaded")+
+  scale_y_continuous(labels=scales::percent) +
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+       # axis.title=element_text(size=14,face="bold"),
+        # axis.text.x = element_text(angle = 310, hjust = 0)
+       )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
 
 
+cplots <- plot_grid(c1,c4,c8,c16, nrow = 1)
+
+###### Plot different ####
+
+max.data <- all_Ninvade %>%
+  group_by(location, rem2) %>%
+  filter(count == max(count)) 
+
+call <- all_Ninvade %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A",
+    "abund4" = "A",
+    "abund8" = "A",
+    "abund16" = "A",
+    "grow1" = "G", 
+    "grow4" = "G", 
+    "grow8" = "G", 
+    "grow16" = "G",
+    "edge1" = "E",
+    "edge4" = "E",
+    "edge8" = "E",
+    "edge16" = "E",
+    "down1" = "D",
+    "down4" = "D",
+    "down8" = "D",
+    "down16" = "D",
+    "random1" = "R",
+    "random4" = "R",
+    "random8" = "R",
+    "random16" = "R"))+
+ # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("Containment")  +  
+  scale_y_continuous(labels=scales::percent) +
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold"))+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+
+#cplots <- plot_grid(call, nrow = 1)
+
+#### Entered Columbia ####
+file_name = paste(path, 'all_Dcol.csv',sep = '/')
+all_Dcol <- fread(file_name)
+all_Dcol <- data.frame(all_Dcol)
+
+nocontrol <- all_Dcol %>% filter(location == 'nocontrol')
+nocontrol$p <- 1
+all_Dcol <- rbind(all_Dcol, nocontrol)
+
+all_Dcol <- all_Dcol %>% filter(p == 1)
+
+all_Dcol$rem <- as.factor(all_Dcol$rem)
+
+prevent0 <- all_Dcol %>%
+  filter(rem == '0') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count),
+            lower = quantile(count, low),
+            upper = quantile(count, high))
+
+prevent1 <-all_Dcol %>%
+  filter(rem == '1') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count),
+            lower = quantile(count, low),
+            upper = quantile(count, high))
+
+prevent4 <-all_Dcol %>%
+  filter(rem == '4') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count),
+            lower = quantile(count, low),
+            upper = quantile(count, high))
+
+prevent8 <-all_Dcol %>%
+  filter(rem == '8') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count),
+            lower = quantile(count, low),
+            upper = quantile(count, high))
+
+prevent16 <-all_Dcol %>%
+  filter(rem == '16') %>% 
+  group_by(location) %>%
+  summarise(mean_c = mean(count),
+            max_c = max(count),
+            lower = quantile(count, low),
+            upper = quantile(count, high))
+
+##### Plot ####
+nc.val <- all_Dcol %>% filter(location == 'nocontrol')
+nc.val <- mean(nc.val$count)
+
+all_Dcol <- all_Dcol %>% filter(p == 1)
+
+all_Dcol_rem1 <- all_Dcol %>% filter(rem == '1')
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'abund'] <- 'abund1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'down'] <- 'down1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'edge'] <- 'edge1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'grow'] <- 'grow1'
+all_Dcol_rem1$location[all_Dcol_rem1$location == 'random'] <- 'random1'
+
+all_Dcol_rem4 <- all_Dcol %>% filter(rem == '4')
+all_Dcol_rem4$location[all_Dcol_rem4$location == 'abund'] <- 'abund4'
+all_Dcol_rem4$location[all_Dcol_rem4$location == 'down'] <- 'down4'
+all_Dcol_rem4$location[all_Dcol_rem4$location == 'edge'] <- 'edge4'
+all_Dcol_rem4$location[all_Dcol_rem4$location == 'grow'] <- 'grow4'
+all_Dcol_rem4$location[all_Dcol_rem4$location == 'random'] <- 'random4'
+
+all_Dcol_rem8 <- all_Dcol %>% filter(rem == '8')
+all_Dcol_rem8$location[all_Dcol_rem8$location == 'abund'] <- 'abund8'
+all_Dcol_rem8$location[all_Dcol_rem8$location == 'down'] <- 'down8'
+all_Dcol_rem8$location[all_Dcol_rem8$location == 'edge'] <- 'edge8'
+all_Dcol_rem8$location[all_Dcol_rem8$location == 'grow'] <- 'grow8'
+all_Dcol_rem8$location[all_Dcol_rem8$location == 'random'] <- 'random8'
+
+all_Dcol_rem16 <- all_Dcol %>% filter(rem == '16')
+all_Dcol_rem16$location[all_Dcol_rem16$location == 'abund'] <- 'abund16'
+all_Dcol_rem16$location[all_Dcol_rem16$location == 'down'] <- 'down16'
+all_Dcol_rem16$location[all_Dcol_rem16$location == 'edge'] <- 'edge16'
+all_Dcol_rem16$location[all_Dcol_rem16$location == 'grow'] <- 'grow16'
+all_Dcol_rem16$location[all_Dcol_rem16$location == 'random'] <- 'random16'
+
+all_Dcol <- rbind(all_Dcol_rem1,all_Dcol_rem4, all_Dcol_rem8, all_Dcol_rem16 )
+new <- c("1 segment", "4 segments", "8 segments", "16 segments") 
+names(new) <-  c("1", "4", "8", "16") 
+
+all_Dcol$rem2 <- all_Dcol$rem
+
+###### Plot 1 ####
+
+max.data <- all_Dcol %>%
+  group_by(location, rem) %>%
+  filter(count == max(count) & rem == '1') 
+
+p1 <- all_Dcol %>% 
+  filter(rem == '1') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A", #Abundance",
+    "abund4" = "A", #"Abundance",
+    "abund8" = "A", #"Abundance",
+    "abund16" = "A", #"Abundance",
+    "grow1" = "G", #"Growth", 
+    "grow4" = "G", #"Growth", 
+    "grow8" = "G", #"Growth", 
+    "grow16" = "G", #"Growth", 
+    "edge1" = "E", #"Edge",
+    "edge4" = "E", #"Edge",
+    "edge8" = "E", #"Edge",
+    "edge16" = "E", #"Edge",
+    "down1" = "D", #"Downstream",
+    "down4" = "D", #"Downstream",
+    "down8" = "D", #"Downstream",
+    "down16" = "D", #"Downstream",
+    "random1" = "R", #"Random",
+    "random4" = "R", #"Random",
+    "random8" = "R", #"Random",
+    "random16" = "R")) + #, #"Random",))+
+  #scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("Prevention") + #ylab("Total crayfish in the Columbia River (Millions)")+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 6000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold")#,
+        #axis.text.x = element_text(angle = 310, hjust = 0)
+        )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+###### Plot 4 ####
+
+max.data <- all_Dcol %>%
+  group_by(location, rem) %>%
+  filter(count == max(count) & rem == '4') 
+
+p4 <- all_Dcol %>% 
+  filter(rem == '4') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A", #Abundance",
+    "abund4" = "A", #"Abundance",
+    "abund8" = "A", #"Abundance",
+    "abund16" = "A", #"Abundance",
+    "grow1" = "G", #"Growth", 
+    "grow4" = "G", #"Growth", 
+    "grow8" = "G", #"Growth", 
+    "grow16" = "G", #"Growth", 
+    "edge1" = "E", #"Edge",
+    "edge4" = "E", #"Edge",
+    "edge8" = "E", #"Edge",
+    "edge16" = "E", #"Edge",
+    "down1" = "D", #"Downstream",
+    "down4" = "D", #"Downstream",
+    "down8" = "D", #"Downstream",
+    "down16" = "D", #"Downstream",
+    "random1" = "R", #"Random",
+    "random4" = "R", #"Random",
+    "random8" = "R", #"Random",
+    "random16" = "R")) + #, #"Random",))+
+ # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("") + #ylab("Total crayfish in the Columbia River (Millions)")+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 6000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+       # axis.title=element_text(size=14,face="bold"),
+      #  axis.text.x = element_text(angle = 310, hjust = 0)
+       )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+###### Plot 8 ####
+
+max.data <- all_Dcol %>%
+  group_by(location, rem) %>%
+  filter(count == max(count) & rem == '8') 
+
+p8 <- all_Dcol %>% 
+  filter(rem == '8') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A", #Abundance",
+    "abund4" = "A", #"Abundance",
+    "abund8" = "A", #"Abundance",
+    "abund16" = "A", #"Abundance",
+    "grow1" = "G", #"Growth", 
+    "grow4" = "G", #"Growth", 
+    "grow8" = "G", #"Growth", 
+    "grow16" = "G", #"Growth", 
+    "edge1" = "E", #"Edge",
+    "edge4" = "E", #"Edge",
+    "edge8" = "E", #"Edge",
+    "edge16" = "E", #"Edge",
+    "down1" = "D", #"Downstream",
+    "down4" = "D", #"Downstream",
+    "down8" = "D", #"Downstream",
+    "down16" = "D", #"Downstream",
+    "random1" = "R", #"Random",
+    "random4" = "R", #"Random",
+    "random8" = "R", #"Random",
+    "random16" = "R")) + #, #"Random",))+
+ # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("") + #ylab("Total crayfish in the Columbia River (Millions)")+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 6000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        # axis.title=element_text(size=14,face="bold"),
+        # axis.text.x = element_text(angle = 310, hjust = 0)
+        )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+###### Plot 16 ####
+
+max.data <- all_Dcol %>%
+  group_by(location, rem) %>%
+  filter(count == max(count) & rem == '16') 
+
+p16 <- all_Dcol %>% 
+  filter(rem == '16') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "A", #Abundance",
+    "abund4" = "A", #"Abundance",
+    "abund8" = "A", #"Abundance",
+    "abund16" = "A", #"Abundance",
+    "grow1" = "G", #"Growth", 
+    "grow4" = "G", #"Growth", 
+    "grow8" = "G", #"Growth", 
+    "grow16" = "G", #"Growth", 
+    "edge1" = "E", #"Edge",
+    "edge4" = "E", #"Edge",
+    "edge8" = "E", #"Edge",
+    "edge16" = "E", #"Edge",
+    "down1" = "D", #"Downstream",
+    "down4" = "D", #"Downstream",
+    "down8" = "D", #"Downstream",
+    "down16" = "D", #"Downstream",
+    "random1" = "R", #"Random",
+    "random4" = "R", #"Random",
+    "random8" = "R", #"Random",
+    "random16" = "R")) + #, #"Random",))+
+ # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("") + #ylab("Total crayfish in the Columbia River (Millions)")+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 6000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        # axis.title=element_text(size=14,face="bold"),
+        #axis.text.x = element_text(angle = 310, hjust = 0)
+        )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+pplots <- plot_grid(p1,p4,p8,p16, nrow = 1)
+
+###### Plot different ####
+
+max.data <- all_Dcol %>%
+  group_by(location, rem) %>%
+  filter(count == max(count)) 
+
+pall <- all_Dcol %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+    scale_x_discrete(labels=c(
+      "abund1" = "Abundance",
+      "abund4" = "Abundance",
+      "abund8" = "Abundance",
+      "abund16" = "Abundance",
+      "grow1" = "Growth", 
+      "grow4" = "Growth", 
+      "grow8" = "Growth", 
+      "grow16" = "Growth", 
+      "edge1" = "Edge",
+      "edge4" = "Edge",
+      "edge8" = "Edge",
+      "edge16" = "Edge",
+      "down1" = "Downstream",
+      "down4" = "Downstream",
+      "down8" = "Downstream",
+      "down16" = "Downstream",
+      "random1" = "Random",
+      "random4" = "Random",
+      "random8" = "Random",
+      "random16" = "Random"))+
+ # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("Prevention") + #ylab("Total crayfish in the Columbia River (Millions)")+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 6000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold"))+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+#pplots <- plot_grid(pall, nrow = 1)
 
 #### Combine plots ####
 library(gridGraphics)
 
-legend <- get_legend(
-  p2 + 
-    guides(color = guide_legend(title.position = "right", nrow = 1)) +
-    theme(legend.position = "right",
-          legend.key.size = unit(0.8, 'cm'))
-)
-
-
-plot_grid(
-  plot_grid(p1, NULL, 
-            nrow = 1, rel_widths = c(0.35, 0.2), 
-            labels = c("A", "")),
-  
-  plot_grid(p2, legend, 
-            nrow = 1, rel_widths = c(0.35, 0.2), 
-            labels = c("B", "")),
-  
-  plot_grid(p3, NULL, 
-            nrow = 1, rel_widths = c(0.35, 0.2), 
-            labels = c("C", "")), 
-  nrow = 3
-)
+plot_grid(splots, cplots, pplots, 
+          labels = c("A", "B", "C"), nrow = 3)
 
 
 #### TRADE OFFS ####
-suppress1$location <- 'No removal' 
-suppress1$type <- 'No removal' 
+suppress0$location <- 'No removal' 
+suppress0$type <- 'No removal' 
+suppress0$rem <- '1'
+suppress0b <- suppress0 
+suppress0b$rem <- '4'
+suppress0c <- suppress0 
+suppress0c$rem <- '8'
+suppress0d <- suppress0 
+suppress0d$rem <- '16'
+
+suppress1$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
+suppress1$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress1$rem <- '1'
-suppress1b <- suppress1 
-suppress1b$rem <- '4'
-suppress1c <- suppress1 
-suppress1c$rem <- '16'
 
-suppress2$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
-suppress2$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-suppress2$rem <- '1'
-suppress3$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
-suppress3$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-suppress3$rem <- '4'
-suppress4$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
+suppress4$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
 suppress4$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-suppress4$rem <- '16'
+suppress4$rem <- '4'
 
-suppress <- rbind(suppress1,suppress1b,suppress1b, suppress2, suppress3, suppress4)
+suppress8$location <- c('Abundance, 8', 'Downstream, 8', 'Edge, 8', 'Growth, 8', 'Random, 8')
+suppress8$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
+suppress8$rem <- '8'
+
+suppress16$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
+suppress16$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
+suppress16$rem <- '16'
+
+suppress <- rbind(suppress0,suppress0b,suppress0c, suppress0c, suppress1, suppress4, 
+                  suppress8, suppress16)
+
 suppress$objective <- 'Suppress'
 colnames(suppress)[2:5] <- c('Expected_Suppress', 'Max_Suppress', "Low_Suppress", "High_Suppress")
 
-prevent1$location <- 'No removal' 
-prevent1$type <- 'No removal' 
+contain0$location <- 'No removal' 
+contain0$type <- 'No removal' 
+contain0$rem <- '1'
+contain0b <- contain0 
+contain0b$rem <- '4'
+contain0c <- contain0 
+contain0c$rem <- '8'
+contain0d <- contain0 
+contain0d$rem <- '16'
+
+contain1$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
+contain1$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
+contain1$rem <- '1'
+
+contain4$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
+contain4$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
+contain4$rem <- '4'
+
+contain8$location <- c('Abundance, 8', 'Downstream, 8', 'Edge, 8', 'Growth, 8', 'Random, 8')
+contain8$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
+contain8$rem <- '8'
+
+contain16$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
+contain16$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
+contain16$rem <- '16'
+
+contain <- rbind(contain0,contain0b,contain0c, contain0c, contain1, contain4, 
+                  contain8, contain16)
+
+contain$objective <- 'contain'
+colnames(contain)[2:5] <- c('Expected_Contain', 'Max_Contain', "Low_Contain", "High_Contain")
+
+prevent0$location <- 'No removal' 
+prevent0$type <- 'No removal' 
+prevent0$rem <- '1'
+prevent0b <- prevent0 
+prevent0b$rem <- '4'
+prevent0c <- prevent0 
+prevent0c$rem <- '8'
+prevent0d <- prevent0 
+prevent0d$rem <- '16'
+
+prevent1$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
+prevent1$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent1$rem <- '1'
-prevent1b <- prevent1 
-prevent1b$rem <- '4'
-prevent1c <- prevent1 
-prevent1c$rem <- '16'
 
-prevent2$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
-prevent2$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-prevent2$rem <- '1'
-prevent3$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
-prevent3$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-prevent3$rem <- '4'
-prevent4$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
+prevent4$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
 prevent4$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-prevent4$rem <- '16'
+prevent4$rem <- '4'
 
-prevent <- rbind(prevent1,prevent1b, prevent1c, prevent2, prevent3, prevent4)
-prevent$objective <- 'Prevent'
+prevent8$location <- c('Abundance, 8', 'Downstream, 8', 'Edge, 8', 'Growth, 8', 'Random, 8')
+prevent8$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
+prevent8$rem <- '8'
+
+prevent16$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
+prevent16$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
+prevent16$rem <- '16'
+
+prevent <- rbind(prevent0,prevent0b,prevent0c, prevent0c, prevent1, prevent4, 
+                 prevent8, prevent16)
+
+prevent$objective <- 'prevent'
 colnames(prevent)[2:5] <- c('Expected_Prevent', 'Max_Prevent', "Low_Prevent", "High_Prevent")
 
-contain1$location <- 'No removal' 
-contain1$type <- 'No removal' 
-contain1$rem <- '1'
-contain1b <- contain1
-contain1b$rem <- '4'
-contain1c <- contain1
-contain1c$rem <- '16'
 
-contain2$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
-contain2$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-contain2$rem <- '1'
-contain3$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
-contain3$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-contain3$rem <- '4'
-contain4$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
-contain4$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
-contain4$rem <- '16'
-
-contain <- rbind(contain1,contain1b,contain1c, contain2, contain3, contain4)
-contain$objective <- 'Contain'
-colnames(contain)[2:5] <- c('Expected_Contain', 'Max_Contain', "Low_Contain", "High_Contain")
 
 #### trade off 1 ####
 Objectives <- cbind(suppress[,1:7], prevent[,2:5], contain[,2:5])
@@ -511,16 +1353,20 @@ Objectives_svsp2 <- Objectives %>% filter(rem == "4")
 Objectives_svsp2 <- psel(Objectives_svsp2, low(Expected_Suppress) * low(Expected_Prevent))
 Objectives_svsp2$rem <- '4'
 
-Objectives_svsp3 <- Objectives %>% filter(rem == "16")
+Objectives_svsp3 <- Objectives %>% filter(rem == "8")
 Objectives_svsp3 <- psel(Objectives_svsp3, low(Expected_Suppress) * low(Expected_Prevent))
-Objectives_svsp3$rem <- '16'
+Objectives_svsp3$rem <- '8'
 
-Objectives_svsp <- rbind(Objectives_svsp1, Objectives_svsp2, Objectives_svsp3)
+Objectives_svsp4 <- Objectives %>% filter(rem == "16")
+Objectives_svsp4 <- psel(Objectives_svsp4, low(Expected_Suppress) * low(Expected_Prevent))
+Objectives_svsp4$rem <- '16'
+
+Objectives_svsp <- rbind(Objectives_svsp1, Objectives_svsp2, Objectives_svsp3, Objectives_svsp4)
 
 colors_all <-  brewer.pal(12, "Dark2")
 colors_all <- c("darkgrey", colors_all[1:4], colors_all[6])
 
-level_order <- c('No removal', "Abundance", "Downstream", "Edge", "Growth", "Random")  
+level_order <- c('No removal', "Abundance", "Growth", "Edge", "Downstream",  "Random")  
 Objectives$type<- factor(Objectives$type, levels = level_order)
 
 t1 <- 
@@ -545,10 +1391,8 @@ t1 <-
         strip.text.x = element_blank(),
         panel.border = element_rect(colour = "gray", size = 1.5), 
         panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-       legend.position = "none"
-        )+
-  facet_wrap(~as.numeric(rem))
+        panel.grid.minor = element_blank(),legend.position = "none")+
+  facet_wrap(~as.numeric(rem), nrow = 1)
 
 #### trade off 2 ####
 Objectives_svsc1 <- Objectives %>% filter(rem == "1")
@@ -559,11 +1403,15 @@ Objectives_svsc2 <- Objectives %>% filter(rem == "4")
 Objectives_svsc2 <- psel(Objectives_svsc2, low(Expected_Suppress) * low(Expected_Contain))
 Objectives_svsc2$rem <- '4'
 
-Objectives_svsc3 <- Objectives %>% filter(rem == "16")
+Objectives_svsc3 <- Objectives %>% filter(rem == "8")
 Objectives_svsc3 <- psel(Objectives_svsc3, low(Expected_Suppress) * low(Expected_Contain))
-Objectives_svsc3$rem <- '16'
+Objectives_svsc3$rem <- '8'
 
-Objectives_svsc <- rbind(Objectives_svsc1, Objectives_svsc2,Objectives_svsc3)
+Objectives_svsc4 <- Objectives %>% filter(rem == "16")
+Objectives_svsc4 <- psel(Objectives_svsc4, low(Expected_Suppress) * low(Expected_Contain))
+Objectives_svsc4$rem <- '16'
+
+Objectives_svsc <- rbind(Objectives_svsc1, Objectives_svsc2,Objectives_svsc3, Objectives_svsc4)
 
 t2 <- 
   ggplot(Objectives,aes(x = Expected_Suppress, y = Expected_Contain))+
@@ -581,15 +1429,16 @@ t2 <-
   scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   scale_y_continuous(labels=scales::percent) +
   xlab("Suppression")+ ylab("Containment")+
-  theme_bw() +   
+  theme_bw() +
   theme(strip.background=element_rect(colour="white",
-                                      fill="white"),
-        strip.text.x = element_blank(),
-        panel.border = element_rect(colour = "gray", size = 1.5), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),legend.position = "none")+
-  facet_wrap(~as.numeric(rem))
-
+                                                 fill="white"),
+                   strip.text.x = element_blank(),
+                   panel.border = element_rect(colour = "gray", size = 1.5), 
+                   panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   legend.position = "none"
+  )+
+  facet_wrap(~as.numeric(rem), nrow = 1)
 
 t4 <- 
   ggplot(Objectives,aes(x = Expected_Suppress, y = Expected_Contain))+
@@ -613,8 +1462,9 @@ t4 <-
         strip.text.x = element_blank(),
         panel.border = element_rect(colour = "gray", size = 1.5), 
         panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank())+
-  facet_wrap(~as.numeric(rem))
+        panel.grid.minor = element_blank(), 
+        legend.direction = "horizontal")+
+  facet_wrap(~as.numeric(rem), nrow = 1)
 
 #### Trade off 3 ####
 Objectives_pvsc1 <- Objectives %>% filter(rem == "1")
@@ -625,11 +1475,15 @@ Objectives_pvsc2 <- Objectives %>% filter(rem == "4")
 Objectives_pvsc2 <- psel(Objectives_pvsc2, low(Expected_Prevent) * low(Expected_Contain))
 Objectives_pvsc2$rem <- '4'
   
-Objectives_pvsc3 <- Objectives %>% filter(rem == "16")
+Objectives_pvsc3 <- Objectives %>% filter(rem == "8")
 Objectives_pvsc3 <- psel(Objectives_pvsc3, low(Expected_Prevent) * low(Expected_Contain))
-Objectives_pvsc3$rem <- '16'
+Objectives_pvsc3$rem <- '8'
 
-Objectives_pvsc <- rbind(Objectives_pvsc1, Objectives_pvsc2, Objectives_pvsc3)  
+Objectives_pvsc4 <- Objectives %>% filter(rem == "16")
+Objectives_pvsc4 <- psel(Objectives_pvsc4, low(Expected_Prevent) * low(Expected_Contain))
+Objectives_pvsc4$rem <- '16'
+
+Objectives_pvsc <- rbind(Objectives_pvsc1, Objectives_pvsc2, Objectives_pvsc3, Objectives_pvsc4)  
   
   
 t3 <- ggplot(Objectives,aes(x = Expected_Prevent, y = Expected_Contain))+
@@ -652,7 +1506,7 @@ t3 <- ggplot(Objectives,aes(x = Expected_Prevent, y = Expected_Contain))+
         panel.border = element_rect(colour = "gray", size = 1.5), 
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), legend.position = "none")+
-  facet_wrap(~as.numeric(rem))
+  facet_wrap(~as.numeric(rem), nrow = 1)
 
 
 
@@ -661,13 +1515,16 @@ legend2<- get_legend(
 )
 
 plot_grid(
-  plot_grid(t1, NULL,
-           nrow = 1, rel_widths = c(0.35, 0.1),
-          labels = c("A", "")),#)#,
-
-  plot_grid(t2, legend2,
+  
+  plot_grid(t2, NULL,
             nrow = 1, rel_widths = c(0.35, 0.1),
-            labels = c("B", "")),#) #,
+            labels = c("A", "")),#) #,
+  
+  plot_grid(t1, legend2,
+           nrow = 1, rel_widths = c(0.35, 0.1),
+          labels = c("B", "")),#)#,
+
+
 
   plot_grid(t3, NULL,
             nrow = 1, rel_widths = c(0.35, 0.1),
@@ -675,12 +1532,10 @@ plot_grid(
   nrow = 3
 )
 
-ggsave2(
-  filename = 'paretoplot.png',
-  plot = ggplot2::last_plot(),
-  scale = 1,
-  width = 7,
-  height = 10,
-  units = "in",
-  dpi = 800
+
+plot_grid(
+  t2,t1,t3, legend2, labels = c("A", "B", "C", ""),
+  rel_heights = c(2,2,2,1),
+  
+  nrow = 4
 )
