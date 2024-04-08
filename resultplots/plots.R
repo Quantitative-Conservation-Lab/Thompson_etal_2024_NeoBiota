@@ -8,7 +8,7 @@ library("cowplot")
 library(rPref)
 library(ggrepel)
 
-path <- 'E:\\Chapter2\\results'
+path <- 'D:\\Chapter2\\results'
 
 low <- 0.1
 high <- 0.9
@@ -20,7 +20,7 @@ all_Ntotal <- data.frame(all_Ntotal)
 
 all_Ntotal$rem <- as.factor(all_Ntotal$rem)
 
-detach(package:plyr)
+detach(packagD:plyr)
 
 suppress0 <- all_Ntotal %>%
   filter(rem == '0') %>% 
@@ -316,26 +316,26 @@ s16 <- all_Ntotal %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "Abundance",
-    "abund4" = "Abundance",
-    "abund8" = "Abundance",
-    "abund16" = "Abundance",
-    "grow1" = "Growth", 
-    "grow4" = "Growth", 
-    "grow8" = "Growth", 
-    "grow16" = "Growth", 
-    "edge1" = "Edge",
-    "edge4" = "Edge",
-    "edge8" = "Edge",
-    "edge16" = "Edge",
-    "down1" = "Downstream",
-    "down4" = "Downstream",
-    "down8" = "Downstream",
-    "down16" = "Downstream",
-    "random1" = "Random",
-    "random4" = "Random",
-    "random8" = "Random",
-    "random16" = "Random"))+
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
   xlab("") + ylab("")+ 
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
                      limits = c(0, 80000000))+
@@ -381,26 +381,26 @@ sall <- all_Ntotal %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A",
-    "abund4" = "A",
-    "abund8" = "A",
-    "abund16" = "A",
-    "grow1" = "G", 
-    "grow4" = "G", 
-    "grow8" = "G", 
-    "grow16" = "G",
-    "edge1" = "E",
-    "edge4" = "E",
-    "edge8" = "E",
-    "edge16" = "E",
-    "down1" = "D",
-    "down4" = "D",
-    "down8" = "D",
-    "down16" = "D",
-    "random1" = "R",
-    "random4" = "R",
-    "random8" = "R",
-    "random16" = "R"))+
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
   xlab("") + ylab("Suppression")+ 
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
                      limits = c(0, 80000000))+
@@ -542,26 +542,26 @@ c1 <- all_Ninvade %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A", #Abundance",
-    "abund4" = "A", #"Abundance",
-    "abund8" = "A", #"Abundance",
-    "abund16" = "A", #"Abundance",
-    "grow1" = "G", #"Growth", 
-    "grow4" = "G", #"Growth", 
-    "grow8" = "G", #"Growth", 
-    "grow16" = "G", #"Growth", 
-    "edge1" = "E", #"Edge",
-    "edge4" = "E", #"Edge",
-    "edge8" = "E", #"Edge",
-    "edge16" = "E", #"Edge",
-    "down1" = "D", #"Downstream",
-    "down4" = "D", #"Downstream",
-    "down8" = "D", #"Downstream",
-    "down16" = "D", #"Downstream",
-    "random1" = "R", #"Random",
-    "random4" = "R", #"Random",
-    "random8" = "R", #"Random",
-    "random16" = "R")) + #, #"Random",))+
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
  # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("Containment") +  #ylab("Percent invaded")+
   scale_y_continuous(labels=scales::percent) +
@@ -603,26 +603,26 @@ c4 <- all_Ninvade %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A", #Abundance",
-    "abund4" = "A", #"Abundance",
-    "abund8" = "A", #"Abundance",
-    "abund16" = "A", #"Abundance",
-    "grow1" = "G", #"Growth", 
-    "grow4" = "G", #"Growth", 
-    "grow8" = "G", #"Growth", 
-    "grow16" = "G", #"Growth", 
-    "edge1" = "E", #"Edge",
-    "edge4" = "E", #"Edge",
-    "edge8" = "E", #"Edge",
-    "edge16" = "E", #"Edge",
-    "down1" = "D", #"Downstream",
-    "down4" = "D", #"Downstream",
-    "down8" = "D", #"Downstream",
-    "down16" = "D", #"Downstream",
-    "random1" = "R", #"Random",
-    "random4" = "R", #"Random",
-    "random8" = "R", #"Random",
-    "random16" = "R")) + #, #"Random",))+
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
  # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("") +  #ylab("Percent invaded")+
   scale_y_continuous(labels=scales::percent) +
@@ -664,26 +664,26 @@ c8 <- all_Ninvade %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A", #Abundance",
-    "abund4" = "A", #"Abundance",
-    "abund8" = "A", #"Abundance",
-    "abund16" = "A", #"Abundance",
-    "grow1" = "G", #"Growth", 
-    "grow4" = "G", #"Growth", 
-    "grow8" = "G", #"Growth", 
-    "grow16" = "G", #"Growth", 
-    "edge1" = "E", #"Edge",
-    "edge4" = "E", #"Edge",
-    "edge8" = "E", #"Edge",
-    "edge16" = "E", #"Edge",
-    "down1" = "D", #"Downstream",
-    "down4" = "D", #"Downstream",
-    "down8" = "D", #"Downstream",
-    "down16" = "D", #"Downstream",
-    "random1" = "R", #"Random",
-    "random4" = "R", #"Random",
-    "random8" = "R", #"Random",
-    "random16" = "R")) + #, #"Random",))+
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
 # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("") +  #ylab("Percent invaded")+
   scale_y_continuous(labels=scales::percent) +
@@ -725,26 +725,26 @@ c16 <- all_Ninvade %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A", #Abundance",
-    "abund4" = "A", #"Abundance",
-    "abund8" = "A", #"Abundance",
-    "abund16" = "A", #"Abundance",
-    "grow1" = "G", #"Growth", 
-    "grow4" = "G", #"Growth", 
-    "grow8" = "G", #"Growth", 
-    "grow16" = "G", #"Growth", 
-    "edge1" = "E", #"Edge",
-    "edge4" = "E", #"Edge",
-    "edge8" = "E", #"Edge",
-    "edge16" = "E", #"Edge",
-    "down1" = "D", #"Downstream",
-    "down4" = "D", #"Downstream",
-    "down8" = "D", #"Downstream",
-    "down16" = "D", #"Downstream",
-    "random1" = "R", #"Random",
-    "random4" = "R", #"Random",
-    "random8" = "R", #"Random",
-    "random16" = "R")) + #, #"Random",))+
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
  # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("") +  #ylab("Percent invaded")+
   scale_y_continuous(labels=scales::percent) +
@@ -788,26 +788,26 @@ call <- all_Ninvade %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A",
-    "abund4" = "A",
-    "abund8" = "A",
-    "abund16" = "A",
-    "grow1" = "G", 
-    "grow4" = "G", 
-    "grow8" = "G", 
-    "grow16" = "G",
-    "edge1" = "E",
-    "edge4" = "E",
-    "edge8" = "E",
-    "edge16" = "E",
-    "down1" = "D",
-    "down4" = "D",
-    "down8" = "D",
-    "down16" = "D",
-    "random1" = "R",
-    "random4" = "R",
-    "random8" = "R",
-    "random16" = "R"))+
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
  # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("Containment")  +  
   scale_y_continuous(labels=scales::percent) +
@@ -943,26 +943,26 @@ p1 <- all_Dcol %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A", #Abundance",
-    "abund4" = "A", #"Abundance",
-    "abund8" = "A", #"Abundance",
-    "abund16" = "A", #"Abundance",
-    "grow1" = "G", #"Growth", 
-    "grow4" = "G", #"Growth", 
-    "grow8" = "G", #"Growth", 
-    "grow16" = "G", #"Growth", 
-    "edge1" = "E", #"Edge",
-    "edge4" = "E", #"Edge",
-    "edge8" = "E", #"Edge",
-    "edge16" = "E", #"Edge",
-    "down1" = "D", #"Downstream",
-    "down4" = "D", #"Downstream",
-    "down8" = "D", #"Downstream",
-    "down16" = "D", #"Downstream",
-    "random1" = "R", #"Random",
-    "random4" = "R", #"Random",
-    "random8" = "R", #"Random",
-    "random16" = "R")) + #, #"Random",))+
+    "abund1" = "Abundance",
+    "abund4" = "Abundance",
+    "abund8" = "Abundance",
+    "abund16" = "Abundance",
+    "grow1" = "Growth", 
+    "grow4" = "Growth", 
+    "grow8" = "Growth", 
+    "grow16" = "Growth", 
+    "edge1" = "Edge",
+    "edge4" = "Edge",
+    "edge8" = "Edge",
+    "edge16" = "Edge",
+    "down1" = "Downstream",
+    "down4" = "Downstream",
+    "down8" = "Downstream",
+    "down16" = "Downstream",
+    "random1" = "Random",
+    "random4" = "Random",
+    "random8" = "Random",
+    "random16" = "Random"))+
   #scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("Prevention") + #ylab("Total crayfish in the Columbia River (Millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
@@ -976,8 +976,8 @@ p1 <- all_Dcol %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
-        axis.title=element_text(size=14,face="bold")#,
-        #axis.text.x = element_text(angle = 310, hjust = 0)
+        axis.title=element_text(size=14,face="bold"),
+        axis.text.x = element_text(angle = 310, hjust = 0)
         )+
   
   facet_grid(~rem, scales = "free", 
@@ -1005,26 +1005,26 @@ p4 <- all_Dcol %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A", #Abundance",
-    "abund4" = "A", #"Abundance",
-    "abund8" = "A", #"Abundance",
-    "abund16" = "A", #"Abundance",
-    "grow1" = "G", #"Growth", 
-    "grow4" = "G", #"Growth", 
-    "grow8" = "G", #"Growth", 
-    "grow16" = "G", #"Growth", 
-    "edge1" = "E", #"Edge",
-    "edge4" = "E", #"Edge",
-    "edge8" = "E", #"Edge",
-    "edge16" = "E", #"Edge",
-    "down1" = "D", #"Downstream",
-    "down4" = "D", #"Downstream",
-    "down8" = "D", #"Downstream",
-    "down16" = "D", #"Downstream",
-    "random1" = "R", #"Random",
-    "random4" = "R", #"Random",
-    "random8" = "R", #"Random",
-    "random16" = "R")) + #, #"Random",))+
+    "abund1" = "Abundance",
+    "abund4" = "Abundance",
+    "abund8" = "Abundance",
+    "abund16" = "Abundance",
+    "grow1" = "Growth", 
+    "grow4" = "Growth", 
+    "grow8" = "Growth", 
+    "grow16" = "Growth", 
+    "edge1" = "Edge",
+    "edge4" = "Edge",
+    "edge8" = "Edge",
+    "edge16" = "Edge",
+    "down1" = "Downstream",
+    "down4" = "Downstream",
+    "down8" = "Downstream",
+    "down16" = "Downstream",
+    "random1" = "Random",
+    "random4" = "Random",
+    "random8" = "Random",
+    "random16" = "Random"))+
  # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("") + #ylab("Total crayfish in the Columbia River (Millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
@@ -1039,7 +1039,7 @@ p4 <- all_Dcol %>%
         panel.grid.minor = element_blank(),
         legend.position = "none",
        # axis.title=element_text(size=14,face="bold"),
-      #  axis.text.x = element_text(angle = 310, hjust = 0)
+      axis.text.x = element_text(angle = 310, hjust = 0)
        )+
   
   facet_grid(~rem, scales = "free", 
@@ -1067,26 +1067,26 @@ p8 <- all_Dcol %>%
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
   scale_x_discrete(labels=c(
-    "abund1" = "A", #Abundance",
-    "abund4" = "A", #"Abundance",
-    "abund8" = "A", #"Abundance",
-    "abund16" = "A", #"Abundance",
-    "grow1" = "G", #"Growth", 
-    "grow4" = "G", #"Growth", 
-    "grow8" = "G", #"Growth", 
-    "grow16" = "G", #"Growth", 
-    "edge1" = "E", #"Edge",
-    "edge4" = "E", #"Edge",
-    "edge8" = "E", #"Edge",
-    "edge16" = "E", #"Edge",
-    "down1" = "D", #"Downstream",
-    "down4" = "D", #"Downstream",
-    "down8" = "D", #"Downstream",
-    "down16" = "D", #"Downstream",
-    "random1" = "R", #"Random",
-    "random4" = "R", #"Random",
-    "random8" = "R", #"Random",
-    "random16" = "R")) + #, #"Random",))+
+    "abund1" = "Abundance",
+    "abund4" = "Abundance",
+    "abund8" = "Abundance",
+    "abund16" = "Abundance",
+    "grow1" = "Growth", 
+    "grow4" = "Growth", 
+    "grow8" = "Growth", 
+    "grow16" = "Growth", 
+    "edge1" = "Edge",
+    "edge4" = "Edge",
+    "edge8" = "Edge",
+    "edge16" = "Edge",
+    "down1" = "Downstream",
+    "down4" = "Downstream",
+    "down8" = "Downstream",
+    "down16" = "Downstream",
+    "random1" = "Random",
+    "random4" = "Random",
+    "random8" = "Random",
+    "random16" = "Random"))+
  # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("") + #ylab("Total crayfish in the Columbia River (Millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
@@ -1100,8 +1100,8 @@ p8 <- all_Dcol %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
-        # axis.title=element_text(size=14,face="bold"),
-        # axis.text.x = element_text(angle = 310, hjust = 0)
+        #axis.title=element_text(size=14,face="bold"),
+         axis.text.x = element_text(angle = 310, hjust = 0)
         )+
   
   facet_grid(~rem, scales = "free", 
@@ -1128,27 +1128,6 @@ p16 <- all_Dcol %>%
                                   group = interaction(rem, location)), color = 'red') +
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
-  scale_x_discrete(labels=c(
-    "abund1" = "A", #Abundance",
-    "abund4" = "A", #"Abundance",
-    "abund8" = "A", #"Abundance",
-    "abund16" = "A", #"Abundance",
-    "grow1" = "G", #"Growth", 
-    "grow4" = "G", #"Growth", 
-    "grow8" = "G", #"Growth", 
-    "grow16" = "G", #"Growth", 
-    "edge1" = "E", #"Edge",
-    "edge4" = "E", #"Edge",
-    "edge8" = "E", #"Edge",
-    "edge16" = "E", #"Edge",
-    "down1" = "D", #"Downstream",
-    "down4" = "D", #"Downstream",
-    "down8" = "D", #"Downstream",
-    "down16" = "D", #"Downstream",
-    "random1" = "R", #"Random",
-    "random4" = "R", #"Random",
-    "random8" = "R", #"Random",
-    "random16" = "R")) + #, #"Random",))+
  # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("") + #ylab("Total crayfish in the Columbia River (Millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
@@ -1162,9 +1141,30 @@ p16 <- all_Dcol %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
-        # axis.title=element_text(size=14,face="bold"),
-        #axis.text.x = element_text(angle = 310, hjust = 0)
+        axis.title=element_text(size=14,face="bold"),
+        axis.text.x = element_text(angle = 310, hjust = 0)
         )+
+  scale_x_discrete(labels=c(
+    "abund1" = "Abundance",
+    "abund4" = "Abundance",
+    "abund8" = "Abundance",
+    "abund16" = "Abundance",
+    "grow1" = "Growth", 
+    "grow4" = "Growth", 
+    "grow8" = "Growth", 
+    "grow16" = "Growth", 
+    "edge1" = "Edge",
+    "edge4" = "Edge",
+    "edge8" = "Edge",
+    "edge16" = "Edge",
+    "down1" = "Downstream",
+    "down4" = "Downstream",
+    "down8" = "Downstream",
+    "down16" = "Downstream",
+    "random1" = "Random",
+    "random4" = "Random",
+    "random8" = "Random",
+    "random16" = "Random"))+
   
   facet_grid(~rem, scales = "free", 
              labeller = 
@@ -1191,27 +1191,27 @@ pall <- all_Dcol %>%
                                   group = interaction(rem, location)), color = 'red') +
   stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
                width = .75, color = "red", linewidth = 1)+ 
-    scale_x_discrete(labels=c(
-      "abund1" = "Abundance",
-      "abund4" = "Abundance",
-      "abund8" = "Abundance",
-      "abund16" = "Abundance",
-      "grow1" = "Growth", 
-      "grow4" = "Growth", 
-      "grow8" = "Growth", 
-      "grow16" = "Growth", 
-      "edge1" = "Edge",
-      "edge4" = "Edge",
-      "edge8" = "Edge",
-      "edge16" = "Edge",
-      "down1" = "Downstream",
-      "down4" = "Downstream",
-      "down8" = "Downstream",
-      "down16" = "Downstream",
-      "random1" = "Random",
-      "random4" = "Random",
-      "random8" = "Random",
-      "random16" = "Random"))+
+  scale_x_discrete(labels=c(
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
  # scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
   xlab("") + ylab("Prevention") + #ylab("Total crayfish in the Columbia River (Millions)")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
@@ -1255,19 +1255,19 @@ suppress0c$rem <- '8'
 suppress0d <- suppress0 
 suppress0d$rem <- '16'
 
-suppress1$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
+suppress1$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress1$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress1$rem <- '1'
 
-suppress4$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
+suppress4$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress4$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress4$rem <- '4'
 
-suppress8$location <- c('Abundance, 8', 'Downstream, 8', 'Edge, 8', 'Growth, 8', 'Random, 8')
+suppress8$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress8$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress8$rem <- '8'
 
-suppress16$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
+suppress16$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress16$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 suppress16$rem <- '16'
 
@@ -1287,19 +1287,19 @@ contain0c$rem <- '8'
 contain0d <- contain0 
 contain0d$rem <- '16'
 
-contain1$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
+contain1$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 contain1$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 contain1$rem <- '1'
 
-contain4$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
+contain4$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 contain4$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 contain4$rem <- '4'
 
-contain8$location <- c('Abundance, 8', 'Downstream, 8', 'Edge, 8', 'Growth, 8', 'Random, 8')
+contain8$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 contain8$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 contain8$rem <- '8'
 
-contain16$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
+contain16$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 contain16$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 contain16$rem <- '16'
 
@@ -1319,19 +1319,19 @@ prevent0c$rem <- '8'
 prevent0d <- prevent0 
 prevent0d$rem <- '16'
 
-prevent1$location <- c('Abundance, 1', 'Downstream, 1', 'Edge, 1', 'Growth, 1', 'Random, 1')
+prevent1$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent1$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent1$rem <- '1'
 
-prevent4$location <- c('Abundance, 4', 'Downstream, 4', 'Edge, 4', 'Growth, 4', 'Random, 4')
+prevent4$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent4$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent4$rem <- '4'
 
-prevent8$location <- c('Abundance, 8', 'Downstream, 8', 'Edge, 8', 'Growth, 8', 'Random, 8')
+prevent8$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent8$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent8$rem <- '8'
 
-prevent16$location <- c('Abundance, 16', 'Downstream, 16', 'Edge, 16', 'Growth, 16', 'Random, 16')
+prevent16$location <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent16$type <- c('Abundance', 'Downstream', 'Edge', 'Growth', 'Random')
 prevent16$rem <- '16'
 
@@ -1340,7 +1340,6 @@ prevent <- rbind(prevent0,prevent0b,prevent0c, prevent0c, prevent1, prevent4,
 
 prevent$objective <- 'prevent'
 colnames(prevent)[2:5] <- c('Expected_Prevent', 'Max_Prevent', "Low_Prevent", "High_Prevent")
-
 
 
 #### trade off 1 ####
@@ -1393,6 +1392,170 @@ t1 <-
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),legend.position = "none")+
   facet_wrap(~as.numeric(rem), nrow = 1)
+
+##### Plot 1 ####
+Objectives_svsp1 <- Objectives_svsp %>% filter(rem == '1')
+
+t1_1 <- 
+  Objectives %>% 
+  filter(rem == '1') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Prevent))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type)) + 
+  geom_errorbar(aes(ymin = Low_Prevent,ymax = High_Prevent, color = type))+
+  scale_colour_manual(name = "Management Strategy", values = colors_all) +
+  geom_point(data = Objectives_svsp1, size = 2) +
+  geom_text_repel(data=Objectives_svsp1, aes(x = Expected_Suppress, y = Expected_Prevent,
+                                            label=Objectives_svsp1$location), 
+                  color="black", 
+                  size=3 , fontface="bold",
+                  nudge_x = 100000, 
+                  nudge_y = 100000)+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  xlab("Suppression")+ ylab("Prevention")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+##### Plot 4 ####
+Objectives_svsp4 <- Objectives_svsp %>% filter(rem == '4')
+
+t1_4 <- 
+  Objectives %>% 
+  filter(rem == '4') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Prevent))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type)) + 
+  geom_errorbar(aes(ymin = Low_Prevent,ymax = High_Prevent, color = type))+
+  scale_colour_manual(name = "Management Strategy", values = colors_all) +
+  geom_point(data = Objectives_svsp4, size = 2) +
+  geom_text_repel(data=Objectives_svsp4, aes(x = Expected_Suppress, y = Expected_Prevent,
+                                            label=Objectives_svsp4$location), 
+                  color="black", 
+                  size=3 , fontface="bold",
+                  nudge_x = 100000, 
+                  nudge_y = 100000)+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  xlab("Suppression")+ ylab("Prevention")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+##### Plot 8 ####
+Objectives_svsp8 <- Objectives_svsp %>% filter(rem == '8')
+
+t1_8 <- 
+  Objectives %>% 
+  filter(rem == '8') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Prevent))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Prevent,ymax = High_Prevent, color = type))+
+  scale_colour_manual(name = "Management Strategy", values = colors_all) +
+  geom_point(data = Objectives_svsp8, size = 2) +
+  geom_text_repel(data=Objectives_svsp8, aes(x = Expected_Suppress, y = Expected_Prevent,
+                                             label=Objectives_svsp8$location), 
+                  color="black", 
+                  size=3 , fontface="bold",
+                  nudge_x = 100000, 
+                  nudge_y = 100000)+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  xlab("Suppression")+ ylab("Prevention")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+##### Plot 16 ####
+Objectives_svsp16 <- Objectives_svsp %>% filter(rem == '16')
+
+t1_16 <- 
+  Objectives %>% 
+  filter(rem == '16') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Prevent))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Prevent,ymax = High_Prevent, color = type))+
+  scale_colour_manual(name = "Management Strategy", values = colors_all) +
+  geom_point(data = Objectives_svsp16, size = 2) +
+  geom_text_repel(data=Objectives_svsp16, aes(x = Expected_Suppress, y = Expected_Prevent,
+                                             label=Objectives_svsp16$location), 
+                  color="black", 
+                  size=3 , fontface="bold",
+                  nudge_x = 100000, 
+                  nudge_y = 100000)+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  xlab("Suppression")+ ylab("Prevention")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+t1plots <- plot_grid(t1_1,t1_4,t1_8,t1_16, nrow = 1)
+
+
 
 #### trade off 2 ####
 Objectives_svsc1 <- Objectives %>% filter(rem == "1")
