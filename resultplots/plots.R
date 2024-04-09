@@ -7,8 +7,10 @@ library(RColorBrewer)
 library("cowplot")
 library(rPref)
 library(ggrepel)
+library(cowplot)
+library(gridExtra)
 
-path <- 'D:\\Chapter2\\results'
+path <- 'E:\\Chapter2\\results'
 
 low <- 0.1
 high <- 0.9
@@ -20,7 +22,7 @@ all_Ntotal <- data.frame(all_Ntotal)
 
 all_Ntotal$rem <- as.factor(all_Ntotal$rem)
 
-detach(packagD:plyr)
+detach(packagE:plyr)
 
 suppress0 <- all_Ntotal %>%
   filter(rem == '0') %>% 
@@ -158,6 +160,7 @@ s1 <- all_Ntotal %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         axis.title=element_text(size=14,face="bold"),
        # axis.text.x = element_text(angle = 310, hjust = 0)
         )+
@@ -222,6 +225,7 @@ s4 <- all_Ntotal %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         #axis.title=element_text(size=14,face="bold"),
         #axis.text.x = element_text(angle = 310, hjust = 0)
         )+
@@ -284,6 +288,7 @@ s8 <- all_Ntotal %>%
         axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         legend.position = "none",
         #axis.title=element_text(size=14,face="bold"),
         axis.text.x = element_text(angle = 310, hjust = 0)
@@ -348,6 +353,7 @@ s16 <- all_Ntotal %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         axis.title=element_text(size=14,face="bold"),
         axis.text.x = element_text(angle = 310, hjust = 0)
         )+
@@ -574,6 +580,7 @@ c1 <- all_Ninvade %>%
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         axis.title=element_text(size=14,face="bold")#,
        # axis.text.x = element_text(angle = 310, hjust = 0)
         )+
@@ -634,6 +641,7 @@ c4 <- all_Ninvade %>%
         axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         legend.position = "none",
       #  axis.title=element_text(size=14,face="bold"),
         #axis.text.x = element_text(angle = 310, hjust = 0)
@@ -695,6 +703,7 @@ c8 <- all_Ninvade %>%
         axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         legend.position = "none",
        # axis.title=element_text(size=14,face="bold"),
        # axis.text.x = element_text(angle = 310, hjust = 0)
@@ -756,6 +765,7 @@ c16 <- all_Ninvade %>%
         axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         legend.position = "none",
        # axis.title=element_text(size=14,face="bold"),
         # axis.text.x = element_text(angle = 310, hjust = 0)
@@ -975,9 +985,10 @@ p1 <- all_Dcol %>%
         axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         legend.position = "none",
         axis.title=element_text(size=14,face="bold"),
-        axis.text.x = element_text(angle = 310, hjust = 0)
+        axis.text.x = element_text(angle = 90, vjust = 0)
         )+
   
   facet_grid(~rem, scales = "free", 
@@ -1037,9 +1048,10 @@ p4 <- all_Dcol %>%
         axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         legend.position = "none",
        # axis.title=element_text(size=14,face="bold"),
-      axis.text.x = element_text(angle = 310, hjust = 0)
+       axis.text.x = element_text(angle = 90, vjust = 0)
        )+
   
   facet_grid(~rem, scales = "free", 
@@ -1099,9 +1111,10 @@ p8 <- all_Dcol %>%
         axis.line = element_line(colour = "gray20", linewidth = 1),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
         legend.position = "none",
         #axis.title=element_text(size=14,face="bold"),
-         axis.text.x = element_text(angle = 310, hjust = 0)
+        axis.text.x = element_text(angle = 90, vjust = 0)
         )+
   
   facet_grid(~rem, scales = "free", 
@@ -1142,7 +1155,8 @@ p16 <- all_Dcol %>%
         panel.grid.minor = element_blank(),
         legend.position = "none",
         axis.title=element_text(size=14,face="bold"),
-        axis.text.x = element_text(angle = 310, hjust = 0)
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
+        axis.text.x = element_text(angle = 90, vjust = 0)
         )+
   scale_x_discrete(labels=c(
     "abund1" = "Abundance",
@@ -1401,7 +1415,7 @@ t1_1 <-
   filter(rem == '1') %>% 
   ggplot(aes(x = Expected_Suppress, y = Expected_Prevent))+
   geom_point(size = 2,aes(color = type))+
-  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type)) + 
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
   geom_errorbar(aes(ymin = Low_Prevent,ymax = High_Prevent, color = type))+
   scale_colour_manual(name = "Management Strategy", values = colors_all) +
   geom_point(data = Objectives_svsp1, size = 2) +
@@ -1413,7 +1427,7 @@ t1_1 <-
                   nudge_y = 100000)+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
-  xlab("Suppression")+ ylab("Prevention")+
+  xlab("Suppression")+ ylab("")+
   theme_bw() +   
   theme(panel.border = element_blank(),
         strip.background=element_rect(colour="white",
@@ -1423,7 +1437,7 @@ t1_1 <-
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
-        axis.title=element_text(size=14,face="bold")
+        axis.title=element_text(size=10,face="bold")
   )+
   facet_grid(~rem, scales = "free", 
              labeller = 
@@ -1441,7 +1455,7 @@ t1_4 <-
   filter(rem == '4') %>% 
   ggplot(aes(x = Expected_Suppress, y = Expected_Prevent))+
   geom_point(size = 2,aes(color = type))+
-  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type)) + 
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
   geom_errorbar(aes(ymin = Low_Prevent,ymax = High_Prevent, color = type))+
   scale_colour_manual(name = "Management Strategy", values = colors_all) +
   geom_point(data = Objectives_svsp4, size = 2) +
@@ -1453,7 +1467,7 @@ t1_4 <-
                   nudge_y = 100000)+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
-  xlab("Suppression")+ ylab("Prevention")+
+  xlab("Suppression")+ ylab("")+
   theme_bw() +   
   theme(panel.border = element_blank(),
         strip.background=element_rect(colour="white",
@@ -1463,7 +1477,7 @@ t1_4 <-
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
-        axis.title=element_text(size=14,face="bold")
+        axis.title=element_text(size=10,face="bold")
   )+
   facet_grid(~rem, scales = "free", 
              labeller = 
@@ -1493,7 +1507,7 @@ t1_8 <-
                   nudge_y = 100000)+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
-  xlab("Suppression")+ ylab("Prevention")+
+  xlab("Suppression")+ ylab("")+
   theme_bw() +   
   theme(panel.border = element_blank(),
         strip.background=element_rect(colour="white",
@@ -1503,7 +1517,7 @@ t1_8 <-
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
-        axis.title=element_text(size=14,face="bold")
+        axis.title=element_text(size=10,face="bold")
   )+
   facet_grid(~rem, scales = "free", 
              labeller = 
@@ -1533,7 +1547,7 @@ t1_16 <-
                   nudge_y = 100000)+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
-  xlab("Suppression")+ ylab("Prevention")+
+  xlab("Suppression")+ ylab("")+
   theme_bw() +   
   theme(panel.border = element_blank(),
         strip.background=element_rect(colour="white",
@@ -1543,7 +1557,7 @@ t1_16 <-
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.position = "none",
-        axis.title=element_text(size=14,face="bold")
+        axis.title=element_text(size=10,face="bold")
   )+
   facet_grid(~rem, scales = "free", 
              labeller = 
@@ -1555,7 +1569,13 @@ t1_16 <-
 
 t1plots <- plot_grid(t1_1,t1_4,t1_8,t1_16, nrow = 1)
 
+y.grob <- textGrob("Prevention", 
+                   gp=gpar(fontface="bold", col="black", fontsize=14), rot=90)
 
+#add to plot
+
+
+T1GROB <- grid.arrange(arrangeGrob(t1plots, left = y.grob))
 
 #### trade off 2 ####
 Objectives_svsc1 <- Objectives %>% filter(rem == "1")
@@ -1629,6 +1649,180 @@ t4 <-
         legend.direction = "horizontal")+
   facet_wrap(~as.numeric(rem), nrow = 1)
 
+##### Plot 1 ####
+Objectives_svsc1 <- Objectives_svsc %>% filter(rem == '1')
+
+t2_1 <- 
+  Objectives %>% 
+  filter(rem == '1') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Contain))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
+  scale_colour_manual(name = "Alternative", values = colors_all) +
+  geom_point(data = Objectives_svsc1, size = 2) +
+  geom_text_repel(data=Objectives_svsc1, aes(x = Expected_Suppress, y = Expected_Contain + 0.01,
+                                            label=Objectives_svsc1$location), 
+                  nudge_y = 0,
+                  color="black", 
+                  nudge_x = 100000,
+                  size=3 , fontface="bold" )+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels=scales::percent) +
+  xlab("Suppression")+ ylab("")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=10,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+##### Plot 4 ####
+Objectives_svsc4 <- Objectives_svsc %>% filter(rem == '4')
+
+t2_4 <- 
+  Objectives %>% 
+  filter(rem == '4') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Contain))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
+  scale_colour_manual(name = "Alternative", values = colors_all) +
+  geom_point(data = Objectives_svsc4, size = 2) +
+  geom_text_repel(data=Objectives_svsc4, aes(x = Expected_Suppress, y = Expected_Contain + 0.01,
+                                             label=Objectives_svsc4$location), 
+                  nudge_y = 0,
+                  color="black", 
+                  nudge_x = 100000,
+                  size=3 , fontface="bold" )+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels=scales::percent) +
+  xlab("Suppression")+ ylab("")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=10,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+##### Plot 8 ####
+Objectives_svsc8 <- Objectives_svsc %>% filter(rem == '8')
+
+t2_8 <- 
+  Objectives %>% 
+  filter(rem == '8') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Contain))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
+  scale_colour_manual(name = "Alternative", values = colors_all) +
+  geom_point(data = Objectives_svsc8, size = 2) +
+  geom_text_repel(data=Objectives_svsc8, aes(x = Expected_Suppress, y = Expected_Contain + 0.01,
+                                             label=Objectives_svsc8$location), 
+                  nudge_y = 0,
+                  color="black", 
+                  nudge_x = 100000,
+                  size=3 , fontface="bold" )+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels=scales::percent) +
+  xlab("Suppression")+ ylab("")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=10,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+
+##### Plot 16 ####
+Objectives_svsc16 <- Objectives_svsc %>% filter(rem == '16')
+
+t2_16 <- 
+  Objectives %>% 
+  filter(rem == '16') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Contain))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
+  scale_colour_manual(name = "Alternative", values = colors_all) +
+  geom_point(data = Objectives_svsc16, size = 2) +
+  geom_text_repel(data=Objectives_svsc16, aes(x = Expected_Suppress, y = Expected_Contain + 0.01,
+                                             label=Objectives_svsc16$location), 
+                  nudge_y = 0,
+                  color="black", 
+                  nudge_x = 100000,
+                  size=3 , fontface="bold" )+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels=scales::percent) +
+  xlab("Suppression")+ ylab("")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=10,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+
+t2plots <- plot_grid(t2_1,t2_4,t2_8,t2_16, nrow = 1)
+
+y.grob <- textGrob("Containment", 
+                   gp=gpar(fontface="bold", col="black", fontsize=14), rot=90)
+
+#add to plot
+
+
+T2GROB <- grid.arrange(arrangeGrob(t2plots, left = y.grob))
+
+
+
 #### Trade off 3 ####
 Objectives_pvsc1 <- Objectives %>% filter(rem == "1")
 Objectives_pvsc1 <- psel(Objectives_pvsc1, low(Expected_Prevent) * low(Expected_Contain))
@@ -1672,33 +1866,216 @@ t3 <- ggplot(Objectives,aes(x = Expected_Prevent, y = Expected_Contain))+
   facet_wrap(~as.numeric(rem), nrow = 1)
 
 
+##### Plot 1 ####
+Objectives_pvsc1 <- Objectives_pvsc %>% filter(rem == '1')
+
+t3_1 <- 
+  Objectives %>% 
+  filter(rem == '1') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Contain))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
+  scale_colour_manual(name = "Alternative", values = colors_all) +
+  geom_point(data = Objectives_pvsc1, size = 2) +
+  geom_text_repel(data=Objectives_pvsc1, aes(x = Expected_Suppress, y = Expected_Contain + 0.01,
+                                             label=Objectives_pvsc1$location), 
+                  nudge_y = 0,
+                  color="black", 
+                  nudge_x = 100000,
+                  size=3 , fontface="bold" )+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels=scales::percent) +
+  xlab("Prevention")+ ylab("")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=10,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+##### Plot 4 ####
+Objectives_pvsc4 <- Objectives_pvsc %>% filter(rem == '4')
+
+t3_4 <- 
+  Objectives %>% 
+  filter(rem == '4') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Contain))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
+  scale_colour_manual(name = "Alternative", values = colors_all) +
+  geom_point(data = Objectives_pvsc4, size = 2) +
+  geom_text_repel(data=Objectives_pvsc4, aes(x = Expected_Suppress, y = Expected_Contain + 0.01,
+                                             label=Objectives_pvsc4$location), 
+                  nudge_y = 0,
+                  color="black", 
+                  nudge_x = 100000,
+                  size=3 , fontface="bold" )+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels=scales::percent) +
+  xlab("Prevention")+ ylab("")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=10,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+##### Plot 8 ####
+Objectives_pvsc8 <- Objectives_pvsc %>% filter(rem == '8')
+
+t3_8 <- 
+  Objectives %>% 
+  filter(rem == '8') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Contain))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
+  scale_colour_manual(name = "Alternative", values = colors_all) +
+  geom_point(data = Objectives_pvsc8, size = 2) +
+  geom_text_repel(data=Objectives_pvsc8, aes(x = Expected_Suppress, y = Expected_Contain + 0.01,
+                                             label=Objectives_pvsc8$location), 
+                  nudge_y = 0,
+                  color="black", 
+                  nudge_x = 100000,
+                  size=3 , fontface="bold" )+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels=scales::percent) +
+  xlab("Prevention")+ ylab("")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=10,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+##### Plot 16 ####
+Objectives_pvsc16 <- Objectives_pvsc %>% filter(rem == '16')
+
+t3_16 <- 
+  Objectives %>% 
+  filter(rem == '16') %>% 
+  ggplot(aes(x = Expected_Suppress, y = Expected_Contain))+
+  geom_point(size = 2,aes(color = type))+
+  geom_errorbarh(aes(xmin = Low_Suppress,xmax = High_Suppress, color = type), height=0) + 
+  geom_errorbar(aes(ymin = Low_Contain,ymax = High_Contain, color = type))+
+  scale_colour_manual(name = "Alternative", values = colors_all) +
+  geom_point(data = Objectives_pvsc16, size = 2) +
+  geom_text_repel(data=Objectives_pvsc16, aes(x = Expected_Suppress, y = Expected_Contain + 0.01,
+                                             label=Objectives_pvsc16$location), 
+                  nudge_y = 0,
+                  color="black", 
+                  nudge_x = 100000,
+                  size=3 , fontface="bold" )+
+  scale_x_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
+  scale_y_continuous(labels=scales::percent) +
+  xlab("Prevention")+ ylab("")+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = "none",
+        axis.title=element_text(size=10,face="bold")
+  )+
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+t3plots <- plot_grid(t3_1,t3_4,t3_8,t3_16, nrow = 1)
+
+y.grob <- textGrob("Containment", 
+                   gp=gpar(fontface="bold", col="black", fontsize=14), rot=90)
+
+#add to plot
+
+
+T3GROB <- grid.arrange(arrangeGrob(t3plots, left = y.grob))
+
+#### COMBINE ####
+
 
 legend2<- get_legend(
   t4 
 )
 
+# plot_grid(
+#   
+#   plot_grid(t2, NULL,
+#             nrow = 1, rel_widths = c(0.35, 0.1),
+#             labels = c("A", "")),#) #,
+#   
+#   plot_grid(t1, legend2,
+#            nrow = 1, rel_widths = c(0.35, 0.1),
+#           labels = c("B", "")),#)#,
+# 
+# 
+# 
+#   plot_grid(t3, NULL,
+#             nrow = 1, rel_widths = c(0.35, 0.1),
+#             labels = c("C", "")),
+#   nrow = 3
+# )
+# 
+# 
+# plot_grid(
+#   t2,t1,t3, legend2, labels = c("A", "B", "C", ""),
+#   rel_heights = c(2,2,2,1),
+#   
+#   nrow = 4
+# )
+
+
 plot_grid(
-  
-  plot_grid(t2, NULL,
-            nrow = 1, rel_widths = c(0.35, 0.1),
-            labels = c("A", "")),#) #,
-  
-  plot_grid(t1, legend2,
-           nrow = 1, rel_widths = c(0.35, 0.1),
-          labels = c("B", "")),#)#,
-
-
-
-  plot_grid(t3, NULL,
-            nrow = 1, rel_widths = c(0.35, 0.1),
-            labels = c("C", "")),
-  nrow = 3
-)
-
-
-plot_grid(
-  t2,t1,t3, legend2, labels = c("A", "B", "C", ""),
+  T1GROB,T2GROB,T3GROB, legend2, labels = c("A", "B", "C", ""),
   rel_heights = c(2,2,2,1),
   
   nrow = 4
 )
+
+
+#grid.arrange(T1GROB, T2GROB, T3GROB, legend2)
