@@ -22,7 +22,7 @@ all_Ntotal <- data.frame(all_Ntotal)
 
 all_Ntotal$rem <- as.factor(all_Ntotal$rem)
 
-detach(packagE:plyr)
+detach(package:plyr)
 
 suppress0 <- all_Ntotal %>%
   filter(rem == '0') %>% 
@@ -1355,6 +1355,27 @@ prevent <- rbind(prevent0,prevent0b,prevent0c, prevent0c, prevent1, prevent4,
 prevent$objective <- 'prevent'
 colnames(prevent)[2:5] <- c('Expected_Prevent', 'Max_Prevent', "Low_Prevent", "High_Prevent")
 
+#### trade off all ####
+Objectives <- cbind(suppress[,1:7], prevent[,2:5], contain[,2:5])
+Objectives_1<- Objectives %>% filter(rem == "1")
+Objectives_1 <- psel(Objectives_1, low(Expected_Suppress) * low(Expected_Prevent) * low(Expected_Contain))
+Objectives_1$rem <- '1'
+
+Objectives_4 <- Objectives %>% filter(rem == "4")
+Objectives_4 <- psel(Objectives_4, low(Expected_Suppress) * low(Expected_Prevent)* low(Expected_Contain))
+Objectives_4$rem <- '4'
+
+Objectives_8 <- Objectives %>% filter(rem == "8")
+Objectives_8 <- psel(Objectives_8, low(Expected_Suppress) * low(Expected_Prevent)* low(Expected_Contain))
+Objectives_8$rem <- '8'
+
+Objectives_16 <- Objectives %>% filter(rem == "16")
+Objectives_16 <- psel(Objectives_16, low(Expected_Suppress) * low(Expected_Prevent)* low(Expected_Contain))
+Objectives_16$rem <- '16'
+
+Objectives_all <- rbind(Objectives_1, Objectives_4, Objectives_8, Objectives_16)
+
+Objectives_all
 
 #### trade off 1 ####
 Objectives <- cbind(suppress[,1:7], prevent[,2:5], contain[,2:5])
