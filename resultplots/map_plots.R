@@ -23,17 +23,18 @@ all_segfin <- all_segfin %>% select(segment, count, location)
 colnames(all_segfin)[1] <- "Segment"
 colnames(all_segfin)[2] <- "Crayfish abundance"
 
-all_segfin$location[all_segfin$location == 'abund'] <- 2
-all_segfin$location[all_segfin$location == 'down'] <- 3
-all_segfin$location[all_segfin$location == 'edge'] <- 4
-all_segfin$location[all_segfin$location == 'grow'] <- 5
-all_segfin$location[all_segfin$location == 'random'] <- 6
 all_segfin$location[all_segfin$location == 'nocontrol'] <- 1
+all_segfin$location[all_segfin$location == 'abund'] <- 2
+all_segfin$location[all_segfin$location == 'grow'] <- 3
+all_segfin$location[all_segfin$location == 'edge'] <- 4
+all_segfin$location[all_segfin$location == 'down'] <- 5
+all_segfin$location[all_segfin$location == 'random'] <- 6
+
 
 
 all_segfin$location <- as.numeric(all_segfin$location)
 
-level_order <- c("No removal", "Abundance, 1", "Downstream, 1", "Edge, 1", "Growth, 1", "Random, 1")
+level_order <- c("No removal", "Abundance, 1", "Growth, 1","Edges, 1","Downstream, 1",   "Random, 1")
 
 jdr_20k_sf <- read_sf(here::here("data", "initial_population", "JDR_20km_initpop.shp"))
 jdr_abund <- merge(jdr_20k_sf, all_segfin, by  = "Segment")
@@ -43,9 +44,11 @@ breaks = c(0.00001, 1, 2, 4, 6, 8, 10) * 100000
 colors <- c("grey", "lightblue", "gold", "darkorange", "red", "black" )
 color <- RColorBrewer::brewer.pal(11, "Paired")[1]
 
-jdr_abund <- jdr_abund %>% filter(location != 'No removal')
 
-tmap_options(bg.color = 'white', legend.text.color = 'black') +
+bg <- basemaps::basemap_raster(ext=jdr_abund, map_service = "esri", map_type = "world_hillshade")
+
+tm_shape(bg) +  
+  tm_rgb()+
   tm_shape(jdr_abund) +
   tm_lines(
     col = "Crayfish abundance",
@@ -56,13 +59,13 @@ tmap_options(bg.color = 'white', legend.text.color = 'black') +
   tm_facets(by=c("location"))+
   tm_layout(legend.position = c("right", "center"), 
             panel.labels = level_order,
-            panel.label.size = 1.2,
-            legend.text.size = 0.9, 
-            legend.width = 2, 
-            frame = "white",
+            panel.label.size = 1,
+            legend.text.size = 0.8, 
+            legend.width = 15, 
+            frame = "black",
             legend.show=FALSE,
             frame.lwd = 0,
-            panel.label.bg.color = "white")
+            panel.label.bg.color = NA)
 
 ##### plot 4 ####
 path <- 'E:\\Chapter2\\results'
@@ -78,17 +81,17 @@ all_segfin <- all_segfin %>% select(segment, count, location)
 colnames(all_segfin)[1] <- "Segment"
 colnames(all_segfin)[2] <- "Crayfish abundance"
 
-all_segfin$location[all_segfin$location == 'abund'] <- 2
-all_segfin$location[all_segfin$location == 'down'] <- 3
-all_segfin$location[all_segfin$location == 'edge'] <- 4
-all_segfin$location[all_segfin$location == 'grow'] <- 5
-all_segfin$location[all_segfin$location == 'random'] <- 6
 #all_segfin$location[all_segfin$location == 'nocontrol'] <- 1
+all_segfin$location[all_segfin$location == 'abund'] <- 2
+all_segfin$location[all_segfin$location == 'grow'] <- 3
+all_segfin$location[all_segfin$location == 'edge'] <- 4
+all_segfin$location[all_segfin$location == 'down'] <- 5
+all_segfin$location[all_segfin$location == 'random'] <- 6
 
 
 all_segfin$location <- as.numeric(all_segfin$location)
 
-level_order <- c("Abundance, 4", "Downstream, 4", "Edge, 4", "Growth, 4", "Random, 4")
+level_order <- c("Abundance, 4", "Growth, 4","Edges, 4", "Downstream, 4",  "Random, 4")
 
 jdr_20k_sf <- read_sf(here::here("data", "initial_population", "JDR_20km_initpop.shp"))
 jdr_abund <- merge(jdr_20k_sf, all_segfin, by  = "Segment")
@@ -98,8 +101,8 @@ breaks = c(0.00001, 1, 2, 4, 6, 8, 10) * 100000
 colors <- c("grey", "lightblue", "gold", "darkorange", "red", "black" )
 color <- RColorBrewer::brewer.pal(11, "Paired")[1]
 
-
-tmap_options(bg.color = 'white', legend.text.color = 'black') +
+tm_shape(bg) +  
+  tm_rgb()+
   tm_shape(jdr_abund) +
   tm_lines(
     col = "Crayfish abundance",
@@ -110,13 +113,14 @@ tmap_options(bg.color = 'white', legend.text.color = 'black') +
   tm_facets(by=c("location"))+
   tm_layout(legend.position = c("right", "center"), 
             panel.labels = level_order,
-            panel.label.size = 1.2,
-            legend.text.size = 0.9, 
-            legend.width = 2, 
-            frame = "white",
-            legend.show=FALSE,
+            panel.label.size = 1,
+            legend.text.size = 0.8, 
+            legend.width = 15, 
+            frame = "black",
+            legend.show=TRUE,
             frame.lwd = 0,
-            panel.label.bg.color = "white")
+            panel.label.bg.color = NA)
+
 
 ##### plot 8 ####
 path <- 'E:\\Chapter2\\results'
@@ -132,17 +136,17 @@ all_segfin <- all_segfin %>% select(segment, count, location)
 colnames(all_segfin)[1] <- "Segment"
 colnames(all_segfin)[2] <- "Crayfish abundance"
 
-all_segfin$location[all_segfin$location == 'abund'] <- 2
-all_segfin$location[all_segfin$location == 'down'] <- 3
-all_segfin$location[all_segfin$location == 'edge'] <- 4
-all_segfin$location[all_segfin$location == 'grow'] <- 5
-all_segfin$location[all_segfin$location == 'random'] <- 6
 #all_segfin$location[all_segfin$location == 'nocontrol'] <- 1
+all_segfin$location[all_segfin$location == 'abund'] <- 2
+all_segfin$location[all_segfin$location == 'grow'] <- 3
+all_segfin$location[all_segfin$location == 'edge'] <- 4
+all_segfin$location[all_segfin$location == 'down'] <- 5
+all_segfin$location[all_segfin$location == 'random'] <- 6
 
 
 all_segfin$location <- as.numeric(all_segfin$location)
 
-level_order <- c("Abundance, 8", "Downstream, 8", "Edge, 8", "Growth, 8", "Random, 8")
+level_order <- c("Abundance, 8", "Growth, 8","Edges, 8","Downstream, 8","Random, 8")
 
 jdr_20k_sf <- read_sf(here::here("data", "initial_population", "JDR_20km_initpop.shp"))
 jdr_abund <- merge(jdr_20k_sf, all_segfin, by  = "Segment")
@@ -153,7 +157,8 @@ colors <- c("grey", "lightblue", "gold", "darkorange", "red", "black" )
 color <- RColorBrewer::brewer.pal(11, "Paired")[1]
 
 
-tmap_options(bg.color = 'white', legend.text.color = 'black') +
+tm_shape(bg) +  
+  tm_rgb()+
   tm_shape(jdr_abund) +
   tm_lines(
     col = "Crayfish abundance",
@@ -164,13 +169,13 @@ tmap_options(bg.color = 'white', legend.text.color = 'black') +
   tm_facets(by=c("location"))+
   tm_layout(legend.position = c("right", "center"), 
             panel.labels = level_order,
-            panel.label.size = 1.2,
-            legend.text.size = 0.9, 
-            legend.width = 2, 
-            frame = "white",
+            panel.label.size = 1,
+            legend.text.size = 0.8, 
+            legend.width = 15, 
+            frame = "black",
             legend.show=FALSE,
             frame.lwd = 0,
-            panel.label.bg.color = "white")
+            panel.label.bg.color = NA)
 
 ##### plot 16 ####
 path <- 'E:\\Chapter2\\results'
@@ -186,17 +191,17 @@ all_segfin <- all_segfin %>% select(segment, count, location)
 colnames(all_segfin)[1] <- "Segment"
 colnames(all_segfin)[2] <- "Crayfish abundance"
 
-all_segfin$location[all_segfin$location == 'abund'] <- 2
-all_segfin$location[all_segfin$location == 'down'] <- 3
-all_segfin$location[all_segfin$location == 'edge'] <- 4
-all_segfin$location[all_segfin$location == 'grow'] <- 5
-all_segfin$location[all_segfin$location == 'random'] <- 6
 all_segfin$location[all_segfin$location == 'nocontrol'] <- 1
+all_segfin$location[all_segfin$location == 'abund'] <- 2
+all_segfin$location[all_segfin$location == 'grow'] <- 3
+all_segfin$location[all_segfin$location == 'edge'] <- 4
+all_segfin$location[all_segfin$location == 'down'] <- 5
+all_segfin$location[all_segfin$location == 'random'] <- 6
 
 
 all_segfin$location <- as.numeric(all_segfin$location)
 
-level_order <- c("No removal", "Abundance", "Growth", "Edge", "Downstream",  "Random")
+level_order <- c("No removal", "Target Abundance", "Target Growth", "Target Edges","Target Downstream", "Target Random")
 
 jdr_20k_sf <- read_sf(here::here("data", "initial_population", "JDR_20km_initpop.shp"))
 jdr_abund <- merge(jdr_20k_sf, all_segfin, by  = "Segment")
