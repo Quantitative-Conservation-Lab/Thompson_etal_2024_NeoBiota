@@ -5,7 +5,7 @@ library(data.table)
 library(scales)
 library(RColorBrewer) 
 
-path <- 'D:\\Chapter2\\results'
+path <- 'E:\\Chapter2\\results'
 
 ###### Final total N #####
 file_name = paste(path, 'all_Ntotal.csv',sep = '/')
@@ -44,10 +44,10 @@ ggplot(all_Ntotal)+
   geom_boxplot(aes(x = factor(location, level = level_order), y = count, 
                    group = interaction(p,rem, location), col = as.factor(p)))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
-                            "down" = "Downstream", "edge" = "Edge",
+                            "down" = "Downstream", "edge" = "Edges",
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Management Strategy") + ylab("Final total crayfish abundance (millions)")+
+  xlab("Management Strategy") + ylab("Suppression")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
@@ -95,7 +95,7 @@ ggplot(all_Nvtime)+
 
 colD <- brewer.pal(9, "Set1") 
 colorsD <- c(colD[2], colD[3], colD[4], colD[5], "black", colD[9])
-labelD <- c("Abundance", "Downstream", "Edge", "Growth", "No control", "Random")
+labelD <- c("Abundance", "Downstream", "Edges", "Growth", "No control", "Random")
 
 
 file_name = paste(path, 'all_Nvtime.csv',sep = '/')
@@ -153,10 +153,10 @@ ggplot(all_Dcol)+
   geom_boxplot(aes(x = factor(location, level = level_order), y = count, 
                    group = interaction(p,rem, location), col = as.factor(p)))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
-                            "down" = "Downstream", "edge" = "Edge",
+                            "down" = "Downstream", "edge" = "Edges",
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Management Strategy") + ylab("Total crayfish in the Columbia River")+
+  xlab("Management Strategy") + ylab("Prevention")+
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
@@ -181,7 +181,7 @@ ggplot(all_Dtrav)+
   geom_boxplot(aes(x = factor(location, level = level_order), y = distance, 
                    group = interaction(p,rem, location), col = as.factor(p)))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
-                            "down" = "Downstream", "edge" = "Edge",
+                            "down" = "Downstream", "edge" = "Edges",
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
   xlab("Management Strategy") + ylab("Total distance traveled")+
@@ -222,10 +222,10 @@ ggplot(all_Ninvade)+
   geom_boxplot(aes(x = factor(location, level = level_order), y = invasion, 
                    group = interaction(p,rem, location), col = as.factor(p)))+
   scale_x_discrete(labels=c("nocontrol" = "No removal", "abund" = "Abundance",
-                            "down" = "Downstream", "edge" = "Edge",
+                            "down" = "Downstream", "edge" = "Edges",
                             "grow" = "Growth", "random" = "Random"))+
   scale_color_manual(name = "Removal rate", labels = rem.label, values = colors) +
-  xlab("Management Strategy") + ylab("Number of segments invaded")+
+  xlab("Management Strategy") + ylab("Containment")+
   facet_wrap( ~rem, nrow = 3, labeller = labeller(rem = new))+
   theme_bw() +   
   theme(strip.background=element_rect(colour="white",
