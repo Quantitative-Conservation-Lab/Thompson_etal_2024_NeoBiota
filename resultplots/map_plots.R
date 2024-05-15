@@ -10,7 +10,7 @@ library(RColorBrewer)
 library(cowplot)
 
 ##### plot 1 ####
-path <- 'E:\\Chapter2\\results'
+path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_segfin.csv',sep = '/')
 all_segfin <- fread(file_name)
 all_segfin <- data.frame(all_segfin)
@@ -67,8 +67,34 @@ tm_shape(bg) +
             frame.lwd = 0,
             panel.label.bg.color = NA)
 
+
+## no removal sub
+g <- basemaps::basemap_raster(ext=jdr_abund, map_service = "esri", map_type = "world_hillshade")
+
+jdr_abundnc <- jdr_abund %>% filter(location == 1)
+
+tm_shape(bg) +  
+  tm_rgb()+
+  tm_shape(jdr_abundnc) +
+  tm_lines(
+    col = "Crayfish abundance",
+    palette = colors,
+    breaks = breaks, 
+    lwd = 8
+  ) + 
+  tm_facets(by=c("location"))+
+  tm_layout(legend.position = c("right", "center"), 
+            panel.labels = level_order,
+            panel.label.size = 1,
+            legend.text.size = 0.8, 
+            legend.width = 15, 
+            frame = "black",
+            #legend.show=FALSE,
+            frame.lwd = 0,
+            panel.label.bg.color = NA)
+
 ##### plot 4 ####
-path <- 'E:\\Chapter2\\results'
+path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_segfin.csv',sep = '/')
 all_segfin <- fread(file_name)
 all_segfin <- data.frame(all_segfin)
@@ -123,7 +149,7 @@ tm_shape(bg) +
 
 
 ##### plot 8 ####
-path <- 'E:\\Chapter2\\results'
+path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_segfin.csv',sep = '/')
 all_segfin <- fread(file_name)
 all_segfin <- data.frame(all_segfin)
@@ -178,7 +204,7 @@ tm_shape(bg) +
             panel.label.bg.color = NA)
 
 ##### plot 16 ####
-path <- 'E:\\Chapter2\\results'
+path <- 'D:\\Chapter2\\results'
 file_name = paste(path, 'all_segfin.csv',sep = '/')
 all_segfin <- fread(file_name)
 all_segfin <- data.frame(all_segfin)
@@ -235,9 +261,68 @@ tm_shape(jdr_abund) +
             frame.lwd = 0,
             panel.label.bg.color = NA)
 
+##### plot 1 again ####
+path <- 'D:\\Chapter2\\results'
+file_name = paste(path, 'all_segfin.csv',sep = '/')
+all_segfin <- fread(file_name)
+all_segfin <- data.frame(all_segfin)
+
+nc <- all_segfin %>% filter(location == 'nocontrol')
+all_segfin <- all_segfin %>%  filter(p == 1 & rem == 1)
+
+all_segfin <- rbind(all_segfin, nc)
+all_segfin <- all_segfin %>% select(segment, count, location)
+colnames(all_segfin)[1] <- "Segment"
+colnames(all_segfin)[2] <- "Crayfish abundance"
+
+all_segfin$location[all_segfin$location == 'nocontrol'] <- 1
+all_segfin$location[all_segfin$location == 'abund'] <- 2
+all_segfin$location[all_segfin$location == 'grow'] <- 3
+all_segfin$location[all_segfin$location == 'edge'] <- 4
+all_segfin$location[all_segfin$location == 'down'] <- 5
+all_segfin$location[all_segfin$location == 'random'] <- 6
+
+
+all_segfin$location <- as.numeric(all_segfin$location)
+
+level_order <- c("No removal", "Target Abundance", "Target Growth", "Target Edges","Target Downstream", "Target Random")
+
+jdr_20k_sf <- read_sf(here::here("data", "initial_population", "JDR_20km_initpop.shp"))
+jdr_abund <- merge(jdr_20k_sf, all_segfin, by  = "Segment")
+
+
+breaks = c(0.00001, 1, 2, 4, 6, 8, 10) * 100000
+colors <- c("grey", "lightblue", "gold", "darkorange", "red", "black" )
+color <- RColorBrewer::brewer.pal(11, "Paired")[1]
+
+bg <- basemaps::basemap_raster(ext=jdr_abund, map_service = "esri", map_type = "world_hillshade")
+
+
+#tmap_options(bg.color = 'white', legend.text.color = 'black') +
+tm_shape(bg) +  
+  tm_rgb()+
+  tm_shape(jdr_abund) +
+  tm_lines(
+    col = "Crayfish abundance",
+    palette = colors,
+    breaks = breaks, 
+    lwd = 5
+  ) + 
+  tm_facets(by=c("location"))+
+  tm_layout(legend.position = c("right", "center"), 
+            panel.labels = level_order,
+            panel.label.size = 1,
+            legend.text.size = 0.8, 
+            legend.width = 15, 
+            frame = "black",
+            legend.show=TRUE,
+            frame.lwd = 0,
+            panel.label.bg.color = NA)
+
+
 # ##################################################################################
 # ###### Animation######
-# path <- 'E:\\Chapter2\\results\\edge'
+# path <- 'D:\\Chapter2\\results\\edge'
 # file_name = paste(path, 'edge_segfin_summary.csv',sep = '/')
 # edge_segfin <- fread(file_name)
 # edge_segfin <- data.frame(edge_segfin)
