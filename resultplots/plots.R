@@ -10,7 +10,7 @@ library(ggrepel)
 library(cowplot)
 library(gridExtra)
 
-path <- 'D:\\Chapter2\\results'
+path <- 'E:\\Chapter2\\results'
 
 low <- 0.1
 high <- 0.9
@@ -1412,3 +1412,145 @@ Objectives_16$location
 Objectives_all <- rbind(Objectives_1, Objectives_4, Objectives_8, Objectives_16)
 
 Objectives_all
+
+
+#### Dissertation plot ####
+splots_D <- plot_grid(s1,s16, nrow = 1)
+splots_D
+
+cplots_D <- plot_grid(c1,c16, nrow = 1)
+cplots_D
+
+max.data <- all_Dcol %>%
+  group_by(location, rem) %>%
+  filter(count == max(count) & rem == '1') 
+
+p1 <- all_Dcol %>% 
+  filter(rem == '1') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "", 
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
+  #scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("Prevention") + #ylab("Total crayfish in the Columbia River (Millions)")+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 6000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+      #  strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
+        legend.position = "none",
+        axis.title=element_text(size=14,face="bold"),
+       # axis.text.x = "none"
+  )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+
+max.data <- all_Dcol %>%
+  group_by(location, rem) %>%
+  filter(count == max(count) & rem == '16') 
+
+p16 <- all_Dcol %>% 
+  filter(rem == '16') %>% 
+  ggplot(aes(x = factor(location, level = level_order), y = count, 
+             group = interaction(rem, location)))+
+  geom_boxplot(position="dodge",alpha = 0.5)+
+  geom_hline(yintercept = nc.val, linetype = 2) + 
+  geom_point(data = max.data, aes(x = factor(location, level = level_order), y = count, 
+                                  group = interaction(rem, location)), color = 'red') +
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = after_stat(y), ymin = after_stat(y)),
+               width = .75, color = "red", linewidth = 1)+ 
+  scale_x_discrete(labels=c(
+    "abund1" = "",
+    "abund4" = "",
+    "abund8" = "",
+    "abund16" = "",
+    "grow1" = "",
+    "grow4" = "", 
+    "grow8" = "", 
+    "grow16" = "", 
+    "edge1" = "",
+    "edge4" = "",
+    "edge8" = "",
+    "edge16" = "",
+    "down1" = "",
+    "down4" = "",
+    "down8" = "",
+    "down16" = "",
+    "random1" = "",
+    "random4" = "",
+    "random8" = "",
+    "random16" = ""))+
+  #scale_fill_manual(name = "Segments removed", labels = rem.label, values = colors2) +
+  xlab("") + ylab("") + #ylab("Total crayfish in the Columbia River (Millions)")+
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6),
+                     limits = c(0, 6000000))+
+  theme_bw() +   
+  theme(panel.border = element_blank(),
+        strip.background=element_rect(colour="white",
+                                      fill="white"),
+        #  strip.text.x = element_text(size = 11),
+        axis.line = element_line(colour = "gray20", linewidth = 1),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"),
+        legend.position = "none",
+      #  axis.title=element_text(size=14,face="bold"),
+        # axis.text.x = "none"
+  )+
+  
+  facet_grid(~rem, scales = "free", 
+             labeller = 
+               labeller(rem = c(`1` = "1 Segment", 
+                                `4` = "4 Segments",
+                                `8` = "8 Segments",
+                                `16`= "16 Segments"
+               )))
+
+
+p16
+
+pplots_D <- plot_grid(p1,p16, nrow = 1)
+pplots_D
+
+
+plot_grid(splots_D, cplots_D, pplots_D, nrow = 1)
+
+
