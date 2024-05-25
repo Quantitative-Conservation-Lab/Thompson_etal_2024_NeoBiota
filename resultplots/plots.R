@@ -24,6 +24,7 @@ all_Ntotal$rem <- as.factor(all_Ntotal$rem)
 
 detach(package:plyr)
 
+
 suppress0 <- all_Ntotal %>%
   filter(rem == '0') %>% 
   group_by(location) %>%
@@ -174,7 +175,6 @@ s1 <- all_Ntotal %>%
                )))
 
 ###### Plot 4 ####
-
 max.data <- all_Ntotal %>%
   group_by(location, rem2) %>%
   filter(count == max(count) & rem == '4') 
