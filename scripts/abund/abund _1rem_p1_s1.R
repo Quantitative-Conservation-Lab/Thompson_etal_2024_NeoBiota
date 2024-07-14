@@ -147,7 +147,7 @@ for(p in 1:P){
 #### checking ####
 library(expm)
 all.equal(L.annual[,,4], L.june[,,4] %*% (L.notjune[,,4] %^% 11))
-
+all.equal(L.annual[,,4], L.june[,,4] %*% (L.notjune[,,4]) %*% (L.notjune[,,4]) %*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4]))
 stable.dist <- array(NA, dim = c(4,P))
 
 for(p in 1:P){
