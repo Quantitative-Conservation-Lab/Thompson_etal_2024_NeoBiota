@@ -78,14 +78,21 @@ rem.labelp <- c("0 = None", "1 = Trap effect", "2 = No trap effect", "3 = Consta
 
 all_Nvtime$Strategy <- all_Nvtime$location
 
+all_NvtimeNC <- all_Nvtime %>% filter(p == 0)
 all_Nvtime <- all_Nvtime %>% filter(p == 1)
+
+colors <- c(col[1], col[2], col[4], col[5], col[6])
+
+all_Nvtime <- rbind(all_Nvtime, all_NvtimeNC)
+
+all_Nvtime$segments <- as.factor(all_Nvtime$segments)
 
 ggplot(all_Nvtime)+
  geom_ribbon(aes(x = year, ymin = low.1, group = interaction(p,segments, Strategy), ymax = high.9), fill = 'lightgrey', alpha = 0.6)+
   geom_line(aes(x = year, y = count, group = interaction(p,segments, Strategy), color = segments))+
   facet_wrap(~segments+ Strategy, labeller = label_both)+
   xlab("Year") + ylab("Final total crayfish abundance (millions)")+
-  scale_color_manual(name = "Removal rate (p)", labels = rem.labelp, values = colors)+
+  scale_color_manual(name = "Segments managed", values = colors)+
   scale_x_continuous(breaks = scales::pretty_breaks(n = 7)) +
   scale_y_continuous(breaks = c(0, 150000000), labels = unit_format(unit = "M", scale = 1e-6))+
   theme_bw() +   
@@ -106,17 +113,26 @@ all_Nvtime <- data.frame(all_Nvtime)
 
 all_Nvtime$year <- (all_Nvtime$primary/12) + 1
 
-all_Nvtime$p[all_Nvtime$p == 0] <- 'None'
-all_Nvtime$p[all_Nvtime$p == 1] <- 'Trap effect'
-all_Nvtime$p[all_Nvtime$p == 2] <- 'No trap effect'
-all_Nvtime$p[all_Nvtime$p == 3] <- 'Constant 0.5'
+# all_Nvtime$p[all_Nvtime$p == 0] <- 'None'
+# all_Nvtime$p[all_Nvtime$p == 1] <- 'Trap effect'
+# all_Nvtime$p[all_Nvtime$p == 2] <- 'No trap effect'
+# all_Nvtime$p[all_Nvtime$p == 3] <- 'Constant 0.5'
 
 colnames(all_Nvtime)[3] <- "segments"
 
+all_Nvtime <- all_Nvtime %>% filter(p <= 1)
+
+all_Nvtime$location[all_Nvtime$location == 'nocontrol'] <- 'No control'  
+all_Nvtime$location[all_Nvtime$location == 'down'] <- 'Downstream'  
+all_Nvtime$location[all_Nvtime$location == 'abund'] <- 'Abundance'  
+all_Nvtime$location[all_Nvtime$location == 'grow'] <- 'Growth'  
+all_Nvtime$location[all_Nvtime$location == 'edge'] <- 'Edge'  
+all_Nvtime$location[all_Nvtime$location == 'random'] <- 'Random'  
+
 ggplot(all_Nvtime)+
   geom_line(aes(x = year, y = count, group = interaction(p,segments, location),color = location), lwd = 0.75)+
-  scale_color_manual(name = "Management Strategy", labels = labelD, values = colorsD) +
-  facet_wrap(~segments+ p, labeller=label_both)+
+  scale_color_manual(name = "Segments managed", values = colorsD) +
+  facet_wrap(~segments, labeller=label_both)+
   xlab("Year") + ylab("Final total crayfish abundance (millions)")+
   scale_x_continuous(breaks = scales::pretty_breaks(n = 7)) +
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6))+
