@@ -144,6 +144,21 @@ for(p in 1:P){
   L.annual[4,4,p] <- (survival_age[4,p]^12)
 }
 
+#### checking ####
+library(expm)
+all.equal(L.annual[,,4], L.june[,,4] %*% (L.notjune[,,4] %^% 11))
+all.equal(L.annual[,,4], L.june[,,4] %*% (L.notjune[,,4]) %*% (L.notjune[,,4]) %*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4])%*% (L.notjune[,,4]))
+stable.dist <- array(NA, dim = c(4,P))
+
+for(p in 1:P){
+  stable.dist[,p] <- stable.stage(L.annual[,,p]) 
+}
+
+for(p in 1:P){
+  for(i in 1:I){
+    N.truth[i,1,1,1:Ages,p,1:S] <- round(t(stable.dist[,p])* initpop[i])
+  }
+}
 
 #### Year 1 removal ####
 site.traps <- array(NA, dim = c(N.years, numrem, P, S))#rep(NA, S)
