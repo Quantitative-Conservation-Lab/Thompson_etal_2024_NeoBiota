@@ -35,5 +35,5 @@ The repository is organized as follows.
 
 ## Other outside data:
  * Link to arcgis [online map](https://uw.maps.arcgis.com/home/item.html?id=8ceee549c4b54b9f939060f099fb6508)
- * Link to full result files
+ * Link to full result [files](https://zenodo.org/records/12761044?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjNjMjllZTc5LTcyZmMtNDg1Ni04ZDBmLThmYjE0MTg4MTYwMiIsImRhdGEiOnt9LCJyYW5kb20iOiIwNWI0YTVmY2JiMzFiZmE0NjlkOTZiZGVmYWQ1MDA5NyJ9.xOVEaERtKzGM2Pe_evGMF6x2eShYL2jy9YojM3Kfel2OUyP7Aev3AFuh3sRtKtijH3RzwXTvfCn26xtf9Pyp_w)
  
