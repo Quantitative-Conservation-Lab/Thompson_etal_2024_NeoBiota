@@ -19,7 +19,7 @@ ________________________________________________________________________________
 The repository is organized as follows. 
 
 * **scripts**: simulation scripts for each management strategy
-  + <Abundance>: simulation scripts for the Target Abundance strategy (remove at segments with highest total crayfish abundance)
+  + <em>Abundance</em>: simulation scripts for the Target Abundance strategy (remove at segments with highest total crayfish abundance)
     - 8 scripts. Each script, is defined as: abundance_#rem_s#. Where #rem is the number of segments receiving removal effort (1,4,8,16), and #sim is the simulation script (s1 = the first 25 simulations for each parameter set, s2 = the second 25 simulations for each parameter set). Due to memory issues we divided these simulations to two scripts. 
   + <em>Downstream</em> : simulation scripts for the Target Downstream strategy (remove at the most downstream segments on the mainstem with crayfish abundance)
     - 8 scripts. The scripts are organized similarly to the abundance scripts above
@@ -48,5 +48,5 @@ The repository is organized as follows.
 
 ## Supplemental data:
  * Link to arcgis [online map](https://uw.maps.arcgis.com/home/item.html?id=8ceee549c4b54b9f939060f099fb6508)
- * Link to full result files [files](https://zenodo.org/records/12761044?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjNjMjllZTc5LTcyZmMtNDg1Ni04ZDBmLThmYjE0MTg4MTYwMiIsImRhdGEiOnt9LCJyYW5kb20iOiIwNWI0YTVmY2JiMzFiZmE0NjlkOTZiZGVmYWQ1MDA5NyJ9.xOVEaERtKzGM2Pe_evGMF6x2eShYL2jy9YojM3Kfel2OUyP7Aev3AFuh3sRtKtijH3RzwXTvfCn26xtf9Pyp_w)
+ * Link to full result files [online link](https://zenodo.org/records/12761044?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjNjMjllZTc5LTcyZmMtNDg1Ni04ZDBmLThmYjE0MTg4MTYwMiIsImRhdGEiOnt9LCJyYW5kb20iOiIwNWI0YTVmY2JiMzFiZmE0NjlkOTZiZGVmYWQ1MDA5NyJ9.xOVEaERtKzGM2Pe_evGMF6x2eShYL2jy9YojM3Kfel2OUyP7Aev3AFuh3sRtKtijH3RzwXTvfCn26xtf9Pyp_w)
  
